@@ -7,7 +7,7 @@ import {StringContextHandler} from "./StringContextHandler"
 export class StringEchoVarReplaceCommand extends RegexReplaceCommand {
 
   constructor(protected varName: HtmlVarName, protected defaultHandlers: StringContextHandler[] = []) {
-    super(new RegExp(`\\$\{mail\}`, "gs"))
+    super(new RegExp(`\\$\{${varName}\}`, "gs"))
   }
 
   protected async createReplacer(context: HtmlSsgContext): Promise<RegexReplacer> {
