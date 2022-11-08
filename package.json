@@ -18,8 +18,8 @@
   "scripts": {
     "clean": "rm -Rf dist && rm -Rf node_modules && rm package-lock.json",
     "prebuild": "npm install",
-    "build": "tsc",
-    "prepublishOnly": "npm run build && npm test",
+    "build": "rm -Rf dist && tsc",
+    "prepublishOnly": "npm run build",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "dependencies": {
