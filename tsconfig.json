@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "strict": true,
+    "module": "ES2020",
+    "target": "ES2018",
+    "moduleResolution": "node",
+    "lib": [
+      "ES2020"
+    ],
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "**/node_modules"
+  ]
+}

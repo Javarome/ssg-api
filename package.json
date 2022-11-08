@@ -1,0 +1,50 @@
+{
+  "name": "rr0",
+  "type": "module",
+  "author": "Jérôme Beau",
+  "version": "1.0.0",
+  "description": "Static Site Generation TypeScript API",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "engines": {
+    "node": ">=16.2.0"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Javarome/ssg-api",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Javarome/ssg-api.git"
+  },
+  "scripts": {
+    "clean": "rm -Rf dist && rm -Rf node_modules && rm package-lock.json",
+    "prebuild": "npm install",
+    "build": "tsc",
+    "prepublishOnly": "npm run build && npm test",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "dependencies": {
+    "copy": "~0.3.2",
+    "detect-character-encoding": "~0.8.0",
+    "glob-promise": "~5.0.0",
+    "jsdom": "~20.0.2",
+    "@googlemaps/google-maps-services-js": "~3.3.16"
+  },
+  "devDependencies": {
+    "@types/detect-character-encoding": "~0.7.0",
+    "@types/jsdom": "~20.0.1",
+    "@types/jest": "~29.2.2",
+    "jest": "~29.3.0",
+    "ts-jest": "~29.0.3",
+    "typescript": "~4.8.4",
+    "uuid": "~9.0.0",
+    "@babel/plugin-transform-modules-commonjs": "~7.19.6"
+  },
+  "keywords": [
+    "ssg",
+    "typescript",
+    "api"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
