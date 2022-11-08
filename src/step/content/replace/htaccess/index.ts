@@ -1,5 +1,3 @@
 export * from "./HtAccessReplaceCommand"
-export * from "./HtAccessToNetlifyConfigReplaceCommand.test"
 export * from "./HtAccessToNetlifyConfigReplaceCommand"
-export * from "./HtAccessToNetlifyRedirectsReplaceCommand.test"
 export * from "./HtAccessToNetlifyRedirectsReplaceCommand"
