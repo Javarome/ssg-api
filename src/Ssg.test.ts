@@ -1,4 +1,4 @@
-import {Ssg, SsgConfig} from "./Ssg"
+import {Ssg} from "./Ssg"
 import {SsgContextImpl} from "./SsgContextImpl"
 import {SsgStep, SsgStepResult} from "./step"
 import {SsgContext} from "./SsgContext"

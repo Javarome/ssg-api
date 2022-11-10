@@ -1,6 +1,6 @@
 import {SsgStep, SsgStepResult} from "../SsgStep"
 import {SsgContext} from "../../SsgContext"
-import {OutputFunc, SsgConfig} from "../../Ssg"
+import {OutputFunc} from "../../Ssg"
 import {promise as glob} from "glob-promise"
 import {getHtmlFileInfo} from "../../util/file/HtmlFileInfo"
 import {ReplaceCommand} from "./replace/ReplaceCommand"
