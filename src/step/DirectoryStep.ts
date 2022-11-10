@@ -1,5 +1,5 @@
 import {SsgStep, SsgStepResult} from "./SsgStep"
-import {OutputFunc, SsgConfig} from "../Ssg"
+import {SsgConfig} from "../Ssg"
 import {SsgContext} from "../SsgContext"
 import {dirNames} from "../util/file/FileUtil"
 import {getFileInfo} from "../util/file/FileInfo"
@@ -15,13 +15,15 @@ export interface DirectoryResult extends SsgStepResult {
  */
 export abstract class DirectoryStep implements SsgStep {
 
-  protected constructor(protected dirs: string[], protected excludedDirs: string[], protected template: string,
-                        protected outputFunc: OutputFunc) {
+  readonly name = "directory"
+
+  constructor(protected dirs: string[], protected excludedDirs: string[], protected template: string,
+              protected config: SsgConfig) {
   }
 
-  async execute(context: SsgContext, config: SsgConfig): Promise<DirectoryResult> {
+  async execute(context: SsgContext): Promise<SsgStepResult> {
     context.inputFile = getFileInfo(context, this.template)
-    context.outputFile = getFileInfo(context, `${config.outDir}/${this.template}`)
+    context.outputFile = getFileInfo(context, `${this.config.outDir}/${this.template}`)
     let dirames = (await this.findDirs(this.dirs))
       .filter(dirName => !this.excludedDirs.includes(dirName))
     await this.processDirs(context, dirames)

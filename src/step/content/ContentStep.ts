@@ -26,10 +26,12 @@ export type ContentStepConfig = {
 
 export class ContentStep implements SsgStep {
 
+  readonly name = "content"
+
   constructor(protected contents: ContentStepConfig[], protected output: OutputFunc) {
   }
 
-  async execute(context: SsgContext, config: SsgConfig): Promise<SsgStepResult> {
+  async execute(context: SsgContext): Promise<SsgStepResult> {
     let contentCount = 0
     for (const contents of this.contents) {
       contentCount += await this.processRoots(context, contents)
