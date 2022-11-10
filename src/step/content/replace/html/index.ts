@@ -1,4 +1,3 @@
-export * from "./anchor"
 export * from "./class"
 export * from "./ssi"
 export * from "./tag"
