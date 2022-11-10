@@ -31,9 +31,10 @@ export class Ssg {
     const result: SsgResult = {}
     for (let i = 0; i < this.steps.length; i++) {
       const step = this.steps[i]
-      context.log(`Step #${i + 1}`)
-      const stepResult = await step.execute(context, config)
-      context.log(`Step result #${i + 1}`, stepResult)
+      const name = step.name ?? `#${i + 1}`
+      context.log(`Step ${name} executing:`)
+      const stepResult = await step.execute(context)
+      context.log(`Step ${name} completed:`, stepResult)
       Object.assign(result, stepResult)
     }
     return result
