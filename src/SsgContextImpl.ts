@@ -32,6 +32,9 @@ export class SsgContextImpl implements SsgContext {
 
   set inputFile(value: FileInfo) {
     this._inputFile = value
+    if (!this._outputFile) {
+      this._outputFile = this._inputFile
+    }
   }
 
   protected _outputFile: FileInfo | undefined

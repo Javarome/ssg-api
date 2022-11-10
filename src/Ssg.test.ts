@@ -7,28 +7,27 @@ describe("Ssg", function () {
 
   test("start", async () => {
     const config = {outDir: "out/"}
-    const ssg = new Ssg(config)
-    const context = new SsgContextImpl("fr")
     const step1 = new class implements SsgStep {
       async execute(context: SsgContext, config: SsgConfig): Promise<SsgStepResult> {
-        console.log("Doing step 1")
+        context.log("Doing step 1")
         return {step1Ok: true}
       }
     }()
     const step2 = new class implements SsgStep {
       async execute(context: SsgContext, config: SsgConfig): Promise<SsgStepResult> {
-        console.log("Doing step 2")
+        context.log("Doing step 2")
         return {step2Done: true}
       }
     }()
+    const ssg = new Ssg(config)
+      .add(step1)
+      .add(step2)
+    const context = new SsgContextImpl("fr")
     try {
-      const result = await ssg
-        .add(step1)
-        .add(step2)
-        .start(context)
-      console.log("Completed", result)
+      const result = ssg.start(context)
+      context.log("Completed", result)
     } catch (e) {
-      console.error(e)
+      context.error(e)
     }
   })
 })

@@ -8,11 +8,12 @@ TypeScript API to generate a static website.
   - [Step](#Step)
     - [ContentStep](#ContentStep)
       - [Replacements](#Replacements)
+  - [Context](#Context)
 - [Examples](#Examples)
 
 ## Setup
 
-Install the ssg-api as a project dependency:
+Install `ssg-api` as a project dependency:
 
 ```
 npm install --save ssg-api
@@ -25,17 +26,19 @@ import {Ssg, SsgContextImpl, SsgConfig} from "ssg-api"
 
 const config: SsgConfig = {outDir: "out"}
 const context = new SsgContextImpl("fr")
-new Ssg(config)
-        .add(someStep)
-        .add(otherStep)
-        .start(context)   // Start the generation in outDir
-        .then(result => console.log("Completed", result))
-        .catch(err => console.error(err, context.inputFile.name, "=>", context.outputFile.name))
+const ssg = new Ssg(config).add(firstStep).add(nextStep)
+try {
+  const result = await ssg.start(context)
+  console.log("Completed", result)
+} catch (e) {
+  console.error(err, context.inputFile.name, "=>", context.outputFile.name)
+)
+}
 ```
 
 ### Testing
 
-No that this is a native ESM package so it may not be supported by all test frameworks out of the box.
+ssg-api is a native ESM package, so it may not be supported by all test frameworks out of the box.
 
 For instance, Jest will require some specifics in its `jest.config.js` to transform the package code (here as ts-jest config):
 
@@ -53,13 +56,13 @@ module.exports = {
 
 ## Concepts
 
-### Step
+### Steps
 
 The [Ssg](https://github.com/Javarome/ssg-api/blob/main/src/Ssg.ts) execute a number of [Step](https://github.com/Javarome/ssg-api/blob/main/src/step/SsgStep.ts)s, sequentially.
-A Step can do anything, but here are some pre-defined steps:
+A Step can do anything and return its own results, but here are some pre-defined steps:
 
-- [CopyStep](#Contentstep) copies files;
-- [ContentStep](https://github.com/Javarome/ssg-api/blob/main/src/step/content/ContentStep.ts) executes a series of [ReplaceCommands](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/ReplaceCommand.ts), sequentially.
+- [CopyStep](https://github.com/Javarome/ssg-api/blob/main/src/step/CopyStep.ts) copies files;
+- [ContentStep](#Contentstep) executes a series of [ReplaceCommands](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/ReplaceCommand.ts), sequentially.
 - [DirectoryStep](https://github.com/Javarome/ssg-api/blob/main/src/step/DirectoryStep.ts) completes a template based on sub-directories, sequentially (to produce a listing of them, typically).
 
 Example:
@@ -76,9 +79,7 @@ new Ssg(config)
         .add(dir2SubdirectoriesStep)
         .add(...anArrayOfSteps)
         .add(new CopyStep(copiesToDo))
-        .start(context)   // Start the generation
-        .then(result => console.log("Completed", result))
-        .catch(err => console.error(err, context.inputFile.name, "=>", context.outputFile.name))
+        .start(context)
 ```
 
 You can create **your own steps** by implementing the [SsgStep](https://github.com/Javarome/ssg-api/blob/main/src/step/SsgStep.ts) interface.
@@ -172,9 +173,10 @@ new Ssg(config)
 ## Examples
 
 ssg-api has been developed to generate the [RR0 website](https://rr0.org),
-so[its repository](https://github.com/RR0/rr0.org) is a good place to find examples:
+so [its repository](https://github.com/RR0/rr0.org) is a good place to find examples. RR0:
 
-- [TimeReplaceCommand](https://github.com/RR0/rr0.org/blob/master/time/TitleReplaceCommand.ts) replaces `<time>yyyy-mm-dd hh:mm</time>` tags with links to a page about that very date.
-- [PlaceReplacer](https://github.com/RR0/rr0.org/blob/master/place/PlaceReplacer.ts) uses a new `ClassDomReplaceCommand("place", new PlaceReplacerFactory(placeService))` to replace `<span class="place">Paris (France)</span>` tags with a clickable tag to display the map of the mentioned place.
-- the website [build](https://github.com/RR0/rr0.org/blob/master/build.ts) app initializes a Ssg config with the abovementioned replacements and runs it.
-- the [RR0SsgContext](https://github.com/RR0/rr0.org/blob/master/RR0SsgContext.ts) specializes `SsgContextImpl` to add access to locale-specific messages and time context.
+- implemented a [TimeReplaceCommand](https://github.com/RR0/rr0.org/blob/master/time/TitleReplaceCommand.ts) to replace `<time>yyyy-mm-dd hh:mm</time>` tags with links to a page about that very date.
+- implemented a [PlaceReplacer](https://github.com/RR0/rr0.org/blob/master/place/PlaceReplacer.ts) to be used through a `ClassDomReplaceCommand("place", new PlaceReplacerFactory(placeService))` to replace `<span class="place">Paris (France)</span>` tags with a clickable tag to display the map of the mentioned place.
+- runs a [CopyStep]() to copy images in the output dir;
+- implemented a [RR0SsgContext](https://github.com/RR0/rr0.org/blob/master/RR0SsgContext.ts) specializes `SsgContextImpl` aht adds access to locale-specific messages and time context.
+- initializes a Ssg config with the abovementioned replacements and runs it in its [build](https://github.com/RR0/rr0.org/blob/master/build.ts) app.
