@@ -1,4 +1,4 @@
-# ssg-api
+# ssg-api [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Javarome/ssg-api/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Javarome/ssg-api/tree/main)
 
 TypeScript API to generate a static website.
 
