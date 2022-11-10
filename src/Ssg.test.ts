@@ -8,13 +8,15 @@ describe("Ssg", function () {
   test("start", async () => {
     const config = {outDir: "out/"}
     const step1 = new class implements SsgStep {
-      async execute(context: SsgContext, config: SsgConfig): Promise<SsgStepResult> {
+      async execute(context: SsgContext): Promise<SsgStepResult> {
         context.log("Doing step 1")
         return {step1Ok: true}
       }
     }()
     const step2 = new class implements SsgStep {
-      async execute(context: SsgContext, config: SsgConfig): Promise<SsgStepResult> {
+      readonly name = "second"
+
+      async execute(context: SsgContext): Promise<SsgStepResult> {
         context.log("Doing step 2")
         return {step2Done: true}
       }
@@ -24,8 +26,8 @@ describe("Ssg", function () {
       .add(step2)
     const context = new SsgContextImpl("fr")
     try {
-      const result = ssg.start(context)
-      context.log("Completed", result)
+      const result = await ssg.start(context)
+      expect(result).toEqual({step1Ok: true, step2Done: true})
     } catch (e) {
       context.error(e)
     }
