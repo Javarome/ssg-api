@@ -32,7 +32,6 @@ try {
   console.log("Completed", result)
 } catch (e) {
   console.error(err, context.inputFile.name, "=>", context.outputFile.name)
-)
 }
 ```
 

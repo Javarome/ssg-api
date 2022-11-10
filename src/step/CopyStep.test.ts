@@ -5,10 +5,10 @@ describe("CopyStep", () => {
 
   test("copy", async () => {
     const config = {outDir: "out/"}
-    const copies = ["src/test/test.htm"]
-    const copyStep = new CopyStep(copies, config)
+    const copies = ["src/test/test.html"]
+    const step = new CopyStep(copies, config)
     const context = new SsgContextImpl("fr")
-    const copyResult = await copyStep.execute(context)
-    expect(copyResult).toEqual({filesCount: 1})
+    const result = await step.execute(context)
+    expect(result).toEqual({filesCount: 1})
   })
 })

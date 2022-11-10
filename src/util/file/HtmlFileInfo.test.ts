@@ -4,10 +4,10 @@ import {getHtmlFileInfo} from "./HtmlFileInfo"
 describe("HtmlFileInfo", () => {
 
   test("defined title", () => {
-    const fileName = "src/test/test.htm"
+    const fileName = "src/test/test.html"
     const fileContents = `<!--#include virtual="/header-start.html" -->
 <title>Introduction à l'édition du NCAS - Rapport Condon</title>
-<meta content="https://www.ncas.org/condon/text/test.htm" name="url">
+<meta content="https://www.ncas.org/condon/text/test.html" name="url">
 <meta name="author" content="Paul Jaffe (président du NCAS, janvier 1999)">
 <!--#include virtual="/header-end.html" -->`
     const context = testUtil.newHtmlContext(fileName, fileContents)
@@ -20,7 +20,7 @@ describe("HtmlFileInfo", () => {
   })
 
   test("undefined title", () => {
-    const fileName = "src/test/test.htm"
+    const fileName = "src/test/test.html"
     const fileContents = `<!--#include virtual="/header.html" -->
 <ul><li>Item 1</li><li>Item 2</li></ul>
 <!--#include virtual="/footer.html" -->`

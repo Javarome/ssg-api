@@ -58,3 +58,16 @@ export function getFileInfo(context: SsgContext, fileName: string, declaredEncod
   const lang = getFileLang(context, fileName)
   return new FileInfo(fileName, encoding, contents, fileStats.mtime, lang)
 }
+
+export function getOrCreateFileInfo(context: SsgContext, fileName: string,
+                                    declaredEncoding?: BufferEncoding): FileInfo {
+  try {
+    return getFileInfo(context, fileName, declaredEncoding)
+  } catch (e) {
+    if ((e as any).code === "ENOENT") {
+      return new FileInfo(fileName, "utf8", "", new Date(), context.locales)
+    } else {
+      throw e
+    }
+  }
+}
