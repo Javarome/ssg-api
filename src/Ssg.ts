@@ -31,9 +31,9 @@ export class Ssg {
     const result: SsgResult = {}
     for (let i = 0; i < this.steps.length; i++) {
       const step = this.steps[i]
-      console.log(`Step #${i + 1}`)
+      context.log(`Step #${i + 1}`)
       const stepResult = await step.execute(context, config)
-      console.log(`Step result #${i + 1}`, stepResult)
+      context.log(`Step result #${i + 1}`, stepResult)
       Object.assign(result, stepResult)
     }
     return result

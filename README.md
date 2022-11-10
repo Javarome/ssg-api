@@ -2,8 +2,54 @@
 
 TypeScript API to generate a static website.
 
-ssg-api has been developed to generate the [RR0 website](https://rr0.org),
-so you'll find examples of Steps and Replacers in [the website repository](https://github.com/RR0/rr0.org).
+- [Setup](#Setup)
+  - [Testing](#Testing)
+- [Concepts](#Concepts)
+  - [Step](#Step)
+    - [ContentStep](#ContentStep)
+      - [Replacements](#Replacements)
+- [Examples](#Examples)
+
+## Setup
+
+Install the ssg-api as a project dependency:
+
+```
+npm install --save ssg-api
+```
+
+Then import the required types to implement your own SSG code:
+
+```ts
+import {Ssg, SsgContextImpl, SsgConfig} from "ssg-api"
+
+const config: SsgConfig = {outDir: "out"}
+const context = new SsgContextImpl("fr")
+new Ssg(config)
+        .add(someStep)
+        .add(otherStep)
+        .start(context)   // Start the generation in outDir
+        .then(result => console.log("Completed", result))
+        .catch(err => console.error(err, context.inputFile.name, "=>", context.outputFile.name))
+```
+
+### Testing
+
+No that this is a native ESM package so it may not be supported by all test frameworks out of the box.
+
+For instance, Jest will require some specifics in its `jest.config.js` to transform the package code (here as ts-jest config):
+
+```js
+/** @type {import("ts-jest/dist/types").InitialOptionsTsJest} */
+module.exports = {
+  preset: "ts-jest",
+  testEnvironment: "node",
+  transformIgnorePatterns: ["node_modules/(?!ssg-api)"],
+  transform: {
+    "^.+\\.[tj]s$": "ts-jest"
+  }
+}
+```
 
 ## Concepts
 
@@ -12,11 +58,11 @@ so you'll find examples of Steps and Replacers in [the website repository](https
 The [Ssg](https://github.com/Javarome/ssg-api/blob/main/src/Ssg.ts) execute a number of [Step](https://github.com/Javarome/ssg-api/blob/main/src/step/SsgStep.ts)s, sequentially.
 A Step can do anything, but here are some pre-defined steps:
 
-- [CopyStep](https://github.com/Javarome/ssg-api/blob/main/src/step/CopyStep.ts) copies files;
+- [CopyStep](#Contentstep) copies files;
 - [ContentStep](https://github.com/Javarome/ssg-api/blob/main/src/step/content/ContentStep.ts) executes a series of [ReplaceCommands](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/ReplaceCommand.ts), sequentially.
-- [DirectoryStep](https://github.com/Javarome/ssg-api/blob/main/src/step/DirectoryStep.ts) performs operations on sub-directories, sequentially.
+- [DirectoryStep](https://github.com/Javarome/ssg-api/blob/main/src/step/DirectoryStep.ts) completes a template based on sub-directories, sequentially (to produce a listing of them, typically).
 
-For instance:
+Example:
 
 ```ts 
 import {SsgConfig, SsgContextImpl, Ssg, ContentStep, CopyStep} from "ssg-api"
@@ -35,20 +81,39 @@ new Ssg(config)
         .catch(err => console.error(err, context.inputFile.name, "=>", context.outputFile.name))
 ```
 
-#### Extensibility
+You can create **your own steps** by implementing the [SsgStep](https://github.com/Javarome/ssg-api/blob/main/src/step/SsgStep.ts) interface.
 
-You can create:
+### Context
 
-- **your own steps** by implementing the [SsgStep](https://github.com/Javarome/ssg-api/blob/main/src/step/SsgStep.ts) interface.
-- **your own context** by implementing the [SsgContext](https://github.com/Javarome/ssg-api/blob/main/src/SsgContext.ts) interface,
-  typically to provide additional info to the custom .
+A [SsgContext](https://github.com/Javarome/ssg-api/blob/main/src/SsgContext.ts) is provided to Ssg methods to carry information about :
 
-### Replacements
+- the current `locale`(s)
+- the current `inputFile` that has been read
+- the current `outputFile` that is about to be written
+- current values of **variables** values (through `getVar()`) that may have been set by current or previous replacements (through `setVar()`).
 
-In the case of a [ContentStep](https://github.com/Javarome/ssg-api/blob/main/src/step/content/ContentStep.ts), predefined replacements are also available.
-You'll find find a number of [SSI](https://fr.wikipedia.org/wiki/Server_Side_Includes) commands because the RR0 website used to rely on them.
+It also provides utility logging methods (`log()`/`warn()`/`error()`/`debug()`) and a `clone()` method.
 
-- [RegexReplaceCommand](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/RegexReplaceCommand.ts) executes a [RegexReplacer](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/RegexReplacer.ts) as long it changes the contents of the current file.
+You can create **your own context** by implementing the [SsgContext](https://github.com/Javarome/ssg-api/blob/main/src/SsgContext.ts) interface
+(typically to provide custom info to custom steps).
+
+#### ContentStep
+
+A [ContentStep](https://github.com/Javarome/ssg-api/blob/main/src/step/content/ContentStep.ts) is parameterized by its `ContentStepConfig`s.
+Each of these configs specifies how the ContentStep will:
+
+1. gather each file from its specified `roots`.
+2. execute its `replacements` on each of them, until the file doesn't change anymore.
+3. saves the modified file contents in according to its `outputSpec`.
+
+##### Replacements
+
+ContentStep replacements are classes implementing the [`ReplaceCommand`](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/ReplaceCommand.ts) interface.
+
+A number of concrete and abstract predefined replace commands are available.
+(you'll find a number of [SSI](https://fr.wikipedia.org/wiki/Server_Side_Includes) ones because RR0 used to rely on them).
+
+- [RegexReplaceCommand](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/RegexReplaceCommand.ts) runs a [RegexReplacer](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/RegexReplacer.ts) as long it changes the contents of the current file.
   - ~~[HtmlTagReplaceCommand](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/html/tag/HtmlTagReplaceCommand.ts) replaces HTML tags using Regexes (use DOM version instead if you have inner tags).~~
   - ~~[ClassRegexReplaceCommand](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/html/class/ClassRegexReplaceCommand.ts) replaces HTML tags bearing a specific class using Regexes (use DOM version instead if you have inner tags).~~
   - [SsiLastModifiedReplaceCommand](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/html/ssi/SsiLastModifiedReplaceCommand.ts) replaces a SSI last-modified directive with the input file's last modified date.
@@ -57,7 +122,7 @@ You'll find find a number of [SSI](https://fr.wikipedia.org/wiki/Server_Side_Inc
   - [StringEchoVarReplaceCommand](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/html/StringEchoVarReplaceCommand.ts) replaces variables expressed as template literals (`${varName}`) in the input files.
   - [SsiSetVarCommand](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/html/ssi/SsiSetVarCommand.ts) sets a context variable from the template (which can be checked by the `SsiIfReplaceCommand` or displayed by the `SsiEchoVarCommand`).
   - [SsiEchoVarCommand](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/html/ssi/SsiEchoVarCommand.ts)
-- [DomReplaceCommand](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/DomReplaceCommand.ts) replaces a [DomReplacer](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/DomReplacer.ts) on all nodes matched by a DOM selector.
+- [DomReplaceCommand](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/DomReplaceCommand.ts) runs a [DomReplacer](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/DomReplacer.ts) on all nodes matched by a DOM selector.
 - [HtAccessReplaceCommand](https://github.com/Javarome/ssg-api/blob/main/src/step/content/replace/htaccess/HtAccessReplaceCommand.ts) replaces `.htaccess` sections.
 
 and others in the repository.
@@ -104,30 +169,12 @@ new Ssg(config)
         .catch(err => console.error(err, context.inputFile.name, "=>", context.outputFile.name))
 ```
 
-## Setup
+## Examples
 
-Install the package as a dependency of your NodeJS app:
+ssg-api has been developed to generate the [RR0 website](https://rr0.org),
+so[its repository](https://github.com/RR0/rr0.org) is a good place to find examples:
 
-```
-npm install --save ssg-api
-```
-
-Then import the required types to implement your own SSG tool.
-
-## Testing
-
-No that this is a native ESM package so it may not be supported by all test frameworks out of the box.
-
-For instance, Jest will require some specifics in its `jest.config.js` to transform the package code (here as ts-jest config):
-
-```js
-/** @type {import("ts-jest/dist/types").InitialOptionsTsJest} */
-module.exports = {
-  preset: "ts-jest",
-  testEnvironment: "node",
-  transformIgnorePatterns: ["node_modules/(?!ssg-api)"],
-  transform: {
-    "^.+\\.[tj]s$": "ts-jest"
-  }
-}
-```
+- [TimeReplaceCommand](https://github.com/RR0/rr0.org/blob/master/time/TitleReplaceCommand.ts) replaces `<time>yyyy-mm-dd hh:mm</time>` tags with links to a page about that very date.
+- [PlaceReplacer](https://github.com/RR0/rr0.org/blob/master/place/PlaceReplacer.ts) uses a new `ClassDomReplaceCommand("place", new PlaceReplacerFactory(placeService))` to replace `<span class="place">Paris (France)</span>` tags with a clickable tag to display the map of the mentioned place.
+- the website [build](https://github.com/RR0/rr0.org/blob/master/build.ts) app initializes a Ssg config with the abovementioned replacements and runs it.
+- the [RR0SsgContext](https://github.com/RR0/rr0.org/blob/master/RR0SsgContext.ts) specializes `SsgContextImpl` to add access to locale-specific messages and time context.

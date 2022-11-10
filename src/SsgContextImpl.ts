@@ -18,7 +18,7 @@ export class SsgContextImpl implements SsgContext {
   protected vars = new Map<string, string>()
 
   constructor(readonly locales: string | string[], currentFile: FileInfo | undefined = undefined) {
-    this._inputFile = currentFile
+    this._inputFile = this._outputFile = currentFile
   }
 
   protected _inputFile: FileInfo | undefined
