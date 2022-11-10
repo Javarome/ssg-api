@@ -23,7 +23,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "dependencies": {
-    "copy": "~0.3.2",
+    "cpy": "~9.0.1",
     "detect-character-encoding": "~0.8.0",
     "glob-promise": "~5.0.0",
     "jsdom": "~20.0.2",

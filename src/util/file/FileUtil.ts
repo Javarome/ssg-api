@@ -2,11 +2,9 @@ import * as fs from "fs"
 import {promises as fsAsync} from "fs"
 import detectCharacterEncoding from "detect-character-encoding"
 import path from "path"
-import * as util from "util"
 import {readdir} from "fs/promises"
 import {FileInfo} from "./FileInfo"
-
-const globCopy = util.promisify(require("copy"))
+import cpy from "cpy"
 
 export function toBufferEncoding(encoding: string | undefined): BufferEncoding | undefined {
   switch (encoding?.toLowerCase()) {
@@ -72,8 +70,8 @@ export async function dirNames(dir: string): Promise<string[]> {
     .map(dirent => dirent.name)
 }
 
-export async function ssgCopy(to: string, ...from: string[]): Promise<File[]> {
-  return globCopy(from, to)
+export async function ssgCopy(to: string, ...from: string[]): Promise<string[]> {
+  return cpy(from, to)
 }
 
 export function getContentType(html: HTMLElement): BufferEncoding | undefined {
