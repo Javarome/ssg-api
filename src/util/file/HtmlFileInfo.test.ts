@@ -15,6 +15,8 @@ describe("HtmlFileInfo", () => {
     expect(fileInfo.title).toBe("Introduction à l'édition du NCAS")
     expect(fileInfo.meta.author).toEqual(["Paul Jaffe (président du NCAS, janvier 1999)"])
     expect(fileInfo.meta.url).toBe("https://www.ncas.org/condon/text/intro.htm")
+    const titleElem = fileInfo.dom.window.document.documentElement.querySelector("title")
+    expect(titleElem?.textContent).toBe("Introduction à l'édition du NCAS - Rapport Condon")
   })
 
   test("undefined title", () => {

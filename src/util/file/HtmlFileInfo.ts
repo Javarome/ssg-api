@@ -1,8 +1,6 @@
 import {SsgContext} from "../../SsgContext"
 import {FileInfo, getFileInfo} from "./FileInfo"
-
-const jsdom = require("jsdom")
-const {JSDOM} = jsdom
+import {JSDOM} from "jsdom"
 
 export type HtmlMeta = {
   url?: string
@@ -32,16 +30,16 @@ export class HtmlFileInfo extends FileInfo {
     super(name, encoding, contents, lastModified, lang)
   }
 
-  _dom: typeof JSDOM | undefined
+  _dom: JSDOM | undefined
 
-  get dom(): typeof JSDOM {
+  get dom(): JSDOM {
     if (!this._dom) {
       this._dom = new JSDOM(this._contents)
     }
     return this._dom
   }
 
-  set dom(newDom: typeof JSDOM) {
+  set dom(newDom: JSDOM) {
     this._contents = newDom.serialize()
     this._dom = newDom
   }
@@ -89,7 +87,7 @@ export function getHtmlFileInfo(context: SsgContext, fileName: string): HtmlFile
   const doc = dom.window.document
   let titleElem = doc.querySelector("title")
   if (titleElem) {
-    const elemTitle = titleElem.textContent.trim()
+    const elemTitle = titleElem.textContent ? titleElem.textContent.trim() : ""
     const split = elemTitle.lastIndexOf(" - ")
     title = split > 0 ? elemTitle.substring(0, split) : elemTitle
   }

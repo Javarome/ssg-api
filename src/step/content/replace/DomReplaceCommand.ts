@@ -15,8 +15,8 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement> imp
     const replacer = await this.createReplacer(context)
     do {
       contents = result
-      const doc = fileInfo.dom.window.document
-      const elements = doc.querySelectorAll(this.selector)
+      const doc = fileInfo.dom.window.document.documentElement
+      const elements = doc.querySelectorAll<T>(this.selector)
       if (elements.length > 0) {
         for (const element of elements) {
           const replaced = await replacer.replace(element)

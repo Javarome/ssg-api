@@ -1,9 +1,7 @@
 import fs from "fs"
 import {detectEncoding, getCharSet, getContentType} from "./FileUtil"
 import {SsgContext} from "../../SsgContext"
-
-const jsdom = require("jsdom")
-const {JSDOM} = jsdom
+import {JSDOM} from "jsdom"
 
 export class FileInfo {
 
@@ -44,7 +42,7 @@ function getContents(context: SsgContext, fileName: string,
   if (!declaredEncoding) {
     if (fileName.endsWith(".html")) {
       const dom = new JSDOM(initialContents)
-      const html = dom.window.document
+      const html = dom.window.document.documentElement
       declaredEncoding = getCharSet(html) || getContentType(html)
     }
     detectedEncoding = detectEncoding(fileName)
