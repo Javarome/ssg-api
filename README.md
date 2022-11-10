@@ -172,11 +172,15 @@ new Ssg(config)
 
 ## Examples
 
-ssg-api has been developed to generate the [RR0 website](https://rr0.org),
+`ssg-api` has been developed to generate the [RR0 website](https://rr0.org),
 so [its repository](https://github.com/RR0/rr0.org) is a good place to find examples. RR0:
 
 - implemented a [TimeReplaceCommand](https://github.com/RR0/rr0.org/blob/master/time/TitleReplaceCommand.ts) to replace `<time>yyyy-mm-dd hh:mm</time>` tags with links to a page about that very date.
 - implemented a [PlaceReplacer](https://github.com/RR0/rr0.org/blob/master/place/PlaceReplacer.ts) to be used through a `ClassDomReplaceCommand("place", new PlaceReplacerFactory(placeService))` to replace `<span class="place">Paris (France)</span>` tags with a clickable tag to display the map of the mentioned place.
+- implemented a [OutlineReplaceCommand](https://github.com/RR0/rr0.org/blob/master/outline/OutlineReplaceCommand.ts) to insert an outline of the current HTML page.
+- implemented a [LinkReplaceCommand](https://github.com/RR0/rr0.org/blob/master/LinkReplaceCommand.ts) to insert navigation links matching the `"start"`, `"contents"`, `"prev"` and `"next"` relationships of the current HTML page.
 - runs a [CopyStep]() to copy images in the output dir;
 - implemented a [RR0SsgContext](https://github.com/RR0/rr0.org/blob/master/RR0SsgContext.ts) specializes `SsgContextImpl` aht adds access to locale-specific messages and time context.
+- implemented a [AnchorReplaceCommand](https://github.com/RR0/rr0.org/blob/master/anchor/AnchorReplaceCommand.ts) to add trailing slash to links and a `target="_blank"` if the url is outside of the current website.
+- implemented [CaseDirectoryStep](https://github.com/RR0/rr0.org/blob/master/science/crypto/ufo/enquete/dossier/CaseDirectoryStep.ts) and [PeopleDirectoryStep](https://github.com/RR0/rr0.org/blob/master/people/PeopleDirectoryStep.ts) to generate live indexes of UFO cases and people subdirectories.
 - initializes a Ssg config with the abovementioned replacements and runs it in its [build](https://github.com/RR0/rr0.org/blob/master/build.ts) app.
