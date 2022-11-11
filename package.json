@@ -2,7 +2,7 @@
   "name": "ssg-api",
   "type": "module",
   "author": "Jérôme Beau",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Static Site Generation TypeScript API",
   "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
