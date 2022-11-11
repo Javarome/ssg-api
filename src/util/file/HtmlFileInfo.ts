@@ -1,5 +1,5 @@
 import {SsgContext} from "../../SsgContext"
-import {FileInfo, getFileInfo} from "./FileInfo"
+import {FileInfo} from "./FileInfo"
 import {JSDOM} from "jsdom"
 
 export type HtmlMeta = {
@@ -80,7 +80,7 @@ function getLink(rel: LinkType, doc: Document): Link | undefined {
 }
 
 export function getHtmlFileInfo(context: SsgContext, fileName: string): HtmlFileInfo {
-  const fileInfo = getFileInfo(context, fileName)
+  const fileInfo = FileInfo.read(context, fileName)
   const fileContents = fileInfo.contents
   const dom = new JSDOM(fileContents)
   let title: string | undefined

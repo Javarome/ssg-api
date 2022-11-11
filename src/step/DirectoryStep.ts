@@ -1,10 +1,10 @@
-import {SsgStep, SsgStepResult} from "./SsgStep"
+import {SsgStep} from "./SsgStep"
 import {SsgConfig} from "../Ssg"
 import {SsgContext} from "../SsgContext"
 import {dirNames} from "../util/file/FileUtil"
-import {getFileInfo, getOrCreateFileInfo} from "../util/file/FileInfo"
+import {FileInfo} from "../util"
 
-export interface DirectoryResult extends SsgStepResult {
+export interface DirectoryResult {
   directoryCount: number
 }
 
@@ -19,37 +19,54 @@ export abstract class DirectoryStep implements SsgStep<DirectoryResult> {
               protected config: SsgConfig, readonly name = "directory") {
   }
 
-  async execute(context: SsgContext): Promise<SsgStepResult> {
-    context.inputFile = getFileInfo(context, this.template)
-    context.outputFile = getOrCreateFileInfo(context, `${this.config.outDir}/${this.template}`)
-    let dirames = (await this.findDirs(this.dirs))
+  /**
+   * Execute the directory step by:
+   * 1. finding all the subdirs of each this.dirs
+   * 2. processing the found directories through the `processDirs()` method.
+   * 3. returning the count of processed directories
+   */
+  async execute(context: SsgContext): Promise<DirectoryResult> {
+    context.inputFile = FileInfo.read(context, this.template)
+    context.outputFile = FileInfo.readOrNew(context, `${this.config.outDir}/${this.template}`)
+    const dirNames = (await this.findDirs(this.dirs))
       .filter(dirName => !this.excludedDirs.includes(dirName))
-    await this.processDirs(context, dirames)
-    return {directoryCount: dirames.length}
+    await this.processDirs(context, dirNames)
+    return {directoryCount: dirNames.length}
   }
 
+  /**
+   * Perform a processing of all found subdirectories.
+   *
+   * The implementation of this method is responsible for writing the outputfile (using
+   * `writeFileInfo(context.outputFile)` typically), if any.
+   */
   protected abstract processDirs(context: SsgContext, dirames: string[]): Promise<void>
 
   private async findDirs(fromDirs: string[]) {
-    let dirames: string[] = []
+    let dirNames: string[] = []
     for (let fromDir of fromDirs) {
-      let subDirs: string[] = []
-      if (fromDir.endsWith("/*/")) {
-        const baseDir = fromDir.substring(0, fromDir.length - 3)
-        if (baseDir.endsWith("/*")) {
-          const dirs = (await this.findDirs([baseDir + "/"]))
-            .filter(dirName => !this.excludedDirs.includes(dirName))
-          for (const dir of dirs) {
-            subDirs = subDirs.concat(await this.findDirs([dir + "/*/"]))
-          }
-        } else {
-          subDirs = (await dirNames(baseDir)).map(x => baseDir + "/" + x)
+      const subDirs = await this.findSubDirs(fromDir)
+      dirNames = dirNames.concat(subDirs)
+    }
+    return dirNames
+  }
+
+  private async findSubDirs(ofDir: string): Promise<string[]> {
+    let subDirs: string[] = []
+    if (ofDir.endsWith("/*/")) {
+      const baseDir = ofDir.substring(0, ofDir.length - 3)
+      if (baseDir.endsWith("/*")) {
+        const dirs = (await this.findDirs([baseDir + "/"]))
+          .filter(dirName => !this.excludedDirs.includes(dirName))
+        for (const dir of dirs) {
+          subDirs = subDirs.concat(await this.findDirs([dir + "/*/"]))
         }
       } else {
-        subDirs = [fromDir]
+        subDirs = (await dirNames(baseDir)).map(x => baseDir + "/" + x)
       }
-      dirames = dirames.concat(subDirs)
+    } else {
+      subDirs = [ofDir]
     }
-    return dirames
+    return subDirs
   }
 }

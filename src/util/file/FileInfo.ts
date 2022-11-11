@@ -1,5 +1,5 @@
 import fs from "fs"
-import {detectEncoding, getCharSet, getContentType} from "./FileUtil"
+import {detectEncoding, getCharSet, getContentType, writeFile} from "./FileUtil"
 import {SsgContext} from "../../SsgContext"
 import {JSDOM} from "jsdom"
 
@@ -18,56 +18,59 @@ export class FileInfo {
   set contents(value: string) {
     this._contents = value
   }
-}
 
-function getFileLang(context: SsgContext, filePath: string): string | string[] {
-  let lang = context.locales
-  const lastDot = filePath.lastIndexOf(".")
-  let lastSlash = filePath.lastIndexOf("/")
-  if (lastSlash < 0 || lastSlash < lastDot) {
-    lastSlash = lastSlash < 0 ? 0 : lastSlash
-    const fileName = filePath.substring(lastSlash, lastDot)
-    const variantPos = fileName.lastIndexOf("_")
-    if (variantPos > 0) {
-      lang = [fileName.substring(variantPos + 1)]
+  static read(context: SsgContext, fileName: string, declaredEncoding?: BufferEncoding): FileInfo {
+    const fileStats = fs.statSync(fileName)
+    const {encoding, contents} = FileInfo.getContents(context, fileName, declaredEncoding)
+    const lang = FileInfo.getFileLang(context, fileName)
+    return new FileInfo(fileName, encoding, contents, fileStats.mtime, lang)
+  }
+
+  static readOrNew(context: SsgContext, fileName: string, declaredEncoding?: BufferEncoding): FileInfo {
+    try {
+      return FileInfo.read(context, fileName, declaredEncoding)
+    } catch (e) {
+      if ((e as any).code === "ENOENT") {
+        return new FileInfo(fileName, "utf8", "", new Date(), context.locales)
+      } else {
+        throw e
+      }
     }
   }
-  return lang
-}
 
-function getContents(context: SsgContext, fileName: string,
+  static getFileLang(context: SsgContext, filePath: string): string | string[] {
+    let lang = context.locales
+    const lastDot = filePath.lastIndexOf(".")
+    let lastSlash = filePath.lastIndexOf("/")
+    if (lastSlash < 0 || lastSlash < lastDot) {
+      lastSlash = lastSlash < 0 ? 0 : lastSlash
+      const fileName = filePath.substring(lastSlash, lastDot)
+      const variantPos = fileName.lastIndexOf("_")
+      if (variantPos > 0) {
+        lang = [fileName.substring(variantPos + 1)]
+      }
+    }
+    return lang
+  }
+
+  static getContents(context: SsgContext, fileName: string,
                      declaredEncoding?: BufferEncoding): { encoding: BufferEncoding, contents: string } {
-  const initialContents = fs.readFileSync(fileName, {encoding: "utf-8"})
-  let detectedEncoding
-  if (!declaredEncoding) {
-    if (fileName.endsWith(".html")) {
-      const dom = new JSDOM(initialContents)
-      const html = dom.window.document.documentElement
-      declaredEncoding = getCharSet(html) || getContentType(html)
+    const initialContents = fs.readFileSync(fileName, {encoding: "utf-8"})
+    let detectedEncoding
+    if (!declaredEncoding) {
+      if (fileName.endsWith(".html")) {
+        const dom = new JSDOM(initialContents)
+        const html = dom.window.document.documentElement
+        declaredEncoding = getCharSet(html) || getContentType(html)
+      }
+      detectedEncoding = detectEncoding(fileName)
     }
-    detectedEncoding = detectEncoding(fileName)
+    const encoding: BufferEncoding = declaredEncoding || detectedEncoding || "utf-8"
+    const contents = fs.readFileSync(fileName, {encoding})
+    return {encoding, contents}
   }
-  const encoding: BufferEncoding = declaredEncoding || detectedEncoding || "utf-8"
-  const contents = fs.readFileSync(fileName, {encoding})
-  return {encoding, contents}
-}
 
-export function getFileInfo(context: SsgContext, fileName: string, declaredEncoding?: BufferEncoding): FileInfo {
-  const fileStats = fs.statSync(fileName)
-  const {encoding, contents} = getContents(context, fileName, declaredEncoding)
-  const lang = getFileLang(context, fileName)
-  return new FileInfo(fileName, encoding, contents, fileStats.mtime, lang)
-}
-
-export function getOrCreateFileInfo(context: SsgContext, fileName: string,
-                                    declaredEncoding?: BufferEncoding): FileInfo {
-  try {
-    return getFileInfo(context, fileName, declaredEncoding)
-  } catch (e) {
-    if ((e as any).code === "ENOENT") {
-      return new FileInfo(fileName, "utf8", "", new Date(), context.locales)
-    } else {
-      throw e
-    }
+  async write(): Promise<void> {
+    return writeFile(this.name, this.contents, this.encoding)
   }
 }

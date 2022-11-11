@@ -3,7 +3,6 @@ import {promises as fsAsync} from "fs"
 import detectCharacterEncoding from "detect-character-encoding"
 import path from "path"
 import {readdir} from "fs/promises"
-import {FileInfo} from "./FileInfo"
 import cpy from "cpy"
 
 export function toBufferEncoding(encoding: string | undefined): BufferEncoding | undefined {
@@ -58,10 +57,6 @@ function ensureDirectoryExistence(filePath: string) {
 export async function writeFile(fileName: string, contents: string, encoding: BufferEncoding): Promise<void> {
   ensureDirectoryExistence(fileName)
   return fsAsync.writeFile(fileName, contents, {encoding})
-}
-
-export async function writeFileInfo(fileInfo: FileInfo): Promise<void> {
-  return writeFile(fileInfo.name, fileInfo.contents, fileInfo.encoding)
 }
 
 export async function dirNames(dir: string): Promise<string[]> {
