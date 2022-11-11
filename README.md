@@ -198,6 +198,7 @@ HTML files automatic parsing will provide additional properties:
 - `title` will contain the value of the `<title>` tag, if any
 - `meta` will contain values of `url`, `copyright` and `author` meta tags (a repeated `author` meta tag will result in an array of author strings)
 - `links` will contain values of `start`, `contents`, `prev` and `next` relationships
+- `dom` will contain you a JSDOM instance, so you can query `dom.window.document` to get the parsed document.
 
 ### Context
 
