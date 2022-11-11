@@ -1,5 +1,5 @@
 import {testUtil} from "../../test/TestUtil"
-import {getHtmlFileInfo} from "./HtmlFileInfo"
+import {getHtmlFileInfo} from "./HtmlSsgFile"
 
 describe("HtmlFileInfo", () => {
 

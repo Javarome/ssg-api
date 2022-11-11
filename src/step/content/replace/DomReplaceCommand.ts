@@ -1,5 +1,5 @@
 import {ReplaceCommand} from "./ReplaceCommand"
-import {FileInfo} from "../../../util/file/FileInfo"
+import {SsgFile} from "../../../util/file/SsgFile"
 import {HtmlSsgContext} from "../../../HtmlSsgContext"
 import {DomReplacer} from "./DomReplacer"
 
@@ -8,7 +8,7 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement> imp
   constructor(protected selector: string) {
   }
 
-  async execute(context: HtmlSsgContext): Promise<FileInfo> {
+  async execute(context: HtmlSsgContext): Promise<SsgFile> {
     const fileInfo = context.inputFile
     let contents = fileInfo.contents
     let result = contents

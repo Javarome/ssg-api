@@ -1,5 +1,5 @@
 import {ReplaceCommand} from "../ReplaceCommand"
-import {FileInfo} from "../../../../util/file/FileInfo"
+import {SsgFile} from "../../../../util/file/SsgFile"
 import {SsgContext} from "../../../../SsgContext"
 
 enum HtAccessCommands {
@@ -17,7 +17,7 @@ enum HtAccessCommands {
 
 export abstract class HtAccessReplaceCommand implements ReplaceCommand<SsgContext> {
 
-  async execute(context: SsgContext): Promise<FileInfo> {
+  async execute(context: SsgContext): Promise<SsgFile> {
     const inputFileInfo = context.inputFile
     const contents = inputFileInfo.contents
     const lines = contents.split("\n").map(line => line.trim())

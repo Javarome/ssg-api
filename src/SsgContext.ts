@@ -1,14 +1,14 @@
-import {FileInfo} from "./util/file/FileInfo"
+import {SsgFile} from "./util/file/SsgFile"
 
-export type ContextVarName = "mail" | keyof FileInfo
+export type ContextVarName = "mail" | keyof SsgFile
 
 export interface SsgContext {
 
   readonly locales: string | string[]
 
-  inputFile: FileInfo
+  inputFile: SsgFile
 
-  outputFile: FileInfo
+  outputFile: SsgFile
   log: { (message?: any, ...optionalParams: any[]): void; (...data: any[]): void }
   debug: { (message?: any, ...optionalParams: any[]): void; (...data: any[]): void }
   warn: { (message?: any, ...optionalParams: any[]): void; (...data: any[]): void }

@@ -1,15 +1,15 @@
 import {ContextVarName, SsgContext} from "./SsgContext"
-import {HtmlFileInfo, HtmlLinks, HtmlMeta} from "./util/file/HtmlFileInfo"
+import {HtmlLinks, HtmlMeta, HtmlSsgFile} from "./util/file/HtmlSsgFile"
 
 export type HtmlContextVarName = ContextVarName | keyof HtmlMeta | keyof HtmlLinks
 
-export type HtmlVarName = HtmlContextVarName | keyof HtmlFileInfo
+export type HtmlVarName = HtmlContextVarName | keyof HtmlSsgFile
 
 export interface HtmlSsgContext extends SsgContext {
 
-  inputFile: HtmlFileInfo
+  inputFile: HtmlSsgFile
 
-  outputFile: HtmlFileInfo
+  outputFile: HtmlSsgFile
 
   getVar(varName: HtmlVarName): string | undefined
 

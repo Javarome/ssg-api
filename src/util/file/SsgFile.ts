@@ -3,7 +3,7 @@ import {detectEncoding, getCharSet, getContentType, writeFile} from "./FileUtil"
 import {SsgContext} from "../../SsgContext"
 import {JSDOM} from "jsdom"
 
-export class FileInfo {
+export class SsgFile {
 
   constructor(
     public name: string, readonly encoding: BufferEncoding, protected _contents: string, readonly lastModified: Date,
@@ -19,19 +19,19 @@ export class FileInfo {
     this._contents = value
   }
 
-  static read(context: SsgContext, fileName: string, declaredEncoding?: BufferEncoding): FileInfo {
+  static read(context: SsgContext, fileName: string, declaredEncoding?: BufferEncoding): SsgFile {
     const fileStats = fs.statSync(fileName)
-    const {encoding, contents} = FileInfo.getContents(context, fileName, declaredEncoding)
-    const lang = FileInfo.getFileLang(context, fileName)
-    return new FileInfo(fileName, encoding, contents, fileStats.mtime, lang)
+    const {encoding, contents} = SsgFile.getContents(context, fileName, declaredEncoding)
+    const lang = SsgFile.getFileLang(context, fileName)
+    return new SsgFile(fileName, encoding, contents, fileStats.mtime, lang)
   }
 
-  static readOrNew(context: SsgContext, fileName: string, declaredEncoding?: BufferEncoding): FileInfo {
+  static readOrNew(context: SsgContext, fileName: string, declaredEncoding?: BufferEncoding): SsgFile {
     try {
-      return FileInfo.read(context, fileName, declaredEncoding)
+      return SsgFile.read(context, fileName, declaredEncoding)
     } catch (e) {
       if ((e as any).code === "ENOENT") {
-        return new FileInfo(fileName, "utf8", "", new Date(), context.locales)
+        return new SsgFile(fileName, "utf8", "", new Date(), context.locales)
       } else {
         throw e
       }

@@ -1,3 +1,3 @@
-export * from "./FileInfo"
+export * from "./SsgFile"
 export * from "./FileUtil"
-export * from "./HtmlFileInfo"
+export * from "./HtmlSsgFile"

@@ -1,5 +1,5 @@
 import {SsgContext} from "../../SsgContext"
-import {FileInfo} from "./FileInfo"
+import {SsgFile} from "./SsgFile"
 import {JSDOM} from "jsdom"
 
 export type HtmlMeta = {
@@ -22,7 +22,7 @@ export type HtmlLinks = {
  *   - links tags
  *   - title
  */
-export class HtmlFileInfo extends FileInfo {
+export class HtmlSsgFile extends SsgFile {
 
   constructor(
     name: string, encoding: BufferEncoding, contents: string, lastModified: Date, lang: string | string[],
@@ -79,8 +79,8 @@ function getLink(rel: LinkType, doc: Document): Link | undefined {
   }
 }
 
-export function getHtmlFileInfo(context: SsgContext, fileName: string): HtmlFileInfo {
-  const fileInfo = FileInfo.read(context, fileName)
+export function getHtmlFileInfo(context: SsgContext, fileName: string): HtmlSsgFile {
+  const fileInfo = SsgFile.read(context, fileName)
   const fileContents = fileInfo.contents
   const dom = new JSDOM(fileContents)
   let title: string | undefined
@@ -100,7 +100,7 @@ export function getHtmlFileInfo(context: SsgContext, fileName: string): HtmlFile
   const prev = getLink(LinkType.prev, doc)
   const next = getLink(LinkType.next, doc)
   const links: HtmlLinks = {start, contents, prev, next}
-  return new HtmlFileInfo(fileInfo.name, fileInfo.encoding, fileInfo.contents, fileInfo.lastModified, fileInfo.lang,
+  return new HtmlSsgFile(fileInfo.name, fileInfo.encoding, fileInfo.contents, fileInfo.lastModified, fileInfo.lang,
     meta, links, title)
 }
 

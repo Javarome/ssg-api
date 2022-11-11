@@ -1,6 +1,6 @@
 import {RegexReplacer} from "./RegexReplacer"
 import {ReplaceCommand} from "./ReplaceCommand"
-import {FileInfo} from "../../../util/file/FileInfo"
+import {SsgFile} from "../../../util/file/SsgFile"
 import {SsgContext} from "../../../SsgContext"
 
 /**
@@ -16,7 +16,7 @@ export abstract class RegexReplaceCommand<C extends SsgContext = SsgContext> imp
    *
    * @param context
    */
-  async execute(context: C): Promise<FileInfo> {
+  async execute(context: C): Promise<SsgFile> {
     const fileInfo = context.inputFile
     let contents = fileInfo.contents
     let result = contents

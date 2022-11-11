@@ -2,9 +2,9 @@ import {SsgStep} from "../SsgStep"
 import {SsgContext} from "../../SsgContext"
 import {OutputFunc} from "../../Ssg"
 import {promise as glob} from "glob-promise"
-import {getHtmlFileInfo} from "../../util/file/HtmlFileInfo"
+import {getHtmlFileInfo} from "../../util/file/HtmlSsgFile"
 import {ReplaceCommand} from "./replace/ReplaceCommand"
-import {FileInfo} from "../../util/file/FileInfo"
+import {SsgFile} from "../../util/file/SsgFile"
 
 export type ContentStepConfig = {
   /**
@@ -21,7 +21,7 @@ export type ContentStepConfig = {
    * @param context
    * @return the file where to output.
    */
-  getOutputFile(context: SsgContext): FileInfo
+  getOutputFile(context: SsgContext): SsgFile
 }
 
 export type ContentStepResult = {

@@ -1,6 +1,6 @@
 import {SsgContext} from "./SsgContext"
 import {SsgStep} from "./step/SsgStep"
-import {FileInfo} from "./util/file/FileInfo"
+import {SsgFile} from "./util/file/SsgFile"
 
 
 export type SsgConfig = {
@@ -9,7 +9,7 @@ export type SsgConfig = {
 
 export type SsgResult = {}
 
-export type OutputFunc = (context: SsgContext, info: FileInfo, outDir?: string) => Promise<void>
+export type OutputFunc = (context: SsgContext, info: SsgFile, outDir?: string) => Promise<void>
 
 /**
  * Static Site Generator

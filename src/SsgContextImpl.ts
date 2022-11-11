@@ -1,4 +1,4 @@
-import {FileInfo} from "./util/file/FileInfo"
+import {SsgFile} from "./util/file/SsgFile"
 import {ContextVarName, SsgContext} from "./SsgContext"
 
 export class SsgContextImpl implements SsgContext {
@@ -17,42 +17,42 @@ export class SsgContextImpl implements SsgContext {
 
   protected vars = new Map<string, string>()
 
-  constructor(readonly locales: string | string[], currentFile: FileInfo | undefined = undefined) {
+  constructor(readonly locales: string | string[], currentFile: SsgFile | undefined = undefined) {
     this._inputFile = this._outputFile = currentFile
   }
 
-  protected _inputFile: FileInfo | undefined
+  protected _inputFile: SsgFile | undefined
 
-  get inputFile(): FileInfo {
+  get inputFile(): SsgFile {
     if (!this._inputFile) {
       throw Error("Should have a inputFile")
     }
     return this._inputFile
   }
 
-  set inputFile(value: FileInfo) {
+  set inputFile(value: SsgFile) {
     this._inputFile = value
     if (!this._outputFile) {
       this._outputFile = this._inputFile
     }
   }
 
-  protected _outputFile: FileInfo | undefined
+  protected _outputFile: SsgFile | undefined
 
-  get outputFile(): FileInfo {
+  get outputFile(): SsgFile {
     if (!this._outputFile) {
       throw Error("Should have a outputFile")
     }
     return this._outputFile
   }
 
-  set outputFile(value: FileInfo) {
+  set outputFile(value: SsgFile) {
     this._outputFile = value
   }
 
   getVar(varName: ContextVarName): string | undefined {
     if (this.inputFile.hasOwnProperty(varName)) {
-      const value = this.inputFile[varName as keyof FileInfo]
+      const value = this.inputFile[varName as keyof SsgFile]
       return value?.toString()
     } else {
       return this.vars.get(varName)
@@ -60,7 +60,7 @@ export class SsgContextImpl implements SsgContext {
   }
 
   setVar(varName: ContextVarName, value: any): void {
-    if (FileInfo.prototype.hasOwnProperty.call(FileInfo.prototype, varName)) {
+    if (SsgFile.prototype.hasOwnProperty.call(SsgFile.prototype, varName)) {
       (this.inputFile as any)[varName] = value
     } else {
       this.vars.set(varName, value)

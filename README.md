@@ -17,7 +17,7 @@ It can be used to generate:
   - [Step](#Step)
     - [ContentStep](#Contentstep)
       - [Replacements](#Replacements)
-  - [FileInfo](#Fileinfo)
+  - [SsgFile](#SsgFile)
   - [Context](#Context)
 - [Examples](#Examples)
 
@@ -140,8 +140,8 @@ const contentConfigs: ContentStepConfig[] = [
   {  // A content config that converts .htaccess to netlify.toml format
     roots: [".htaccess"],
     replacements: [new HtAccessToNetlifyConfigReplaceCommand("https://rr0.org/")],
-    getOutputFile(context: SsgContext): FileInfo {
-      return getFileInfo(context, "netlify.toml", "utf-8")
+    getOutputFile(context: SsgContext): SsgFile {
+      return SsgFile.readOrNew(context, "netlify.toml", "utf-8")
     }
   },
   {  // A content config that replaces parts in roots
@@ -162,7 +162,7 @@ const contentConfigs: ContentStepConfig[] = [
       new LinkReplaceCommand(),
       new AnchorReplaceCommand("https://my.base.url/")
     ],
-    getOutputFile(context: SsgContext): FileInfo {
+    getOutputFile(context: SsgContext): SsgFile {
       return context.inputFile  // Under output root, I don't want to change the file path.
     }
   }
@@ -175,9 +175,9 @@ new Ssg(config)
         .catch(err => console.error(err, context.inputFile.name, "=>", context.outputFile.name))
 ```
 
-### FileInfo
+### SsgFile
 
-Ssg manipulates files through a `FileInfo` types, which contain:
+Ssg manipulates files through a `SsgFile` types, which contain:
 
 - the `name` of the file (including relative path)
 - the detected (or specified) `encoding` of the file contents (`utf8`, `latin1`, etc.)
@@ -187,11 +187,11 @@ Ssg manipulates files through a `FileInfo` types, which contain:
 
 You can:
 
-- get one for an existing (likely input) file using `FileInfo.read(context, fileName, encoding?)`
-- get or create in memory (if it doesn't exist) using `FileInfo.readOrNew(context, fileName, encoding?)`
+- get one for an existing (likely input) file using `SsgFile.read(context, fileName, encoding?)`
+- get or create in memory (if it doesn't exist) using `SsgFile.readOrNew(context, fileName, encoding?)`
 - save its (likely output) contents it in the output directory, using `context.outputFile.write()`
 
-#### HtmlFileInfo
+#### HtmlSsgFile
 
 HTML files automatic parsing will provide additional properties:
 

@@ -1,4 +1,4 @@
-import {FileInfo} from "../../../util/file/FileInfo"
+import {SsgFile} from "../../../util/file/SsgFile"
 import {SsgContext} from "../../../SsgContext"
 
 export interface ReplaceCommand<C extends SsgContext> {
@@ -9,5 +9,5 @@ export interface ReplaceCommand<C extends SsgContext> {
    * @param context
    * @return The output file.
    */
-  execute(context: C): Promise<FileInfo>
+  execute(context: C): Promise<SsgFile>
 }
