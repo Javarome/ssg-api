@@ -32,4 +32,4 @@ try {
 }
 ```
 
-See the [[documentation]] to know what steps are about.
+See the [documentation](https://github.com/Javarome/ssg-api/wiki) to know what steps are about.
