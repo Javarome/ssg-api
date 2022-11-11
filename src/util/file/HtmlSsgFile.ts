@@ -8,6 +8,19 @@ export type HtmlMeta = {
   copyright?: string
 }
 
+export enum LinkType {
+  start = "start",
+  contents = "contents",
+  prev = "prev",
+  next = "next"
+}
+
+export interface Link {
+  type: LinkType
+  text: string
+  url: string
+}
+
 export type HtmlLinks = {
   start?: Link
   contents?: Link
@@ -17,10 +30,10 @@ export type HtmlLinks = {
 
 /**
  * File info augmented with HTML semantics, such as:
- * - head info
- *   - meta tags
- *   - links tags
- *   - title
+ * - `<head>` info:
+ *   - `<meta>` tags values
+ *   - `<link>` tags values
+ *   - `<title>` tag content
  */
 export class HtmlSsgFile extends SsgFile {
 
@@ -52,56 +65,41 @@ export class HtmlSsgFile extends SsgFile {
     this._dom = undefined
     this._contents = value
   }
-}
 
-function getMeta(name: string, doc: Document): string[] {
-  const metaElems = doc.querySelectorAll(`meta[name='${name}']`)
-  return Array.from(metaElems).map(metaElem => (metaElem as HTMLMetaElement).content)
-}
+  static read(context: SsgContext, fileName: string): HtmlSsgFile {
+    const fileInfo = super.read(context, fileName)
+    const fileContents = fileInfo.contents
+    const dom = new JSDOM(fileContents)
+    let title: string | undefined
+    const doc = dom.window.document
+    let titleElem = doc.querySelector("title")
+    if (titleElem) {
+      const elemTitle = titleElem.textContent ? titleElem.textContent.trim() : ""
+      const split = elemTitle.lastIndexOf(" - ")
+      title = split > 0 ? elemTitle.substring(0, split) : elemTitle
+    }
+    const url = HtmlSsgFile.getMeta("url", doc)[0]
+    const author = HtmlSsgFile.getMeta("author", doc)
+    const copyright = HtmlSsgFile.getMeta("copyright", doc)[0]
+    const meta: HtmlMeta = {url, author, copyright}
+    const start = HtmlSsgFile.getLink(LinkType.start, doc)
+    const contents = HtmlSsgFile.getLink(LinkType.contents, doc)
+    const prev = HtmlSsgFile.getLink(LinkType.prev, doc)
+    const next = HtmlSsgFile.getLink(LinkType.next, doc)
+    const links: HtmlLinks = {start, contents, prev, next}
+    return new HtmlSsgFile(fileInfo.name, fileInfo.encoding, fileInfo.contents, fileInfo.lastModified, fileInfo.lang,
+      meta, links, title)
+  }
 
-export enum LinkType {
-  start = "start",
-  contents = "contents",
-  prev = "prev",
-  next = "next"
-}
+  static getMeta(name: string, doc: Document): string[] {
+    const metaElems = doc.querySelectorAll(`meta[name='${name}']`)
+    return Array.from(metaElems).map(metaElem => (metaElem as HTMLMetaElement).content)
+  }
 
-export interface Link {
-  type: LinkType
-  text: string
-  url: string
-}
-
-function getLink(rel: LinkType, doc: Document): Link | undefined {
-  const linkElem = doc.querySelector(`link[rel='${rel}']`) as HTMLLinkElement
-  if (linkElem) {
-    return {text: linkElem.title, url: linkElem.href, type: rel}
+  static getLink(rel: LinkType, doc: Document): Link | undefined {
+    const linkElem = doc.querySelector(`link[rel='${rel}']`) as HTMLLinkElement
+    if (linkElem) {
+      return {text: linkElem.title, url: linkElem.href, type: rel}
+    }
   }
 }
-
-export function getHtmlFileInfo(context: SsgContext, fileName: string): HtmlSsgFile {
-  const fileInfo = SsgFile.read(context, fileName)
-  const fileContents = fileInfo.contents
-  const dom = new JSDOM(fileContents)
-  let title: string | undefined
-  const doc = dom.window.document
-  let titleElem = doc.querySelector("title")
-  if (titleElem) {
-    const elemTitle = titleElem.textContent ? titleElem.textContent.trim() : ""
-    const split = elemTitle.lastIndexOf(" - ")
-    title = split > 0 ? elemTitle.substring(0, split) : elemTitle
-  }
-  const url = getMeta("url", doc)[0]
-  const author = getMeta("author", doc)
-  const copyright = getMeta("copyright", doc)[0]
-  const meta: HtmlMeta = {url, author, copyright}
-  const start = getLink(LinkType.start, doc)
-  const contents = getLink(LinkType.contents, doc)
-  const prev = getLink(LinkType.prev, doc)
-  const next = getLink(LinkType.next, doc)
-  const links: HtmlLinks = {start, contents, prev, next}
-  return new HtmlSsgFile(fileInfo.name, fileInfo.encoding, fileInfo.contents, fileInfo.lastModified, fileInfo.lang,
-    meta, links, title)
-}
-
-

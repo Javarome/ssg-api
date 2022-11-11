@@ -1,7 +1,7 @@
 import {testUtil} from "../../test/TestUtil"
-import {getHtmlFileInfo} from "./HtmlSsgFile"
+import {HtmlSsgFile} from "./HtmlSsgFile"
 
-describe("HtmlFileInfo", () => {
+describe("HtmlSsgFile", () => {
 
   test("defined title", () => {
     const fileName = "src/test/test.html"
@@ -11,7 +11,7 @@ describe("HtmlFileInfo", () => {
 <meta name="author" content="Paul Jaffe (président du NCAS, janvier 1999)">
 <!--#include virtual="/header-end.html" -->`
     const context = testUtil.newHtmlContext(fileName, fileContents)
-    const fileInfo = getHtmlFileInfo(context, fileName)
+    const fileInfo = HtmlSsgFile.read(context, fileName)
     expect(fileInfo.title).toBe("Introduction à l'édition du NCAS")
     expect(fileInfo.meta.author).toEqual(["Paul Jaffe (président du NCAS, janvier 1999)"])
     expect(fileInfo.meta.url).toBe("https://www.ncas.org/condon/text/intro.htm")
@@ -25,7 +25,7 @@ describe("HtmlFileInfo", () => {
 <ul><li>Item 1</li><li>Item 2</li></ul>
 <!--#include virtual="/footer.html" -->`
     const context = testUtil.newHtmlContext(fileName, fileContents)
-    const fileInfo = getHtmlFileInfo(context, fileName)
+    const fileInfo = HtmlSsgFile.read(context, fileName)
     expect(fileInfo.title).toBe("Introduction à l'édition du NCAS")
     expect(fileInfo.meta.author).toEqual(["Paul Jaffe (président du NCAS, janvier 1999)"])
     expect(fileInfo.meta.url).toBe("https://www.ncas.org/condon/text/intro.htm")

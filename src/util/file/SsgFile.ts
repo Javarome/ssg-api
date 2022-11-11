@@ -31,7 +31,7 @@ export class SsgFile {
       return SsgFile.read(context, fileName, declaredEncoding)
     } catch (e) {
       if ((e as any).code === "ENOENT") {
-        return new SsgFile(fileName, "utf8", "", new Date(), context.locales)
+        return new SsgFile(fileName, "utf8", "", new Date(), context.locale)
       } else {
         throw e
       }
@@ -39,7 +39,7 @@ export class SsgFile {
   }
 
   static getFileLang(context: SsgContext, filePath: string): string | string[] {
-    let lang = context.locales
+    let lang = context.locale
     const lastDot = filePath.lastIndexOf(".")
     let lastSlash = filePath.lastIndexOf("/")
     if (lastSlash < 0 || lastSlash < lastDot) {
@@ -47,7 +47,7 @@ export class SsgFile {
       const fileName = filePath.substring(lastSlash, lastDot)
       const variantPos = fileName.lastIndexOf("_")
       if (variantPos > 0) {
-        lang = [fileName.substring(variantPos + 1)]
+        lang = fileName.substring(variantPos + 1)
       }
     }
     return lang

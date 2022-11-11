@@ -2,7 +2,6 @@ import {SsgStep} from "../SsgStep"
 import {SsgContext} from "../../SsgContext"
 import {OutputFunc} from "../../Ssg"
 import {promise as glob} from "glob-promise"
-import {getHtmlFileInfo} from "../../util/file/HtmlSsgFile"
 import {ReplaceCommand} from "./replace/ReplaceCommand"
 import {SsgFile} from "../../util/file/SsgFile"
 
@@ -65,7 +64,7 @@ export class ContentStep implements SsgStep<ContentStepResult> {
 
   private async processFile(context: SsgContext, filePath: string, contentsConfig: ContentStepConfig,
                             contentCount: number): Promise<number> {
-    context.inputFile = getHtmlFileInfo(context, filePath)
+    context.inputFile = SsgFile.read(context, filePath)
     context.outputFile = contentsConfig.getOutputFile(context)
     for (const replacement of contentsConfig.replacements) {
       context.outputFile = await replacement.execute(context)
