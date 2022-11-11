@@ -1,13 +1,23 @@
 # ssg-api [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Javarome/ssg-api/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/Javarome/ssg-api/tree/main)
 
-TypeScript API to generate a static website.
+TypeScript API to generate output files from input files.
+
+It can be used to generate:
+
+- **a static website** from HTML templates (but those templates can include client-side JavaScript and CSS of course).
+- (and/or) **other files** such as configuration files (for instance convert an `.htaccess` file to a `netlify.toml` file)
+
+---
+
+**Table of contents**
 
 - [Setup](#Setup)
   - [Testing](#Testing)
 - [Concepts](#Concepts)
   - [Step](#Step)
-    - [ContentStep](#ContentStep)
+    - [ContentStep](#Contentstep)
       - [Replacements](#Replacements)
+  - [FileInfo](#Fileinfo)
   - [Context](#Context)
 - [Examples](#Examples)
 
@@ -40,7 +50,10 @@ try {
 
 ### Testing
 
-`ssg-api` is a provided as a native ESM package, so it may [not be supported by all test frameworks out of the box](https://stackoverflow.com/a/66279352/650104).
+`ssg-api` is a provided as a native ESM package, so:
+
+- you may want to enable them in your node version, using the `--experimental-vm-modules` option;
+- it may [not be supported by all test frameworks out of the box](https://stackoverflow.com/a/66279352/650104).
 
 For instance, [Jest will require some specifics](https://jestjs.io/fr/docs/ecmascript-modules) in its `jest.config.js` to transform the package code (here as ts-jest config):
 
@@ -161,6 +174,30 @@ new Ssg(config)
         .then(result => console.log("Completed", result))
         .catch(err => console.error(err, context.inputFile.name, "=>", context.outputFile.name))
 ```
+
+### FileInfo
+
+Ssg manipulates files through a `FileInfo` types, which contain:
+
+- the `name` of the file (including relative path)
+- the detected (or specified) `encoding` of the file contents (`utf8`, `latin1`, etc.)
+- the `contents` of the file, as a string
+- the `lastModified` Date of the file
+- the detected (or specified) `lang`uage of the file contents (`file_fr.txt` will imply french for instance).
+
+You can:
+
+- get one for an existing (likely input) file using `FileInfo.read(context, fileName, encoding?)`
+- get or create in memory (if it doesn't exist) using `FileInfo.readOrNew(context, fileName, encoding?)`
+- save its (likely output) contents it in the output directory, using `context.outputFile.write()`
+
+#### HtmlFileInfo
+
+HTML files automatic parsing will provide additional properties:
+
+- `title` will contain the value of the `<title>` tag, if any
+- `meta` will contain values of `url`, `copyright` and `author` meta tags (a repeated `author` meta tag will result in an array of author strings)
+- `links` will contain values of `start`, `contents`, `prev` and `next` relationships
 
 ### Context
 
