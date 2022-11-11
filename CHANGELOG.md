@@ -13,9 +13,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - under `context.` prefix to avoid collision with JS variables.
         - under reserved prefixes for each built-in object (like `context.inputFile`, etc.)
 
+## [1.1.1] - 2022-11-11
+
+### Fixed
+
+- Parsing of HTML files
+
+### Added
+
+- ContentStep test.
+
 ## [1.1.0] - 2022-11-11
 
 This release adds API consistency and generalization, as well as a number of tests.
+
+_However it contains a regression that prevents HTML files to be parsed, so use 1.1.1+ instead._
 
 ### Added
 
@@ -32,3 +44,7 @@ This release adds API consistency and generalization, as well as a number of tes
 ### Fixed
 
 - Ability to use any variables names in a context.
+
+### Regressions
+
+- HTML are not parsed anymore.

@@ -59,15 +59,19 @@ export class SsgFile {
     let detectedEncoding
     if (!declaredEncoding) {
       if (fileName.endsWith(".html")) {
-        const dom = new JSDOM(initialContents)
-        const html = dom.window.document.documentElement
-        declaredEncoding = getCharSet(html) || getContentType(html)
+        declaredEncoding = SsgFile.getHtmlDeclaredEncoding(initialContents)
       }
       detectedEncoding = detectEncoding(fileName)
     }
     const encoding: BufferEncoding = declaredEncoding || detectedEncoding || "utf-8"
     const contents = fs.readFileSync(fileName, {encoding})
     return {encoding, contents}
+  }
+
+  static getHtmlDeclaredEncoding(initialContents: string): BufferEncoding | undefined {
+    const dom = new JSDOM(initialContents)
+    const html = dom.window.document.documentElement
+    return getCharSet(html) || getContentType(html)
   }
 
   async write(): Promise<void> {

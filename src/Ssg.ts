@@ -9,7 +9,7 @@ export type SsgConfig = {
 
 export type SsgResult = {}
 
-export type OutputFunc = (context: SsgContext, info: SsgFile, outDir?: string) => Promise<void>
+export type OutputFunc = (context: SsgContext, outputFile: SsgFile, outDir?: string) => Promise<void>
 
 /**
  * Static Site Generator
