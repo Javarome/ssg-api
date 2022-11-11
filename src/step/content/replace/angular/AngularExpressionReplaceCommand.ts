@@ -16,7 +16,7 @@ export class AngularExpressionReplaceCommand extends RegexReplaceCommand<HtmlSsg
         const filter = args[1]
         switch (filter) {
           case "number":
-            replacement = new Intl.NumberFormat(context.locales).format(value)
+            replacement = new Intl.NumberFormat(context.locale).format(value)
             break
           default:
             context.warn("Unsupported Angular filter", filter)

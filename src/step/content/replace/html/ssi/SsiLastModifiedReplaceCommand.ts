@@ -13,7 +13,7 @@ export class SsiLastModifiedReplaceCommand extends RegexReplaceCommand {
       replace: (substring: string, ...args: any[]): string => {
         const timeFormat = args[0]  // TODO: Support it
         const fileInfo = context.inputFile
-        return fileInfo.lastModified.toLocaleDateString(context.locales, this.options)
+        return fileInfo.lastModified.toLocaleDateString(context.locale, this.options)
       }
     }
   }
