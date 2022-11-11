@@ -20,7 +20,8 @@
     "prebuild": "npm install",
     "build": "rm -Rf dist && tsc",
     "prepublishOnly": "npm run build && npm test",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --coverage"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test-ci": "NODE_OPTIONS=--experimental-vm-modules jest --coverage"
   },
   "dependencies": {
     "cpy": "~9.0.1",

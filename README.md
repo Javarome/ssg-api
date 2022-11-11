@@ -5,7 +5,7 @@ TypeScript API to generate output files from input files.
 It can be used to generate:
 
 - **a static website** from HTML templates (but those templates can include client-side JavaScript and CSS of course).
-- (and/or) **other files** such as configuration files (for instance convert an `.htaccess` file to a `netlify.toml` file)
+- (and/or) **other files** such as configuration files (for instance converting an `.htaccess` file to a `netlify.toml` file)
 
 ---
 
@@ -198,7 +198,7 @@ HTML files automatic parsing will provide additional properties:
 - `title` will contain the value of the `<title>` tag, if any
 - `meta` will contain values of `url`, `copyright` and `author` meta tags (a repeated `author` meta tag will result in an array of author strings)
 - `links` will contain values of `start`, `contents`, `prev` and `next` relationships
-- `dom` will contain you a JSDOM instance, so you can query `dom.window.document` to get the parsed document.
+- `dom` will contain a [JSDOM](https://github.com/jsdom/jsdom) instance, so you can query `dom.window.document` to get the parsed document.
 
 ### Context
 

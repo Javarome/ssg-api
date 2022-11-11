@@ -12,11 +12,11 @@ describe("HtmlSsgFile", () => {
 <!--#include virtual="/header-end.html" -->`
     const context = testUtil.newHtmlContext(fileName, fileContents)
     const fileInfo = HtmlSsgFile.read(context, fileName)
-    expect(fileInfo.title).toBe("Introduction à l'édition du NCAS")
-    expect(fileInfo.meta.author).toEqual(["Paul Jaffe (président du NCAS, janvier 1999)"])
-    expect(fileInfo.meta.url).toBe("https://www.ncas.org/condon/text/intro.htm")
+    expect(fileInfo.title).toBe("Some title")
+    expect(fileInfo.meta.author).toEqual(["Jérôme Beau"])
+    expect(fileInfo.meta.url).toBe("https://rr0.org/tech/info/soft")
     const titleElem = fileInfo.dom.window.document.documentElement.querySelector("title")
-    expect(titleElem?.textContent).toBe("Introduction à l'édition du NCAS - Rapport Condon")
+    expect(titleElem?.textContent).toBe("Some title - Some website")
   })
 
   test("undefined title", () => {
@@ -25,9 +25,9 @@ describe("HtmlSsgFile", () => {
 <ul><li>Item 1</li><li>Item 2</li></ul>
 <!--#include virtual="/footer.html" -->`
     const context = testUtil.newHtmlContext(fileName, fileContents)
-    const fileInfo = HtmlSsgFile.read(context, fileName)
-    expect(fileInfo.title).toBe("Introduction à l'édition du NCAS")
-    expect(fileInfo.meta.author).toEqual(["Paul Jaffe (président du NCAS, janvier 1999)"])
-    expect(fileInfo.meta.url).toBe("https://www.ncas.org/condon/text/intro.htm")
+    const inputFile = HtmlSsgFile.read(context, fileName)
+    expect(inputFile.title).toBe("Some title")  // // TODO: Fix mocking to really have undefined title
+    expect(inputFile.meta.author).toEqual(["Jérôme Beau"])
+    expect(inputFile.meta.url).toBe("https://rr0.org/tech/info/soft")
   })
 })

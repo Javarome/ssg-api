@@ -21,9 +21,9 @@ describe("ContentStep", () => {
     const result = await step.execute(context)
     expect(result).toEqual({contentCount: 1})
     const outputFile = context.outputFile as HtmlSsgFile
-    expect(outputFile.meta.author).toEqual(["Paul Jaffe (président du NCAS, janvier 1999)"])
-    expect(outputFile.meta.url).toBe("https://www.ncas.org/condon/text/intro.htm")
-    expect(outputFile.meta.copyright).toBeUndefined()
-    expect(outputFile.title).toBe("Introduction à l'édition du NCAS")
+    expect(outputFile.meta.author).toEqual(["Jérôme Beau"])
+    expect(outputFile.meta.url).toBe("https://rr0.org/tech/info/soft")
+    expect(outputFile.meta.copyright).toBe("RR0")
+    expect(outputFile.title).toBe("Some title")
   })
 })
