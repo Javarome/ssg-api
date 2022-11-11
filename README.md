@@ -39,7 +39,7 @@ const ssg = new Ssg(config)
         .add(firstStep)
         .add(nextStep)  // See "Concepts" for a description of steps
 
-const context = new SsgContextImpl("fr")
+const context = new SsgContextImpl("fr", {})
 try {
   const result = await ssg.start(context)
   console.log("Completed", result)
@@ -88,7 +88,7 @@ Example:
 import {SsgConfig, SsgContextImpl, Ssg, ContentStep, CopyStep} from "ssg-api"
 
 const config: SsgConfig = {outDir: "out"}
-const context = new SsgContextImpl("fr")
+const context = new SsgContextImpl("fr", {})
 
 new Ssg(config)
         .add(new ContentStep(contentConfigs, outputFunc))
