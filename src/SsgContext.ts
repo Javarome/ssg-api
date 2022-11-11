@@ -1,23 +1,34 @@
 import {SsgFile} from "./util/file/SsgFile"
 
-export type ContextVarName = "mail" | keyof SsgFile
+export type BuiltInVars = SsgFile | undefined
 
-export interface SsgContext {
+export type VarProp<V> = keyof BuiltInVars | keyof V
 
-  readonly locales: string | string[]
+export interface SsgContext<V = any> {
+  /**
+   * The locale to use to format output (dates, messages, etc.).
+   */
+  readonly locale: string
 
+  /**
+   * The file that has been read (a template for instance).
+   */
   inputFile: SsgFile
 
+  /**
+   * The file that will be written.
+   */
   outputFile: SsgFile
+
   log: { (message?: any, ...optionalParams: any[]): void; (...data: any[]): void }
   debug: { (message?: any, ...optionalParams: any[]): void; (...data: any[]): void }
   warn: { (message?: any, ...optionalParams: any[]): void; (...data: any[]): void }
   error: { (message?: any, ...optionalParams: any[]): void; (...data: any[]): void }
 
-  getVar(varName: ContextVarName): string | undefined
+  getVar(varName: VarProp<V>): string | undefined
 
-  setVar(varName: ContextVarName, value: any): void
+  setVar(varName: VarProp<V>, value: any): void
 
-  clone(): SsgContext
+  clone(): SsgContext<V>
 }
 

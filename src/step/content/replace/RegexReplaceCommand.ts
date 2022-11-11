@@ -6,7 +6,7 @@ import {SsgContext} from "../../../SsgContext"
 /**
  * Performs replacements using a Regular Expression to find patterns to replace.
  */
-export abstract class RegexReplaceCommand<C extends SsgContext = SsgContext> implements ReplaceCommand<C> {
+export abstract class RegexReplaceCommand<V = any, C extends SsgContext = SsgContext<V>> implements ReplaceCommand<C> {
 
   protected constructor(protected regex: RegExp) {
   }

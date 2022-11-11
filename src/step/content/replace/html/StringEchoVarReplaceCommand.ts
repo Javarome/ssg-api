@@ -1,16 +1,17 @@
 import {RegexReplaceCommand} from "../RegexReplaceCommand"
-import {HtmlSsgContext, HtmlVarName} from "../../../../HtmlSsgContext"
+import {HtmlVarProp} from "../../../../HtmlSsgContext"
 import {RegexReplacer} from "../RegexReplacer"
 import {VarRegexReplacer} from "./VarRegexReplacer"
 import {StringContextHandler} from "./StringContextHandler"
+import {SsgContext} from "../../../../SsgContext"
 
-export class StringEchoVarReplaceCommand extends RegexReplaceCommand {
+export class StringEchoVarReplaceCommand<V = any, C extends SsgContext = SsgContext<V>> extends RegexReplaceCommand<V, C> {
 
-  constructor(protected varName: HtmlVarName, protected defaultHandlers: StringContextHandler[] = []) {
-    super(new RegExp(`\\$\{${varName}\}`, "gs"))
+  constructor(protected varName: HtmlVarProp<V>, protected defaultHandlers: StringContextHandler[] = []) {
+    super(new RegExp(`\\$\{${String(varName)}\}`, "gs"))
   }
 
-  protected async createReplacer(context: HtmlSsgContext): Promise<RegexReplacer> {
+  protected async createReplacer(context: SsgContext<V>): Promise<RegexReplacer> {
     return new VarRegexReplacer(context, this.varName, this.defaultHandlers)
   }
 }

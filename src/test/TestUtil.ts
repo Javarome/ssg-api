@@ -7,7 +7,7 @@ import {SsgContextImpl} from "../SsgContextImpl"
 class TestUtil {
 
   newContext(inputFileName: string, contents: string): SsgContext {
-    const context = new SsgContextImpl("fr")
+    const context = new SsgContextImpl("fr", {})
     context.inputFile = new SsgFile(inputFileName, "utf8", contents, new Date(), "fr")
     context.outputFile = context.inputFile  // By default
     return context

@@ -1,13 +1,13 @@
 import {RegexReplacer} from "../RegexReplacer"
-import {HtmlSsgContext, HtmlVarName} from "../../../../HtmlSsgContext"
 import {StringContextHandler} from "./StringContextHandler"
+import {SsgContext, VarProp} from "../../../../SsgContext"
 
-export class VarRegexReplacer implements RegexReplacer {
+export class VarRegexReplacer<V = any, C extends SsgContext = SsgContext> implements RegexReplacer {
 
   constructor(
-    protected context: HtmlSsgContext,
-    protected varName: HtmlVarName,
-    protected defaultHandlers: StringContextHandler[]
+    protected context: C,
+    protected varName: VarProp<V>,
+    protected defaultHandlers: StringContextHandler<C>[]
   ) {
   }
 

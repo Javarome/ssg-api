@@ -1,7 +1,10 @@
 import {SsgFile} from "./util/file/SsgFile"
-import {ContextVarName, SsgContext} from "./SsgContext"
+import {BuiltInVars, SsgContext, VarProp} from "./SsgContext"
+import {WithPropsOf} from "./util/WithPropsOf"
 
-export class SsgContextImpl implements SsgContext {
+type AllVars<V> = V & BuiltInVars
+
+export class SsgContextImpl<V = any> implements SsgContext<V> {
 
   readonly log = process.env.LOG_LEVEL === "none" ? () => {
   } : console.log
@@ -15,10 +18,12 @@ export class SsgContextImpl implements SsgContext {
   readonly error = process.env.LOG_LEVEL === "error" ? console.error : () => {
   }
 
-  protected vars = new Map<string, string>()
+  protected vars: WithPropsOf<AllVars<V>>
 
-  constructor(readonly locales: string | string[], currentFile: SsgFile | undefined = undefined) {
+  constructor(readonly locale: string, vars: WithPropsOf<V>, currentFile: SsgFile | undefined = undefined) {
     this._inputFile = this._outputFile = currentFile
+    const builtInVars = {...currentFile}
+    this.vars = {...builtInVars, ...vars}
   }
 
   protected _inputFile: SsgFile | undefined
@@ -50,24 +55,24 @@ export class SsgContextImpl implements SsgContext {
     this._outputFile = value
   }
 
-  getVar(varName: ContextVarName): string | undefined {
-    if (this.inputFile.hasOwnProperty(varName)) {
+  getVar(varName: VarProp<V>): string | undefined {
+    if (this._inputFile?.hasOwnProperty(varName)) {
       const value = this.inputFile[varName as keyof SsgFile]
       return value?.toString()
     } else {
-      return this.vars.get(varName)
+      return this.vars[varName]
     }
   }
 
-  setVar(varName: ContextVarName, value: any): void {
+  setVar(varName: VarProp<V>, value: any): void {
     if (SsgFile.prototype.hasOwnProperty.call(SsgFile.prototype, varName)) {
       (this.inputFile as any)[varName] = value
     } else {
-      this.vars.set(varName, value)
+      this.vars[varName] = value
     }
   }
 
-  clone(): SsgContext {
-    return new SsgContextImpl(this.locales, this._inputFile)
+  clone(): SsgContext<V> {
+    return new SsgContextImpl(this.locale, this.vars, this._inputFile)
   }
 }

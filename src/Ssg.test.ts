@@ -24,7 +24,7 @@ describe("Ssg", function () {
     const ssg = new Ssg(config)
       .add(step1)
       .add(step2)
-    const context = new SsgContextImpl("fr")
+    const context = new SsgContextImpl("fr", {})
     try {
       const result = await ssg.start(context)
       expect(result).toEqual({step1Ok: true, step2Done: true})
