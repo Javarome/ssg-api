@@ -1,8 +1,6 @@
 import {SsgContext} from "../SsgContext"
 
-export type SsgStepResult = Record<string, any>
-
-export interface SsgStep {
+export interface SsgStep<R = any> {
 
   readonly name?: string
 
@@ -11,5 +9,5 @@ export interface SsgStep {
    *
    * @param context
    */
-  execute(context: SsgContext): Promise<SsgStepResult>
+  execute(context: SsgContext): Promise<R>
 }

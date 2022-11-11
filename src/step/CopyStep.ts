@@ -1,19 +1,23 @@
-import {SsgStep, SsgStepResult} from "./SsgStep"
+import {SsgStep} from "./SsgStep"
 import {SsgConfig} from "../Ssg"
 import {SsgContext} from "../SsgContext"
 import {ssgCopy} from "../util/file/FileUtil"
 
+export type CopyStepResult = {
+  filesCount: number
+}
+
 /**
  * Perform copies to out directory.
  */
-export class CopyStep implements SsgStep {
+export class CopyStep implements SsgStep<CopyStepResult> {
 
   readonly name = "copy"
 
   constructor(protected copies: string[], protected config: SsgConfig) {
   }
 
-  async execute(context: SsgContext): Promise<SsgStepResult> {
+  async execute(context: SsgContext): Promise<CopyStepResult> {
     const copies: string[] = this.copies
     const dest = this.config.outDir
     try {

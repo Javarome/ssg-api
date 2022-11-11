@@ -13,7 +13,7 @@ export interface DirectoryResult extends SsgStepResult {
  *
  * A typical use case is to generate an index page from subdirectories.
  */
-export abstract class DirectoryStep implements SsgStep {
+export abstract class DirectoryStep implements SsgStep<DirectoryResult> {
 
   constructor(protected dirs: string[], protected excludedDirs: string[], protected template: string,
               protected config: SsgConfig, readonly name = "directory") {

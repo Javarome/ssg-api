@@ -1,6 +1,6 @@
 import {Ssg} from "./Ssg"
 import {SsgContextImpl} from "./SsgContextImpl"
-import {SsgStep, SsgStepResult} from "./step"
+import {SsgStep} from "./step"
 import {SsgContext} from "./SsgContext"
 
 describe("Ssg", function () {
@@ -8,7 +8,7 @@ describe("Ssg", function () {
   test("start", async () => {
     const config = {outDir: "out/"}
     const step1 = new class implements SsgStep {
-      async execute(context: SsgContext): Promise<SsgStepResult> {
+      async execute(context: SsgContext): Promise<any> {
         context.log("Doing step 1")
         return {step1Ok: true}
       }
@@ -16,7 +16,7 @@ describe("Ssg", function () {
     const step2 = new class implements SsgStep {
       readonly name = "second"
 
-      async execute(context: SsgContext): Promise<SsgStepResult> {
+      async execute(context: SsgContext): Promise<any> {
         context.log("Doing step 2")
         return {step2Done: true}
       }
