@@ -2,16 +2,26 @@ import fs from "fs"
 import {detectEncoding, getCharSet, getContentType, writeFile} from "./FileUtil"
 import {SsgContext} from "../../SsgContext"
 import {JSDOM} from "jsdom"
+import {ObjectUtil} from "../ObjectUtil"
 
 export type SsgFileLang = {
+  /**
+   * The detected language for the file ("fr" for instance).
+   */
   lang?: string
+
+  /**
+   * Other variants detected in the file's directory (["fr", "en"] for instance)
+   *
+   * [] if there are no variants. Will contain "" if there is a variant with no language suffix.
+   */
   variants: string[]
 }
 
 export class SsgFile {
 
   protected static readonly filePathRegex = /(.*\/)?(.*?)(?:_(.*))?\.(.*)/
-  protected static readonly fileRegex = /(?:_(.*))?\.(.*)/
+  protected static readonly fileRegex = /(.*?)(?:_(.*))?\.(.*)/
 
   constructor(
     public name: string, readonly encoding: BufferEncoding, protected _contents: string, readonly lastModified: Date,
@@ -54,16 +64,16 @@ export class SsgFile {
     if (exec) {
       const dir = exec[1] ?? "."
       const fileName = exec[2]
-      lang = exec[3]
+      lang = exec[3] || ""
       const ext = exec[4]
       const files = fs.readdirSync(dir)
       const unique = new Set(files
         .filter(f => f.startsWith(fileName) && f.endsWith(ext))
         .map(f => {
           const fileExec = SsgFile.fileRegex.exec(f)
-          return fileExec ? fileExec[1] : undefined
+          return fileExec ? fileExec[2] || "" : undefined
         })
-        .filter(v => v && v != lang)
+        .filter(v => !ObjectUtil.isUndefined(v) && v != lang)
       ) as Set<string>
       variants = Array.from(unique)
     }

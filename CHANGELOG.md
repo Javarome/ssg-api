@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - under `context.` prefix to avoid collision with JS variables.
         - under reserved prefixes for each built-in object (like `context.inputFile`, etc.)
 
+## [1.2.6] - 2022-11-13
+
+### Added
+
+- `SsgFileLang.variants` can contain `""` if there is the same file is found without language suffix.
+
 ## [1.2.5] - 2022-11-13
 
 ### Fixed
