@@ -2,7 +2,7 @@
   "name": "ssg-api",
   "type": "module",
   "author": "Jérôme Beau",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Static Site Generation TypeScript API",
   "exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -10,13 +10,12 @@
     "node": ">=16.2.0"
   },
   "license": "MIT",
-  "homepage": "https://github.com/Javarome/ssg-api",
+  "homepage": "https://github.com/Javarome/ssg-api#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Javarome/ssg-api.git"
   },
   "scripts": {
-    "clean": "rm -Rf dist && rm -Rf node_modules && rm package-lock.json",
     "prebuild": "npm install",
     "build": "rm -Rf dist && tsc --project tsconfig.prod.json",
     "prepublishOnly": "npm run build && npm test",
@@ -27,8 +26,7 @@
     "cpy": "~9.0.1",
     "detect-character-encoding": "~0.8.0",
     "glob-promise": "~5.0.0",
-    "jsdom": "~20.0.2",
-    "@googlemaps/google-maps-services-js": "~3.3.16"
+    "jsdom": "~20.0.2"
   },
   "devDependencies": {
     "@types/detect-character-encoding": "~0.7.0",

@@ -20,8 +20,8 @@ import {Ssg, SsgContextImpl, SsgConfig} from "ssg-api"
 
 const config: SsgConfig = {outDir: "out"}
 const ssg = new Ssg(config)
-        .add(firstStep)
-        .add(nextStep)
+  .add(firstStep)
+  .add(nextStep)
 
 const context = new SsgContextImpl("fr", {})
 try {
@@ -32,5 +32,5 @@ try {
 }
 ```
 
-[Steps](https://github.com/Javarome/ssg-api/wiki/Steps) can do anything, you can implement your owns; but there are predefined ones.
+[Steps](https://github.com/Javarome/ssg-api/wiki/Steps) can do anything. You can implement your owns, but there are predefined ones.
 Check the [documentation](https://github.com/Javarome/ssg-api/wiki) for more.
