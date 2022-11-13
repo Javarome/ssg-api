@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - under `context.` prefix to avoid collision with JS variables.
         - under reserved prefixes for each built-in object (like `context.inputFile`, etc.)
 
+## [1.2.5] - 2022-11-13
+
+### Fixed
+
+- Publish src
+
 ## [1.2.4] - 2022-11-13
 
 ### Fixed
