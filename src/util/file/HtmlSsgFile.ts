@@ -45,11 +45,18 @@ export class HtmlSsgFile extends SsgFile {
 
   _dom: JSDOM | undefined
 
+  /**
+   * @deprecated Avoid this as JSDOM is implementation-specific. Most of the time calling `.document` will be enough.
+   */
   get dom(): JSDOM {
     if (!this._dom) {
       this._dom = new JSDOM(this._contents)
     }
     return this._dom
+  }
+
+  get document(): Document {
+    return this.dom.window.document
   }
 
   set dom(newDom: JSDOM) {
