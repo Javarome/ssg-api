@@ -13,15 +13,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - under `context.` prefix to avoid collision with JS variables.
         - under reserved prefixes for each built-in object (like `context.inputFile`, etc.)
 
+## [1.2.3] - 2022-11-13
+
+### Fixed
+
+- Find `SsgFile.variants` for path with no directory.
+
 ## [1.2.2] - 2022-11-13
 
 ### Added
 
 - `DomReplaceCommand` now accepts a second Context type parameter, to allow it to query custom context members without casting.
-
-### Fixed
-
-- Find `SsgFile.variants` for path with no directory.
 
 ## [1.2.1] - 2022-11-13
 
@@ -36,7 +38,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `SsgFile.lang` changed from a single string to a `{ lang, variants }` so that you can know which variants of a file exist.
 
 ## [1.1.1] - 2022-11-11
-
 ### Fixed
 - Parsing of HTML files
 
@@ -44,7 +45,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - ContentStep test.
 
 ## [1.1.0] - 2022-11-11
-
 This release adds API consistency and generalization, as well as a number of tests.
 
 _However it contains a regression that prevents HTML files to be parsed, so use 1.1.1+ instead._
