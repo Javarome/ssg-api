@@ -11,7 +11,7 @@ describe("DirectoryStep", () => {
       protected async processDirs(context: SsgContext, dirames: string[]): Promise<void> {
         return context.outputFile.write()
       }
-    }(["src/"], [], "src/test/test.html", config, name)
+    }(["src/"], [], "test/test.html", config, name)
     expect(step.name).toBe(name)
     const context = new SsgContextImpl("fr", {})
     const result = await step.execute(context)

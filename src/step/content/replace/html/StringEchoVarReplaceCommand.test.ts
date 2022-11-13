@@ -1,4 +1,4 @@
-import {testUtil} from "../../../../test/TestUtil"
+import {testUtil} from "../../../../../test/TestUtil"
 import {HtmlSsgFile} from "../../../../util/file/HtmlSsgFile"
 import {StringEchoVarReplaceCommand} from "./StringEchoVarReplaceCommand"
 

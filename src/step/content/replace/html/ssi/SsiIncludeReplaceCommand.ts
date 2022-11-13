@@ -5,7 +5,7 @@ import {SsgContext} from "../../../../../SsgContext"
 import {SsgFile} from "../../../../../util"
 
 /**
- * Replaces SSI's <!-- #include virtual="fileName" --> by fileName's contents.
+ * Replaces SSI's `<!-- #include virtual="myFileName" -->` by fileName's contents.
  */
 export class SsiIncludeReplaceCommand extends RegexReplaceCommand {
 

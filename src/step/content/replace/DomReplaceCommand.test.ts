@@ -1,7 +1,7 @@
 import {DomReplaceCommand} from "./DomReplaceCommand"
 import {HtmlSsgContext} from "../../../HtmlSsgContext"
 import {DomReplacer} from "./DomReplacer"
-import {testUtil} from "../../../test/TestUtil"
+import {testUtil} from "../../../../test/TestUtil"
 
 describe("DomReplaceCommand", () => {
 

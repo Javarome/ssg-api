@@ -1,8 +1,8 @@
-import {SsgContext} from "../SsgContext"
-import {HtmlSsgFile} from "../util/file/HtmlSsgFile"
-import {HtmlSsgContext} from "../HtmlSsgContext"
-import {SsgFile} from "../util/file/SsgFile"
-import {SsgContextImpl} from "../SsgContextImpl"
+import {SsgContext} from "../src/SsgContext"
+import {HtmlSsgFile} from "../src/util/file/HtmlSsgFile"
+import {HtmlSsgContext} from "../src/HtmlSsgContext"
+import {SsgFile} from "../src/util/file/SsgFile"
+import {SsgContextImpl} from "../src/SsgContextImpl"
 
 class TestUtil {
 

@@ -10,7 +10,7 @@ describe("ContentStep", () => {
       info.write()
     }
     const contentConfigs = [{
-      roots: ["src/test/*.html"],
+      roots: ["test/*.html"],
       replacements: [],
       getOutputFile(context: SsgContext) {
         return context.inputFile
@@ -19,7 +19,7 @@ describe("ContentStep", () => {
     const step = new ContentStep(contentConfigs, outputFunc)
     const context = new SsgContextImpl("fr", {})
     const result = await step.execute(context)
-    expect(result).toEqual({contentCount: 2})
+    expect(result).toEqual({contentCount: 3})
     const outputFile = context.outputFile as HtmlSsgFile
     expect(outputFile.meta.author).toEqual(["Jérôme Beau"])
     expect(outputFile.meta.url).toBe("https://rr0.org/tech/info/soft")

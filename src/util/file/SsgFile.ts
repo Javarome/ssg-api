@@ -4,7 +4,7 @@ import {SsgContext} from "../../SsgContext"
 import {JSDOM} from "jsdom"
 
 export type SsgFileLang = {
-  lang: string
+  lang?: string
   variants: string[]
 }
 
@@ -47,24 +47,27 @@ export class SsgFile {
     }
   }
 
-  static getLang(context: SsgContext, filePath: string, defaultLang = context.locale): SsgFileLang {
+  static getLang(context: SsgContext, filePath: string): SsgFileLang {
     const exec = SsgFile.filePathRegex.exec(filePath)
-    let lang
-    let variants
+    let lang: string | undefined
+    let variants: string[] = []
     if (exec) {
       const dir = exec[1] ?? "."
       const fileName = exec[2]
-      lang = exec[3] ?? defaultLang
+      lang = exec[3]
       const ext = exec[4]
       const files = fs.readdirSync(dir)
-      variants = files
+      const unique = new Set(files
         .filter(f => f.startsWith(fileName) && f.endsWith(ext))
         .map(f => {
           const fileExec = SsgFile.fileRegex.exec(f)
-          return fileExec ? fileExec[1] ?? defaultLang : defaultLang
+          return fileExec ? fileExec[1] : undefined
         })
+        .filter(v => v && v != lang)
+      ) as Set<string>
+      variants = Array.from(unique)
     }
-    return {lang: lang || defaultLang, variants: variants || []}
+    return {lang, variants}
   }
 
   static getContents(context: SsgContext, fileName: string,

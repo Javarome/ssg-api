@@ -1,29 +1,34 @@
 import {SsgFile} from "./SsgFile"
-import {testUtil} from "../../test/TestUtil"
+import {testUtil} from "../../../test/TestUtil"
 
 describe("SsgFile", () => {
 
-  test("langs", () => {
-    const context = testUtil.newContext("src/test/test.html", "")
+  test("lang", () => {
+    const context = testUtil.newContext("test/test.html", "")
 
-    const langDefault = SsgFile.getLang(context, "src/test/test.html", context.locale)
-    expect(langDefault).toEqual({lang: "fr", variants: ["fr", "en"]})
+    const langDefault = SsgFile.getLang(context, "test/test.html")
+    expect(langDefault).toEqual({lang: undefined, variants: ["en", "fr"]})
 
-    const langEn = SsgFile.getLang(context, "src/test/test_en.html", context.locale)
-    expect(langEn).toEqual({lang: "en", variants: ["fr", "en"]})
+    const langFr = SsgFile.getLang(context, "test/test_fr.html")
+    expect(langFr).toEqual({lang: "fr", variants: ["en"]})
+  })
 
-    const langNoDir = SsgFile.getLang(context, "LICENSE", context.locale)
-    expect(langNoDir).toEqual({lang: "fr", variants: []})
+  test("lang with no path", () => {
+    const context = testUtil.newContext("test/test.html", "")
+    const langNoDir = SsgFile.getLang(context, "LICENSE")
+    expect(langNoDir).toEqual({lang: undefined, variants: []})
   })
 
   test("files", () => {
-    const context = testUtil.newContext("src/test/test.html", "")
+    const context = testUtil.newContext("test/test.html", "")
 
-    const fileDefault = SsgFile.read(context, "src/test/test.html")
-    expect(fileDefault.lang).toEqual({lang: "fr", variants: ["fr", "en"]})
+    const langFr = SsgFile.getLang(context, "test/test_fr.html")
+    expect(langFr).toEqual({lang: "fr", variants: ["en"]})
 
-    const langEn = SsgFile.read(context, "src/test/test_en.html")
-    expect(langEn.lang).toEqual({lang: "en", variants: ["fr", "en"]})
+    const fileDefault = SsgFile.read(context, "test/test.html")
+    expect(fileDefault.lang).toEqual({lang: undefined, variants: ["en", "fr"]})
+
+    const langEn = SsgFile.read(context, "test/test_en.html")
+    expect(langEn.lang).toEqual({lang: "en", variants: ["fr"]})
   })
-
 })

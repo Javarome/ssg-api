@@ -1,10 +1,10 @@
-import {testUtil} from "../../test/TestUtil"
+import {testUtil} from "../../../test/TestUtil"
 import {HtmlSsgFile, LinkType} from "./HtmlSsgFile"
 
 describe("HtmlSsgFile", () => {
 
   test("defined title", () => {
-    const fileName = "src/test/test.html"
+    const fileName = "test/test.html"
     const fileContents = `<!--#include virtual="/header-start.html" -->
 <title>Introduction à l'édition du NCAS - Rapport Condon</title>
 <meta content="https://www.ncas.org/condon/text/test.html" name="url">
@@ -21,7 +21,7 @@ describe("HtmlSsgFile", () => {
   })
 
   test("undefined title", () => {
-    const fileName = "src/test/test.html"
+    const fileName = "test/test.html"
     const fileContents = `<!--#include virtual="/header.html" -->
 <ul><li>Item 1</li><li>Item 2</li></ul>
 <!--#include virtual="/footer.html" -->`

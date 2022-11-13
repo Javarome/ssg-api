@@ -1,5 +1,5 @@
 import {SsiSetVarReplaceCommand} from "./SsiSetVarCommand"
-import {testUtil} from "../../../../../test/TestUtil"
+import {testUtil} from "../../../../../../test/TestUtil"
 
 describe("SsiVarCommand", () => {
 

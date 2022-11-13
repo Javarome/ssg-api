@@ -32,6 +32,7 @@ export class Ssg {
     for (let i = 0; i < this.steps.length; i++) {
       const step = this.steps[i]
       const name = step.name ?? `#${i + 1}`
+      context.name = name
       context.log(`Step ${name} executing:`)
       const stepResult = await step.execute(context)
       context.log(`Step ${name} completed:`, stepResult)

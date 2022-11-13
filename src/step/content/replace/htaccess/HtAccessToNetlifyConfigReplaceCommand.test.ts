@@ -1,4 +1,4 @@
-import {testUtil} from "../../../../test/TestUtil"
+import {testUtil} from "../../../../../test/TestUtil"
 import {SsgFile} from "../../../../util/file/SsgFile"
 import {HtAccessToNetlifyConfigReplaceCommand} from "./HtAccessToNetlifyConfigReplaceCommand"
 
