@@ -20,8 +20,8 @@ export type SsgFileLang = {
 
 export class SsgFile {
 
-  protected static readonly filePathRegex = /(.*\/)?(.*?)(?:_(.*))?\.(.*)/
-  protected static readonly fileRegex = /(.*?)(?:_(.*))?\.(.*)/
+  protected static readonly filePathRegex = /(.*\/)?(.*?)(?:_([a-z]{2}))?\.(.*)/
+  protected static readonly fileRegex = /(.*?)(?:_([a-z]{2}))?\.(.*)/
 
   constructor(
     public name: string, readonly encoding: BufferEncoding, protected _contents: string, readonly lastModified: Date,
