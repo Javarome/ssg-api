@@ -3,12 +3,12 @@ import {SsgFile} from "../../../util/file/SsgFile"
 import {HtmlSsgContext} from "../../../HtmlSsgContext"
 import {DomReplacer} from "./DomReplacer"
 
-export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement> implements ReplaceCommand<HtmlSsgContext> {
+export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C extends HtmlSsgContext = HtmlSsgContext> implements ReplaceCommand<C> {
 
   constructor(protected selector: string) {
   }
 
-  async execute(context: HtmlSsgContext): Promise<SsgFile> {
+  async execute(context: C): Promise<SsgFile> {
     const fileInfo = context.inputFile
     let contents = fileInfo.contents
     let result = contents
@@ -29,5 +29,5 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement> imp
     return fileInfo
   }
 
-  protected abstract createReplacer(context: HtmlSsgContext): Promise<DomReplacer<T>>
+  protected abstract createReplacer(context: C): Promise<DomReplacer<T>>
 }
