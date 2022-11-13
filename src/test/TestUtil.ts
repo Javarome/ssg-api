@@ -8,7 +8,7 @@ class TestUtil {
 
   newContext(inputFileName: string, contents: string): SsgContext {
     const context = new SsgContextImpl("fr", {})
-    context.inputFile = new SsgFile(inputFileName, "utf8", contents, new Date(), "fr")
+    context.inputFile = new SsgFile(inputFileName, "utf8", contents, new Date(), {lang: "fr", variants: []})
     context.outputFile = context.inputFile  // By default
     return context
   }

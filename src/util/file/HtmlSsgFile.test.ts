@@ -1,5 +1,5 @@
 import {testUtil} from "../../test/TestUtil"
-import {HtmlSsgFile} from "./HtmlSsgFile"
+import {HtmlSsgFile, LinkType} from "./HtmlSsgFile"
 
 describe("HtmlSsgFile", () => {
 
@@ -11,11 +11,12 @@ describe("HtmlSsgFile", () => {
 <meta name="author" content="Paul Jaffe (président du NCAS, janvier 1999)">
 <!--#include virtual="/header-end.html" -->`
     const context = testUtil.newHtmlContext(fileName, fileContents)
-    const fileInfo = HtmlSsgFile.read(context, fileName)
-    expect(fileInfo.title).toBe("Some title")
-    expect(fileInfo.meta.author).toEqual(["Jérôme Beau"])
-    expect(fileInfo.meta.url).toBe("https://rr0.org/tech/info/soft")
-    const titleElem = fileInfo.dom.window.document.documentElement.querySelector("title")
+    const inputFile = HtmlSsgFile.read(context, fileName)
+    expect(inputFile.title).toBe("Some title")
+    expect(inputFile.meta.author).toEqual(["Jérôme Beau"])
+    expect(inputFile.meta.url).toBe("https://rr0.org/tech/info/soft")
+    expect(inputFile.links.start).toEqual({type: LinkType.start, text: "Tests root", url: ".."})
+    const titleElem = inputFile.dom.window.document.documentElement.querySelector("title")
     expect(titleElem?.textContent).toBe("Some title - Some website")
   })
 
@@ -29,5 +30,6 @@ describe("HtmlSsgFile", () => {
     expect(inputFile.title).toBe("Some title")  // // TODO: Fix mocking to really have undefined title
     expect(inputFile.meta.author).toEqual(["Jérôme Beau"])
     expect(inputFile.meta.url).toBe("https://rr0.org/tech/info/soft")
+    expect(inputFile.links.start).toEqual({type: LinkType.start, text: "Tests root", url: ".."})
   })
 })

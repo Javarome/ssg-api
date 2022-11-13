@@ -3,11 +3,19 @@ import {detectEncoding, getCharSet, getContentType, writeFile} from "./FileUtil"
 import {SsgContext} from "../../SsgContext"
 import {JSDOM} from "jsdom"
 
+export type SsgFileLang = {
+  lang: string
+  variants: string[]
+}
+
 export class SsgFile {
+
+  protected static readonly filePathRegex = /(.*\/)?(.*?)(?:_(.*))?\.(.*)/
+  protected static readonly fileRegex = /(?:_(.*))?\.(.*)/
 
   constructor(
     public name: string, readonly encoding: BufferEncoding, protected _contents: string, readonly lastModified: Date,
-    readonly lang: string | string[]
+    readonly lang: SsgFileLang
   ) {
   }
 
@@ -22,7 +30,7 @@ export class SsgFile {
   static read(context: SsgContext, fileName: string, declaredEncoding?: BufferEncoding): SsgFile {
     const fileStats = fs.statSync(fileName)
     const {encoding, contents} = SsgFile.getContents(context, fileName, declaredEncoding)
-    const lang = SsgFile.getFileLang(context, fileName)
+    const lang = SsgFile.getLang(context, fileName)
     return new SsgFile(fileName, encoding, contents, fileStats.mtime, lang)
   }
 
@@ -31,26 +39,35 @@ export class SsgFile {
       return SsgFile.read(context, fileName, declaredEncoding)
     } catch (e) {
       if ((e as any).code === "ENOENT") {
-        return new SsgFile(fileName, "utf8", "", new Date(), context.locale)
+        const lang = SsgFile.getLang(context, fileName)
+        return new SsgFile(fileName, "utf8", "", new Date(), lang)
       } else {
         throw e
       }
     }
   }
 
-  static getFileLang(context: SsgContext, filePath: string): string | string[] {
-    let lang = context.locale
-    const lastDot = filePath.lastIndexOf(".")
-    let lastSlash = filePath.lastIndexOf("/")
-    if (lastSlash < 0 || lastSlash < lastDot) {
-      lastSlash = lastSlash < 0 ? 0 : lastSlash
-      const fileName = filePath.substring(lastSlash, lastDot)
-      const variantPos = fileName.lastIndexOf("_")
-      if (variantPos > 0) {
-        lang = fileName.substring(variantPos + 1)
-      }
+  static getLang(context: SsgContext, filePath: string, defaultLang = context.locale): SsgFileLang {
+    const exec = SsgFile.filePathRegex.exec(filePath)
+    let lang: string
+    let variants: string[]
+    if (exec) {
+      const dir = exec[1]
+      const fileName = exec[2]
+      lang = exec[3] ?? defaultLang
+      const ext = exec[4]
+      const files = fs.readdirSync(dir)
+      variants = files
+        .filter(f => f.startsWith(fileName) && f.endsWith(ext))
+        .map(f => {
+          const fileExec = SsgFile.fileRegex.exec(f)
+          return fileExec ? fileExec[1] ?? defaultLang : defaultLang
+        })
+    } else {
+      lang = defaultLang
+      variants = []
     }
-    return lang
+    return {lang, variants}
   }
 
   static getContents(context: SsgContext, fileName: string,

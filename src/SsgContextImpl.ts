@@ -1,6 +1,7 @@
 import {SsgFile} from "./util/file/SsgFile"
 import {BuiltInVars, SsgContext, VarProp} from "./SsgContext"
 import {WithPropsOf} from "./util/WithPropsOf"
+import {ObjectUtil} from "./util/ObjectUtil"
 
 type AllVars<V> = V & BuiltInVars
 
@@ -29,10 +30,7 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
   protected _inputFile: SsgFile | undefined
 
   get inputFile(): SsgFile {
-    if (!this._inputFile) {
-      throw Error("Should have a inputFile")
-    }
-    return this._inputFile
+    return ObjectUtil.asSet(this._inputFile, "Should have a inputFile")
   }
 
   set inputFile(value: SsgFile) {
@@ -45,10 +43,7 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
   protected _outputFile: SsgFile | undefined
 
   get outputFile(): SsgFile {
-    if (!this._outputFile) {
-      throw Error("Should have a outputFile")
-    }
-    return this._outputFile
+    return ObjectUtil.asSet(this._outputFile, "Should have a outputFile")
   }
 
   set outputFile(value: SsgFile) {

@@ -41,8 +41,8 @@ describe("HtAccessToNetlifyConfigReplaceCommand", () => {
       const context = testUtil.newContext(".htaccess",
         `Redirect /science/crypto/ufo/analyse/hypotheses/HET/ https://rr0.org/science/crypto/ufo/analyse/hypotheses/intelligence/HET/`)
       const inputFile = context.inputFile
-      context.outputFile = new SsgFile("out/.netlify.toml", inputFile.encoding, "",
-        inputFile.lastModified, inputFile.lang)
+      context.outputFile = new SsgFile("out/.netlify.toml", inputFile.encoding, "", inputFile.lastModified,
+        inputFile.lang)
       const file = await command.execute(context)
       expect(file.contents).toBe(`[[redirects]]
   from = "/science/crypto/ufo/analyse/hypotheses/HET/*"
@@ -56,8 +56,8 @@ describe("HtAccessToNetlifyConfigReplaceCommand", () => {
       const context = testUtil.newContext(".htaccess",
         `Redirect /science/crypto/ufologie https://rr0.org/science/crypto/ufo`)
       const inputFile = context.inputFile
-      context.outputFile = new SsgFile("out/.netlify.toml", inputFile.encoding, "",
-        inputFile.lastModified, inputFile.lang)
+      context.outputFile = new SsgFile("out/.netlify.toml", inputFile.encoding, "", inputFile.lastModified,
+        inputFile.lang)
       const file = await command.execute(context)
       expect(file.contents).toBe(`[[redirects]]
   from = "/science/crypto/ufologie/*"

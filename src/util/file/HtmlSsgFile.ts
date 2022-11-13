@@ -1,5 +1,5 @@
 import {SsgContext} from "../../SsgContext"
-import {SsgFile} from "./SsgFile"
+import {SsgFile, SsgFileLang} from "./SsgFile"
 import {JSDOM} from "jsdom"
 
 export type HtmlMeta = {
@@ -38,7 +38,7 @@ export type HtmlLinks = {
 export class HtmlSsgFile extends SsgFile {
 
   constructor(
-    name: string, encoding: BufferEncoding, contents: string, lastModified: Date, lang: string | string[],
+    name: string, encoding: BufferEncoding, contents: string, lastModified: Date, lang: SsgFileLang,
     readonly meta: HtmlMeta, readonly links: HtmlLinks, public title?: string) {
     super(name, encoding, contents, lastModified, lang)
   }

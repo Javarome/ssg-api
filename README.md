@@ -32,4 +32,5 @@ try {
 }
 ```
 
-See the [documentation](https://github.com/Javarome/ssg-api/wiki) to know what steps are about.
+[Steps](https://github.com/Javarome/ssg-api/wiki/Steps) can do anything, you can implement your owns; but there are predefined ones.
+Check the [documentation](https://github.com/Javarome/ssg-api/wiki) for more.
