@@ -9,24 +9,24 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C e
   }
 
   async execute(context: C): Promise<SsgFile> {
-    const fileInfo = context.inputFile
-    let contents = fileInfo.contents
+    const inputFile = context.inputFile
+    let contents = inputFile.contents
     let result = contents
     const replacer = await this.createReplacer(context)
     do {
       contents = result
-      const doc = fileInfo.dom.window.document.documentElement
+      const doc = inputFile.dom.window.document.documentElement
       const elements = doc.querySelectorAll<T>(this.selector)
       if (elements.length > 0) {
         for (const element of elements) {
           const replaced = await replacer.replace(element)
           element.replaceWith(replaced)
         }
-        result = fileInfo.dom.serialize()
+        result = inputFile.dom.serialize()
       }
     } while (result != contents)
-    fileInfo.contents = result
-    return fileInfo
+    inputFile.contents = result
+    return inputFile
   }
 
   protected abstract createReplacer(context: C): Promise<DomReplacer<T>>

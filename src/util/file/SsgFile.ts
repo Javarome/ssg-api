@@ -49,10 +49,10 @@ export class SsgFile {
 
   static getLang(context: SsgContext, filePath: string, defaultLang = context.locale): SsgFileLang {
     const exec = SsgFile.filePathRegex.exec(filePath)
-    let lang: string
-    let variants: string[]
+    let lang
+    let variants
     if (exec) {
-      const dir = exec[1]
+      const dir = exec[1] ?? "."
       const fileName = exec[2]
       lang = exec[3] ?? defaultLang
       const ext = exec[4]
@@ -63,11 +63,8 @@ export class SsgFile {
           const fileExec = SsgFile.fileRegex.exec(f)
           return fileExec ? fileExec[1] ?? defaultLang : defaultLang
         })
-    } else {
-      lang = defaultLang
-      variants = []
     }
-    return {lang, variants}
+    return {lang: lang || defaultLang, variants: variants || []}
   }
 
   static getContents(context: SsgContext, fileName: string,

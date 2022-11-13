@@ -11,6 +11,9 @@ describe("SsgFile", () => {
 
     const langEn = SsgFile.getLang(context, "src/test/test_en.html", context.locale)
     expect(langEn).toEqual({lang: "en", variants: ["fr", "en"]})
+
+    const langNoDir = SsgFile.getLang(context, "LICENSE", context.locale)
+    expect(langNoDir).toEqual({lang: "fr", variants: []})
   })
 
   test("files", () => {
