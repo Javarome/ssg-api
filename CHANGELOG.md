@@ -13,6 +13,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - under `context.` prefix to avoid collision with JS variables.
         - under reserved prefixes for each built-in object (like `context.inputFile`, etc.)
 
+## [1.2.7] - 2022-11-16
+
+### Added
+
+- `Logger.name` is the context name to be displayed before a log.
+- `SsgContext.logger` is the logger object used to perform context.logs. `DefaultLogger` will be used by `SsgContextImpl` unless another `Logger` implementation is provided at construction.
+
+### Fixed
+
+- Changing `context.name` will change context's logger's name as well.
+
 ## [1.2.6] - 2022-11-13
 
 ### Added
