@@ -27,7 +27,6 @@ export class Ssg {
   }
 
   async start(context: SsgContext): Promise<SsgResult> {
-    const config = this.config
     const result: SsgResult = {}
     for (let i = 0; i < this.steps.length; i++) {
       const step = this.steps[i]
