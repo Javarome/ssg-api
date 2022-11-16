@@ -3,12 +3,13 @@ import {BuiltInVars, SsgContext, VarProp} from "./SsgContext"
 import {WithPropsOf} from "./util/WithPropsOf"
 import {ObjectUtil} from "./util/ObjectUtil"
 import {DefaultLogger} from "./DefaultLogger"
+import {Logger} from "./Logger"
 
 type AllVars<V> = V & BuiltInVars
 
 export class SsgContextImpl<V = any> implements SsgContext<V> {
 
-  public logger = new DefaultLogger("Ssg")
+  static readonly DEFAULT_NAME = "Ssg"
 
   readonly log = this.logger.log
   readonly debug = this.logger.debug
@@ -17,11 +18,24 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
 
   protected vars: WithPropsOf<AllVars<V>>
 
-  constructor(readonly locale: string, vars: WithPropsOf<V>, public name = "Ssg",
+  constructor(readonly locale: string, vars: WithPropsOf<V>, name = SsgContextImpl.DEFAULT_NAME,
+              readonly logger: Logger = new DefaultLogger(name),
               currentFile: SsgFile | undefined = undefined) {
     this._inputFile = this._outputFile = currentFile
     const builtInVars = {...currentFile}
     this.vars = {...builtInVars, ...vars}
+    this.name = name
+  }
+
+  protected _name = SsgContextImpl.DEFAULT_NAME
+
+  get name(): string {
+    return this._name
+  }
+
+  set name(newName: string) {
+    this._name = newName
+    this.logger.name = this._name
   }
 
   protected _inputFile: SsgFile | undefined
@@ -65,6 +79,6 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
   }
 
   clone(): SsgContext<V> {
-    return new SsgContextImpl(this.locale, this.vars, this.name, this._inputFile)
+    return new SsgContextImpl(this.locale, this.vars, this.name, this.logger, this._inputFile)
   }
 }

@@ -12,6 +12,11 @@ export interface SsgContext<V = any> extends Logger {
   name: string
 
   /**
+   * Logger.
+   */
+  logger: Logger
+
+  /**
    * The locale to use to format output (dates, messages, etc.).
    */
   readonly locale: string
