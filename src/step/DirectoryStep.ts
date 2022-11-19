@@ -1,8 +1,7 @@
 import {SsgStep} from "./SsgStep"
 import {SsgConfig} from "../Ssg"
 import {SsgContext} from "../SsgContext"
-import {dirNames} from "../util/file/FileUtil"
-import {SsgFile} from "../util"
+import {FileUtil, SsgFile} from "../util"
 
 export interface DirectoryResult {
   directoryCount: number
@@ -62,7 +61,7 @@ export abstract class DirectoryStep implements SsgStep<DirectoryResult> {
           subDirs = subDirs.concat(await this.findDirs([dir + "/*/"]))
         }
       } else {
-        subDirs = (await dirNames(baseDir)).map(x => baseDir + "/" + x)
+        subDirs = (await FileUtil.dirNames(baseDir)).map(x => baseDir + "/" + x)
       }
     } else {
       subDirs = [ofDir]

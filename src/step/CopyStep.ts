@@ -1,7 +1,7 @@
 import {SsgStep} from "./SsgStep"
 import {SsgConfig} from "../Ssg"
 import {SsgContext} from "../SsgContext"
-import {ssgCopy} from "../util/file/FileUtil"
+import {FileUtil} from "../util"
 
 export type CopyStepResult = {
   filesCount: number
@@ -22,7 +22,7 @@ export class CopyStep implements SsgStep<CopyStepResult> {
     const dest = this.config.outDir
     try {
       context.log("Copying to", dest, copies)
-      const files = await ssgCopy(dest, ...copies)
+      const files = await FileUtil.ssgCopy(dest, ...copies)
       return {
         filesCount: files.length
       }
