@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - under `context.` prefix to avoid collision with JS variables.
         - under reserved prefixes for each built-in object (like `context.inputFile`, etc.)
 
+## [1.2.8] - 2022-11-20
+
+### Changed
+
+- change `ContentStep.processFile` visibility from `private` to `protected` to allow more fine-tuned specialization.
+
 ## [1.2.7] - 2022-11-16
 
 ### Added
