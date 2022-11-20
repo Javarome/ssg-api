@@ -3,12 +3,18 @@ import {HtmlSsgFile} from "../src/util/file/HtmlSsgFile"
 import {HtmlSsgContext} from "../src/HtmlSsgContext"
 import {SsgFile} from "../src/util/file/SsgFile"
 import {SsgContextImpl} from "../src/SsgContextImpl"
+import {ObjectUtil} from "../src/util/ObjectUtil"
 
 class TestUtil {
 
-  newContext(inputFileName: string, contents: string): SsgContext {
+  newContext(inputFileName: string, contents?: string): SsgContext {
     const context = new SsgContextImpl("fr", {})
-    context.inputFile = new SsgFile(inputFileName, "utf8", contents, new Date(), {lang: "fr", variants: []})
+    if (ObjectUtil.isUndefined(contents)) {
+      context.inputFile = SsgFile.read(context, inputFileName)
+    } else {
+      context.inputFile = new SsgFile(inputFileName, "utf8", ObjectUtil.asSet(contents), new Date(),
+        {lang: "fr", variants: []})
+    }
     context.outputFile = context.inputFile  // By default
     return context
   }
