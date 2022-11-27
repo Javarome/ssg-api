@@ -7,7 +7,12 @@ export type SsgConfig = {
   outDir: string
 }
 
-export type SsgResult = {}
+/**
+ * Result of a Ssg.start().
+ */
+export type SsgResult = {
+  [stepName: string]: any
+}
 
 export type OutputFunc = (context: SsgContext, outputFile: SsgFile, outDir?: string) => Promise<void>
 
@@ -28,15 +33,21 @@ export class Ssg {
 
   async start(context: SsgContext): Promise<SsgResult> {
     const result: SsgResult = {}
+    const parentName = context.name
     for (let i = 0; i < this.steps.length; i++) {
       const step = this.steps[i]
-      const name = step.name ?? `#${i + 1}`
-      context.logger.name = name
-      context.log(`Step ${name} executing:`)
+      const stepName = step.name ?? `#${i + 1}`
+      if (context.name === parentName) {
+        context.push(stepName)
+      } else {
+        context.name = stepName
+      }
+      context.log(`Step ${stepName} executing:`)
       const stepResult = await step.execute(context)
-      context.log(`Step ${name} completed:`, stepResult)
-      Object.assign(result, stepResult)
+      context.log(`Step ${stepName} completed:`, stepResult)
+      result[stepName] = stepResult
     }
+    context.pop()
     return result
   }
 }

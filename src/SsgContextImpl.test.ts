@@ -22,4 +22,32 @@ describe("SsgContextImpl", () => {
     expect(context.name).toBe(newName)
     expect(context.logger.name).toBe(newName)
   })
+
+  test("push and pop", () => {
+    const context = new SsgContextImpl<MyVars>("fr", {})
+    expect(context.name).toBe(SsgContextImpl.DEFAULT_NAME)
+    const hierarchicalName = SsgContextImpl.DEFAULT_NAME
+    expect(context.logger.name).toBe(hierarchicalName)
+    {
+      const subName1 = "Sub name 1"
+      context.push(subName1)
+      expect(context.name).toBe(subName1)
+      const hierarchicalName1 = SsgContextImpl.DEFAULT_NAME + ":" + subName1
+      expect(context.logger.name).toBe(hierarchicalName1)
+      {
+        const subName2 = "Sub name 2"
+        context.push(subName2)
+        expect(context.name).toBe(subName2)
+        const hierarchicalName2 = `${SsgContextImpl.DEFAULT_NAME}:${subName1}:${subName2}`
+        expect(context.logger.name).toBe(hierarchicalName2)
+      }
+      context.pop()
+      expect(context.name).toBe(subName1)
+      expect(context.logger.name).toBe(hierarchicalName1)
+    }
+    context.pop()
+    expect(context.name).toBe(SsgContextImpl.DEFAULT_NAME)
+    expect(context.name).toBe(hierarchicalName)
+    expect(context.logger.name).toBe(hierarchicalName)
+  })
 })

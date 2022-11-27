@@ -1,2 +1,2 @@
 export * from "./ClassDomReplaceCommand"
-export * from "./ClassRegexReplaceCommand"
+export * from "./ClassDomRegexReplaceCommand"

@@ -8,6 +8,8 @@ export type VarProp<V> = keyof BuiltInVars | keyof V
 export interface SsgContext<V = any> extends Logger {
   /**
    * Context identifier. Used in the logs.
+   *
+   * @see push() to create a sub-context with a different name.
    */
   name: string
 
@@ -36,5 +38,17 @@ export interface SsgContext<V = any> extends Logger {
   setVar(varName: VarProp<V>, value: any): void
 
   clone(): SsgContext<V>
+
+  /**
+   * Defines a new sub-context.
+   *
+   * @param name The name of the new sub-context.
+   */
+  push(name: string): SsgContext
+
+  /**
+   * Restores parent context.
+   */
+  pop(): SsgContext
 }
 

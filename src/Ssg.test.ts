@@ -10,11 +10,11 @@ describe("Ssg", function () {
     const step1 = new class implements SsgStep {
       async execute(context: SsgContext): Promise<any> {
         context.log("Doing step 1")
-        return {step1Ok: true}
+        return true
       }
     }()
     const step2 = new class implements SsgStep {
-      readonly name = "second"
+      readonly name = "Second step"
 
       async execute(context: SsgContext): Promise<any> {
         context.log("Doing step 2")
@@ -25,11 +25,7 @@ describe("Ssg", function () {
       .add(step1)
       .add(step2)
     const context = new SsgContextImpl("fr", {})
-    try {
-      const result = await ssg.start(context)
-      expect(result).toEqual({step1Ok: true, step2Done: true})
-    } catch (e) {
-      context.error(e)
-    }
+    const result = await ssg.start(context)
+    expect(result).toEqual({"#1": true, "Second step": {step2Done: true}})
   })
 })

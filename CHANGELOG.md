@@ -13,6 +13,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - under `context.` prefix to avoid collision with JS variables.
         - under reserved prefixes for each built-in object (like `context.inputFile`, etc.)
 
+## [1.2.9] - 2022-11-27
+
+### Added
+
+- TagReplaceCommand, a DomReplacement to ease replacement of tags by name.
+- Nested contexts with `push()` and `pop()`, reflected in logs.
+
+### Changed
+
+- TagReplaceCommand, a DomReplacement to ease replacement of tags by name.
+- More parameterable context type in Ssg.
+
 ## [1.2.8] - 2022-11-20
 
 ### Changed

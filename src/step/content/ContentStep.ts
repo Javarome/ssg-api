@@ -6,7 +6,7 @@ import {ReplaceCommand} from "./replace/ReplaceCommand"
 import {SsgFile} from "../../util/file/SsgFile"
 import {HtmlSsgFile} from "../../util"
 
-export type ContentStepConfig = {
+export type ContentStepConfig<C extends SsgContext = SsgContext> = {
   /**
    * The glob roots of contents to process.
    */
@@ -15,27 +15,27 @@ export type ContentStepConfig = {
   /**
    * The replacements to process on contents.
    */
-  replacements: ReplaceCommand<SsgContext>[],
+  replacements: ReplaceCommand<C>[],
 
   /**
    * @param context
    * @return the file where to output.
    */
-  getOutputFile(context: SsgContext): SsgFile
+  getOutputFile(context: C): SsgFile
 }
 
 export type ContentStepResult = {
   contentCount: number
 }
 
-export class ContentStep implements SsgStep<ContentStepResult> {
+export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C, ContentStepResult> {
 
   readonly name = "content"
 
-  constructor(protected contents: ContentStepConfig[], protected output: OutputFunc) {
+  constructor(protected contents: ContentStepConfig<C>[], protected output: OutputFunc) {
   }
 
-  async execute(context: SsgContext): Promise<ContentStepResult> {
+  async execute(context: C): Promise<ContentStepResult> {
     let contentCount = 0
     for (const contents of this.contents) {
       contentCount += await this.processRoots(context, contents)
@@ -45,7 +45,7 @@ export class ContentStep implements SsgStep<ContentStepResult> {
     }
   }
 
-  protected async processRoots(context: SsgContext, contentsConfig: ContentStepConfig): Promise<number> {
+  protected async processRoots(context: C, contentsConfig: ContentStepConfig): Promise<number> {
     let contentCount = 0
     for (const contentsRoot of contentsConfig.roots) {
       contentCount = await this.processRoot(context, contentsRoot, contentsConfig, contentCount)
@@ -53,7 +53,7 @@ export class ContentStep implements SsgStep<ContentStepResult> {
     return contentCount
   }
 
-  protected async processRoot(context: SsgContext, contentsRoot: string, contentsConfig: ContentStepConfig,
+  protected async processRoot(context: C, contentsRoot: string, contentsConfig: ContentStepConfig,
                               contentCount: number): Promise<number> {
     context.debug("Processing root", contentsRoot)
     const contentFiles = await glob(contentsRoot)
@@ -63,7 +63,7 @@ export class ContentStep implements SsgStep<ContentStepResult> {
     return contentCount
   }
 
-  protected async processFile(context: SsgContext, filePath: string, contentsConfig: ContentStepConfig,
+  protected async processFile(context: C, filePath: string, contentsConfig: ContentStepConfig,
                               contentCount: number): Promise<number> {
     context.inputFile = HtmlSsgFile.read(context, filePath)
     context.outputFile = contentsConfig.getOutputFile(context)
