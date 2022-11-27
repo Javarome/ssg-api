@@ -10,7 +10,7 @@ export type CopyStepResult = {
 /**
  * Perform copies to out directory.
  */
-export class CopyStep implements SsgStep<CopyStepResult> {
+export class CopyStep<C extends SsgContext = SsgContext> implements SsgStep<C, CopyStepResult> {
 
   readonly name = "copy"
 

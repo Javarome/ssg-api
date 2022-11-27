@@ -38,6 +38,10 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
 
   set name(newName: string) {
     this._name = newName
+    const lastLevel = this.stack.length - 1
+    if (lastLevel >= 0) {
+      this.stack[lastLevel] = newName
+    }
     this.logger.name = this.stack.join(":")
   }
 
