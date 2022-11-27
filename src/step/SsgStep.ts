@@ -1,6 +1,6 @@
 import {SsgContext} from "../SsgContext"
 
-export interface SsgStep<R = any> {
+export interface SsgStep<C extends SsgContext = SsgContext, R = any> {
 
   readonly name?: string
 
@@ -9,5 +9,5 @@ export interface SsgStep<R = any> {
    *
    * @param context
    */
-  execute(context: SsgContext): Promise<R>
+  execute(context: C): Promise<R>
 }

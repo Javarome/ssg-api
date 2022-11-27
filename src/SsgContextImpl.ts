@@ -18,12 +18,15 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
 
   protected vars: WithPropsOf<AllVars<V>>
 
+  protected stack: string[] = []
+
   constructor(readonly locale: string, vars: WithPropsOf<V>, name = SsgContextImpl.DEFAULT_NAME,
               readonly logger: Logger = new DefaultLogger(name),
               currentFile: SsgFile | undefined = undefined) {
     this._inputFile = this._outputFile = currentFile
     const builtInVars = {...currentFile}
     this.vars = {...builtInVars, ...vars}
+    this.stack.push(name)
     this.name = name
   }
 
@@ -35,7 +38,7 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
 
   set name(newName: string) {
     this._name = newName
-    this.logger.name = this._name
+    this.logger.name = this.stack.join(":")
   }
 
   protected _inputFile: SsgFile | undefined
@@ -80,5 +83,20 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
 
   clone(): SsgContext<V> {
     return new SsgContextImpl(this.locale, this.vars, this.name, this.logger, this._inputFile)
+  }
+
+  push(newName: string): SsgContext {
+    this.stack.push(newName)
+    this.name = newName
+    return this
+  }
+
+  pop(): SsgContext {
+    ObjectUtil.asSet(this.stack.pop())
+    const lastLevel = this.stack.length - 1
+    if (lastLevel >= 0) {
+      this.name = this.stack[lastLevel]
+    }
+    return this
   }
 }
