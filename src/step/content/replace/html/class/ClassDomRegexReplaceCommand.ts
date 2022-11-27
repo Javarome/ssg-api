@@ -4,9 +4,9 @@ import {RegexReplacer} from "../../RegexReplacer"
 import {SsgContext} from "../../../../../SsgContext"
 
 /**
- * @deprecated Can't work tags with regexes.
+ * @deprecated Can't work tags with regexes. Use ClassReplaceCommand
  */
-export class ClassRegexReplaceCommand extends RegexReplaceCommand {
+export class ClassDomRegexReplaceCommand extends RegexReplaceCommand {
 
   constructor(protected className: string, protected replacerFactory: ReplacerFactory<RegexReplacer>) {
     super(new RegExp(`<[A-z\-]+?\\s+class="${className}">\\s*(.+?)\\s*<\/[A-z\-]+?>`, "gm"))
