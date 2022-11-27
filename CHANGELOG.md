@@ -13,6 +13,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - under `context.` prefix to avoid collision with JS variables.
         - under reserved prefixes for each built-in object (like `context.inputFile`, etc.)
 
+## [1.2.10] - 2022-11-27
+
+### Added
+
+- `SsgContext.document` and `SsgContext.serialize()` to avoid using deprecated JSDOM-dependent `SsgContext.dom`.
+
+### Fixed
+
+- TagReplaceCommand is now the DOM implementation. Deprecated Regex implementation is renamed as such.
+- Avoid redundancing in Ssg logs
+
 ## [1.2.9] - 2022-11-27
 
 ### Added

@@ -59,6 +59,13 @@ export class HtmlSsgFile extends SsgFile {
     return this.dom.window.document
   }
 
+  /**
+   * Converts document's state to an HTML string.
+   */
+  serialize(): string {
+    return this.dom.serialize()
+  }
+
   set dom(newDom: JSDOM) {
     this._contents = newDom.serialize()
     this._dom = newDom

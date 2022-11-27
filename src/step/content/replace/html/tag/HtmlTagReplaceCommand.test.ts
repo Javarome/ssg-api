@@ -1,13 +1,13 @@
-import {TagDomReplaceCommand} from "./TagReplaceCommand"
-import {ReplacerFactory} from "../ReplacerFactory"
-import {SsgContext} from "../../../../SsgContext"
-import {testUtil} from "../../../../../test/TestUtil"
-import {DomReplacer} from "../DomReplacer"
+import {HtmlTagReplaceCommand} from "./HtmlTagReplaceCommand"
+import {ReplacerFactory} from "../../ReplacerFactory"
+import {SsgContext} from "../../../../../SsgContext"
+import {testUtil} from "../../../../../../test/TestUtil"
+import {DomReplacer} from "../../DomReplacer"
 
-describe("TagReplaceCommand", () => {
+describe("HtmlTagReplaceCommand", () => {
 
   test("replaces tag", async () => {
-    const command = new TagDomReplaceCommand("a", new class implements ReplacerFactory<DomReplacer> {
+    const command = new HtmlTagReplaceCommand("a", new class implements ReplacerFactory<DomReplacer> {
       async create(context: SsgContext): Promise<DomReplacer> {
         return new class implements DomReplacer {
           async replace(original: HTMLElement): Promise<HTMLElement> {

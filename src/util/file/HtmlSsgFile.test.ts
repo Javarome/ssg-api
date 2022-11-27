@@ -16,7 +16,7 @@ describe("HtmlSsgFile", () => {
     expect(inputFile.meta.author).toEqual(["Jérôme Beau"])
     expect(inputFile.meta.url).toBe("https://rr0.org/tech/info/soft")
     expect(inputFile.links.start).toEqual({type: LinkType.start, text: "Tests root", url: ".."})
-    const titleElem = inputFile.dom.window.document.documentElement.querySelector("title")
+    const titleElem = inputFile.document.documentElement.querySelector("title")
     expect(titleElem?.textContent).toBe("Some title - Some website")
   })
 

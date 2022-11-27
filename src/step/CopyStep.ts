@@ -27,7 +27,7 @@ export class CopyStep<C extends SsgContext = SsgContext> implements SsgStep<C, C
         filesCount: files.length
       }
     } catch (e) {
-      throw Error("Could not copy" + copies + " because of " + e)
+      throw Error(`Could not copy${copies} because of ${e}`)
     }
   }
 }

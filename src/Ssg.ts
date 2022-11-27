@@ -42,9 +42,9 @@ export class Ssg {
       } else {
         context.name = stepName
       }
-      context.log(`Step ${stepName} executing:`)
+      context.log(`Executing:`)
       const stepResult = await step.execute(context)
-      context.log(`Step ${stepName} completed:`, stepResult)
+      context.log(`Completed:`, stepResult)
       result[stepName] = stepResult
     }
     context.pop()
