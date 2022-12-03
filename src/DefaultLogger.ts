@@ -15,6 +15,8 @@ export interface LogConsole {
   error(...data: any[]): void
 }
 
+const defaultConsole = console
+
 export class DefaultLogger implements Logger {
 
   readonly log = this.logLevels.includes("info") ? (...data: any[]) => this.console.log(this.name + ":", ...data) : NOP
@@ -25,6 +27,6 @@ export class DefaultLogger implements Logger {
   readonly error = this.logLevels.includes("error") ? (...data: any[]) => this.console.error(this.name + ":",
     ...data) : NOP
 
-  constructor(public name: string, protected console: LogConsole = window.console, protected logLevels = envLogLevels) {
+  constructor(public name: string, protected console: LogConsole = defaultConsole, protected logLevels = envLogLevels) {
   }
 }
