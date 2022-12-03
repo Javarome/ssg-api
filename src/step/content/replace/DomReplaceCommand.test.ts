@@ -19,7 +19,7 @@ describe("DomReplaceCommand", () => {
         return domReplacer
       }
 
-      protected postExecute(context: HtmlSsgContext) {
+      protected async postExecute(context: HtmlSsgContext) {
         command.postExecuted = true
       }
     }("a")

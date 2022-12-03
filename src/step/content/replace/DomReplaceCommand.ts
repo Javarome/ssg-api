@@ -26,7 +26,7 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C e
       }
     } while (result != contents)
     context.outputFile.contents = result
-    this.postExecute(context)
+    await this.postExecute(context)
     return inputFile
   }
 
@@ -43,7 +43,7 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C e
    * @param context
    * @protected
    */
-  protected postExecute(context: C) {
+  protected async postExecute(context: C): Promise<void> {
     // Do nothing by default.
   }
 }
