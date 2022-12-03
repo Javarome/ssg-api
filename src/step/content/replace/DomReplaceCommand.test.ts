@@ -13,12 +13,20 @@ describe("DomReplaceCommand", () => {
       }
     }
     const command = new class extends DomReplaceCommand {
+      postExecuted = false
+
       protected async createReplacer(context: HtmlSsgContext): Promise<DomReplacer> {
         return domReplacer
       }
+
+      protected postExecute(context: HtmlSsgContext) {
+        command.postExecuted = true
+      }
     }("a")
     const context = testUtil.newHtmlContext("test.xml", `<a href="link">text</a>`)
+    expect(command.postExecuted).toBe(false)
     const outFile = await command.execute(context)
+    expect(command.postExecuted).toBe(true)
     expect(outFile.contents).toBe(`<html><head></head><body><a href="link" data-prop="value">text</a></body></html>`)
   })
 })

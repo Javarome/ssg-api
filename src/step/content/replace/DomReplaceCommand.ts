@@ -25,7 +25,8 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C e
         result = inputFile.serialize()
       }
     } while (result != contents)
-    inputFile.contents = result
+    context.outputFile.contents = result
+    this.postExecute(context)
     return inputFile
   }
 
@@ -36,4 +37,13 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C e
    * @protected
    */
   protected abstract createReplacer(context: C): Promise<DomReplacer<T>>
+
+  /**
+   * Executed as last operation of execute()
+   * @param context
+   * @protected
+   */
+  protected postExecute(context: C) {
+    // Do nothing by default.
+  }
 }

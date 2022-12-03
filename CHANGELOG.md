@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - under `context.` prefix to avoid collision with JS variables.
         - under reserved prefixes for each built-in object (like `context.inputFile`, etc.)
 
+## [1.2.11] - 2022-12-03
+
+### Added
+
+- `DomReplaceCommand.postExecute()` can be overriden to execute some operation after some given replacements have been performed.
+
 ## [1.2.10] - 2022-11-27
 
 ### Added
