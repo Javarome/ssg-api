@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - under `context.` prefix to avoid collision with JS variables.
         - under reserved prefixes for each built-in object (like `context.inputFile`, etc.)
 
+## [1.2.13] - 2022-12-03
+
+### Fixed
+
+- `DefaultLogger` uses levels from `process.env.LOG_LEVEL` split with comma.
+
 ## [1.2.12] - 2022-12-03
 
 ### Changed
