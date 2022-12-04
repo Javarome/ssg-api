@@ -17,7 +17,7 @@ describe("ContentStep", () => {
       }
     }]
     const step = new ContentStep(contentConfigs, outputFunc)
-    const context = new SsgContextImpl("fr", {})
+    const context = new SsgContextImpl("fr")
     const result = await step.execute(context)
     expect(result).toEqual({contentCount: 3})
     const outputFile = context.outputFile as HtmlSsgFile

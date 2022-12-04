@@ -4,7 +4,7 @@ import {SsgFile} from "../../../util/file/SsgFile"
 import {SsgContext} from "../../../SsgContext"
 
 /**
- * Performs replacements using a Regular Expression to find patterns to replace.
+ * A command that performs replacements using a Regular Expression.
  */
 export abstract class RegexReplaceCommand<V = any, C extends SsgContext = SsgContext<V>> implements ReplaceCommand<C> {
 
@@ -30,5 +30,11 @@ export abstract class RegexReplaceCommand<V = any, C extends SsgContext = SsgCon
     return fileInfo
   }
 
+  /**
+   * Create the replacer for a given context.
+   *
+   * @param context
+   * @protected
+   */
   protected abstract createReplacer(context: C): Promise<RegexReplacer>
 }

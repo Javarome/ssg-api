@@ -13,7 +13,7 @@ describe("DirectoryStep", () => {
       }
     }(["src/"], [], "test/test.html", config, name)
     expect(step.name).toBe(name)
-    const context = new SsgContextImpl("fr", {})
+    const context = new SsgContextImpl("fr")
     const result = await step.execute(context)
     expect(result).toEqual({directoryCount: 1})
   })

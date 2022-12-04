@@ -1,12 +1,12 @@
 import {RegexReplacer} from "../RegexReplacer"
 import {StringContextHandler} from "./StringContextHandler"
-import {SsgContext, VarProp} from "../../../../SsgContext"
+import {SsgContext} from "../../../../SsgContext"
 
 export class VarRegexReplacer<V = any, C extends SsgContext = SsgContext> implements RegexReplacer {
 
   constructor(
     protected context: C,
-    protected varName: VarProp<V>,
+    protected varName: string,
     protected defaultHandlers: StringContextHandler<C>[]
   ) {
   }

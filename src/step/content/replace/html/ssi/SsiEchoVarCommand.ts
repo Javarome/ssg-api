@@ -1,6 +1,6 @@
 import {RegexReplaceCommand} from "../../RegexReplaceCommand"
 import {RegexReplacer} from "../../RegexReplacer"
-import {HtmlSsgContext, HtmlVarProp} from "../../../../../HtmlSsgContext"
+import {HtmlSsgContext} from "../../../../../HtmlSsgContext"
 import {StringContextHandler} from "../StringContextHandler"
 import {VarRegexReplacer} from "../VarRegexReplacer"
 
@@ -9,7 +9,7 @@ import {VarRegexReplacer} from "../VarRegexReplacer"
  */
 export class SsiEchoVarReplaceCommand<V = any, C extends HtmlSsgContext<V> = HtmlSsgContext<V>> extends RegexReplaceCommand<V, HtmlSsgContext<V>> {
 
-  constructor(protected varName: HtmlVarProp<V>, protected defaultHandlers: StringContextHandler[] = []) {
+  constructor(protected varName: string, protected defaultHandlers: StringContextHandler[] = []) {
     super(new RegExp(`<!--\\s*#echo\\s+var="${String(varName)}"\\s*-->`, "gs"))
   }
 

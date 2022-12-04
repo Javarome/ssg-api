@@ -5,13 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.3.0] - To be released
+## [1.3.0] - 2022-12-04
 
 ### Changed
 
 - context variables scoped
-    - under `context.` prefix to avoid collision with JS variables.
-        - under reserved prefixes for each built-in object (like `context.inputFile`, etc.)
+    - under `$context.` prefix to avoid collision with JS variables.
+        - under reserved prefixes for each built-in object (like `$context._name`, `$context.inputFile.name`, etc.)
 
 ## [1.2.13] - 2022-12-03
 

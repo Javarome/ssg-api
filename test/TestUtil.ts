@@ -8,7 +8,7 @@ import {ObjectUtil} from "../src/util/ObjectUtil"
 class TestUtil {
 
   newContext(inputFileName: string, contents?: string): SsgContext {
-    const context = new SsgContextImpl("fr", {})
+    const context = new SsgContextImpl("fr")
     if (ObjectUtil.isUndefined(contents)) {
       context.inputFile = SsgFile.read(context, inputFileName)
     } else {

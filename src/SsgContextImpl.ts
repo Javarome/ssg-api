@@ -1,14 +1,12 @@
 import {SsgFile} from "./util/file/SsgFile"
-import {BuiltInVars, SsgContext, VarProp} from "./SsgContext"
-import {WithPropsOf} from "./util/WithPropsOf"
+import {SsgContext} from "./SsgContext"
 import {ObjectUtil} from "./util/ObjectUtil"
 import {DefaultLogger} from "./DefaultLogger"
 import {Logger} from "./Logger"
 
-type AllVars<V> = V & BuiltInVars
-
 export class SsgContextImpl<V = any> implements SsgContext<V> {
 
+  static readonly CONTEXT_PREFIX = "$context."
   static readonly DEFAULT_NAME = "Ssg"
 
   readonly log = this.logger.log
@@ -16,16 +14,13 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
   readonly warn = this.logger.warn
   readonly error = this.logger.error
 
-  protected vars: WithPropsOf<AllVars<V>>
-
   protected stack: string[] = []
 
-  constructor(readonly locale: string, vars: WithPropsOf<V>, name = SsgContextImpl.DEFAULT_NAME,
+  constructor(readonly locale: string, protected vars: Map<string, any> = new Map<string, any>(),
+              name = SsgContextImpl.DEFAULT_NAME,
               readonly logger: Logger = new DefaultLogger(name),
               currentFile: SsgFile | undefined = undefined) {
     this._inputFile = this._outputFile = currentFile
-    const builtInVars = {...currentFile}
-    this.vars = {...builtInVars, ...vars}
     this.stack.push(name)
     this.name = name
   }
@@ -68,20 +63,30 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     this._outputFile = value
   }
 
-  getVar(varName: VarProp<V>): string | undefined {
-    if (this._inputFile?.hasOwnProperty(varName)) {
-      const value = this.inputFile[varName as keyof SsgFile]
-      return value?.toString()
+  getVar(varName: string): string | undefined {
+    if (varName.startsWith(SsgContextImpl.CONTEXT_PREFIX)) {
+      const contextPath = varName.substring(SsgContextImpl.CONTEXT_PREFIX.length).split(".")
+      let obj = this
+      for (const path of contextPath) {
+        obj = (obj as any)[path]
+      }
+      return obj.toString()
     } else {
-      return this.vars[varName]
+      return this.vars.get(varName)
     }
   }
 
-  setVar(varName: VarProp<V>, value: any): void {
-    if (SsgFile.prototype.hasOwnProperty.call(SsgFile.prototype, varName)) {
-      (this.inputFile as any)[varName] = value
+  setVar(varName: string, value: any): void {
+    if (varName.startsWith(SsgContextImpl.CONTEXT_PREFIX)) {
+      const contextPath = varName.substring(SsgContextImpl.CONTEXT_PREFIX.length).split(".")
+      let obj = this
+      for (let i = 0; i < contextPath.length - 1; i++) {
+        const path = contextPath[i]
+        obj = (obj as any)[path]
+      }
+      return (obj as any)[contextPath.length - 1] = value
     } else {
-      this.vars[varName] = value
+      this.vars.set(varName, value)
     }
   }
 

@@ -23,7 +23,7 @@ const ssg = new Ssg(config)
   .add(firstStep)
   .add(nextStep)
 
-const context = new SsgContextImpl("fr", {})
+const context = new SsgContextImpl("fr")
 try {
   const result = await ssg.start(context)
   console.log("Completed", result)
