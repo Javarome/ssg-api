@@ -1,11 +1,5 @@
-import {BuiltInVars, SsgContext} from "./SsgContext"
-import {HtmlLinks, HtmlMeta, HtmlSsgFile} from "./util/file/HtmlSsgFile"
-
-type HtmlBuiltInVars = keyof HtmlMeta | keyof HtmlLinks
-
-type AllHtmlBuiltInVars = BuiltInVars | HtmlBuiltInVars
-
-export type HtmlVarProp<V> = keyof AllHtmlBuiltInVars | keyof V
+import {SsgContext} from "./SsgContext"
+import {HtmlSsgFile} from "./util/file/HtmlSsgFile"
 
 export interface HtmlSsgContext<V = any> extends SsgContext<V> {
 
@@ -13,7 +7,7 @@ export interface HtmlSsgContext<V = any> extends SsgContext<V> {
 
   outputFile: HtmlSsgFile
 
-  getVar(varName: HtmlVarProp<V>): string | undefined
+  getVar(varName: string): string | undefined
 
-  setVar(varName: HtmlVarProp<V>, value: any): void
+  setVar(varName: string, value: any): void
 }
