@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.3.2] - 2023-01-14
+
+### Fixed
+
+- Angular replacement of {{6000|number}} failure with 'Could not find variable "6000"'
+
 ## [1.3.1] - 2023-01-14
 
 ### Changed
