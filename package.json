@@ -19,8 +19,8 @@
     "prebuild": "npm install",
     "build": "rm -Rf dist && tsc --project tsconfig.prod.json",
     "prepublishOnly": "npm run build && npm test",
-    "test": "rm -Rf out && NODE_OPTIONS=--experimental-vm-modules jest",
-    "test-ci": "rm -Rf out && NODE_OPTIONS=--experimental-vm-modules jest --coverage"
+    "test": "rm -Rf out && NODE_OPTIONS=--experimental-vm-modules jest  --runInBand",
+    "test-ci": "rm -Rf out && NODE_OPTIONS=--experimental-vm-modules jest --coverage --runInBand"
   },
   "dependencies": {
     "cpy": "~9.0.1",
