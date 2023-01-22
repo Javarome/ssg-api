@@ -14,7 +14,7 @@ export type SsgResult = {
   [stepName: string]: any
 }
 
-export type OutputFunc = (context: SsgContext, outputFile: SsgFile, outDir?: string) => Promise<void>
+export type OutputFunc = (context: SsgContext, outputFile: SsgFile) => Promise<void>
 
 /**
  * Static Site Generator

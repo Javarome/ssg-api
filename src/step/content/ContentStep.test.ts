@@ -2,18 +2,28 @@ import {ContentStep} from "./ContentStep"
 import {SsgContext} from "../../SsgContext"
 import {HtmlSsgFile, SsgFile} from "../../util"
 import {SsgContextImpl} from "../../SsgContextImpl"
+import path from "path"
 
 describe("ContentStep", () => {
 
+  const outDir = "out"
+
   test("parses HTML", async () => {
     const outputFunc = async (context: SsgContext, info: SsgFile) => {
-      info.write()
+      try {
+        context.log("Writing", info.name)
+        await info.write()
+      } catch (e) {
+        context.error(info.name, e)
+      }
     }
     const contentConfigs = [{
       roots: ["test/*.html"],
       replacements: [],
       getOutputFile(context: SsgContext) {
-        return context.inputFile
+        let outputFile = context.outputFile
+        outputFile.name = path.join(outDir, context.inputFile.name)
+        return outputFile
       }
     }]
     const step = new ContentStep(contentConfigs, outputFunc)

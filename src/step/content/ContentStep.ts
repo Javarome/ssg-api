@@ -5,6 +5,7 @@ import {promise as glob} from "glob-promise"
 import {ReplaceCommand} from "./replace/ReplaceCommand"
 import {SsgFile} from "../../util/file/SsgFile"
 import {HtmlSsgFile} from "../../util"
+import fs from "fs"
 
 export type ContentStepConfig<C extends SsgContext = SsgContext> = {
   /**
@@ -78,11 +79,24 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
     context.debug("Processing file", filePath)
     context.inputFile = HtmlSsgFile.read(context, filePath)
     context.outputFile = contentsConfig.getOutputFile(context)
-    for (const replacement of contentsConfig.replacements) {
-      context.outputFile = await replacement.execute(context)
+    let process: boolean
+    const exists = fs.existsSync(context.outputFile.name)
+    if (exists) {
+      const outStats = fs.statSync(context.outputFile.name)
+      process = outStats.mtime < context.inputFile.lastModified
+      if (!process) {
+        console.debug(context.inputFile.name, "is not older that current out file")
+      }
+    } else {
+      process = true
     }
-    fileCount++
-    await this.output(context, context.outputFile)
+    if (process) {
+      for (const replacement of contentsConfig.replacements) {
+        context.outputFile = await replacement.execute(context)
+      }
+      fileCount++
+      await this.output(context, context.outputFile)
+    }
     return fileCount
   }
 }

@@ -16,19 +16,19 @@ npm install --save ssg-api
 Then import the required types to implement your own SSG code:
 
 ```ts
-import {Ssg, SsgContextImpl, SsgConfig} from "ssg-api"
+import {Ssg, SsgContextImpl, SsgConfig} from "ssg-api";
 
-const config: SsgConfig = {outDir: "out"}
+const config: SsgConfig = {outDir: "out"};
 const ssg = new Ssg(config)
   .add(firstStep)
-  .add(nextStep)
+  .add(nextStep); // Write your own SSG steps!
 
-const context = new SsgContextImpl("fr")
+const context = new SsgContextImpl("fr");
 try {
-  const result = await ssg.start(context)
-  console.log("Completed", result)
-} catch (e) {
-  console.error(err, context.inputFile.name, "=>", context.outputFile.name)
+  const result = await ssg.start(context);
+  context.log("Completed", result);
+} catch (err) {
+  context.error(err, context.inputFile.name, "=>", context.outputFile.name);
 }
 ```
 
