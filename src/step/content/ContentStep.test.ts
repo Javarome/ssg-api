@@ -3,10 +3,15 @@ import {SsgContext} from "../../SsgContext"
 import {HtmlSsgFile, SsgFile} from "../../util"
 import {SsgContextImpl} from "../../SsgContextImpl"
 import path from "path"
+import fs from "fs"
 
 describe("ContentStep", () => {
 
   const outDir = "out"
+
+  beforeEach(() => {
+    fs.rmSync(outDir, {recursive: true, force: true})
+  })
 
   test("parses HTML", async () => {
     const outputFunc = async (context: SsgContext, info: SsgFile) => {
