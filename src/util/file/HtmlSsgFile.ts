@@ -91,6 +91,7 @@ export class HtmlSsgFile extends SsgFile {
       const elemTitle = titleElem.textContent ? titleElem.textContent.trim() : ""
       const split = elemTitle.lastIndexOf(" - ")
       title = split > 0 ? elemTitle.substring(0, split) : elemTitle
+      title = title?.replace(/\s{2,}/g, " ").replace(/[\n\t]/, " ")
     }
     const url = HtmlSsgFile.getMeta("url", doc)[0]
     const author = HtmlSsgFile.getMeta("author", doc)

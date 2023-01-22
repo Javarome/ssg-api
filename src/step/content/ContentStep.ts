@@ -79,6 +79,17 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
     context.debug("Processing file", filePath)
     context.inputFile = HtmlSsgFile.read(context, filePath)
     context.outputFile = contentsConfig.getOutputFile(context)
+    if (this.shouldProcess(context)) {
+      for (const replacement of contentsConfig.replacements) {
+        context.outputFile = await replacement.execute(context)
+      }
+      fileCount++
+      await this.output(context, context.outputFile)
+    }
+    return fileCount
+  }
+
+  protected shouldProcess(context: C): boolean {
     let process: boolean
     const exists = fs.existsSync(context.outputFile.name)
     if (exists) {
@@ -90,13 +101,6 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
     } else {
       process = true
     }
-    if (process) {
-      for (const replacement of contentsConfig.replacements) {
-        context.outputFile = await replacement.execute(context)
-      }
-      fileCount++
-      await this.output(context, context.outputFile)
-    }
-    return fileCount
+    return process
   }
 }

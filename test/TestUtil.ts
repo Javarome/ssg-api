@@ -19,10 +19,13 @@ class TestUtil {
     return context
   }
 
-  newHtmlContext(inputFileName: string, contents: string): HtmlSsgContext {
+  newHtmlContext(inputFileName: string, contents?: string): HtmlSsgContext {
     const context = this.newContext(inputFileName, contents)
-    const titleExec = /<title>(.*)<\/title>/.exec(contents)
-    const title = titleExec && titleExec.length > 0 ? titleExec[1].trim() : undefined
+    let title: string | undefined
+    if (contents) {
+      const titleExec = /<title>(.*)<\/title>/.exec(contents)
+      title = titleExec && titleExec.length > 0 ? titleExec[1].trim() : undefined
+    }
     const currentFile = context.inputFile
     context.inputFile = new HtmlSsgFile(currentFile.name, currentFile.encoding, currentFile.contents,
       currentFile.lastModified, currentFile.lang, {author: []}, {}, title)

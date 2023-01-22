@@ -5,7 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.4.0] - 2023-01-22
+## [1.4.2] - 2023-01-22
+
+### Fixed
+
+- Remove duplicated spaces, carriage returns and tabs from HTML titles.
+
+## [1.4.1] - 2023-01-21
+
+### Added
+
+- Overridable method to allow processing a content file.
+
+## [1.4.0] - 2023-01-21
 
 ### Added
 
