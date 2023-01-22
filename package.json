@@ -2,7 +2,7 @@
   "name": "ssg-api",
   "type": "module",
   "author": "Jérôme Beau",
-  "version": "1.3.2",
+  "version": "1.4.0",
   "description": "Static Site Generation TypeScript API",
   "exports": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -19,8 +19,8 @@
     "prebuild": "npm install",
     "build": "rm -Rf dist && tsc --project tsconfig.prod.json",
     "prepublishOnly": "npm run build && npm test",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "test-ci": "NODE_OPTIONS=--experimental-vm-modules jest --coverage"
+    "test": "rm -Rf out && NODE_OPTIONS=--experimental-vm-modules jest",
+    "test-ci": "rm -Rf out && NODE_OPTIONS=--experimental-vm-modules jest --coverage"
   },
   "dependencies": {
     "cpy": "~9.0.1",

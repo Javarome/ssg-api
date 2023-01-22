@@ -9,11 +9,8 @@ describe("ContentStep", () => {
 
   const outDir = "out"
 
-  beforeEach(() => {
-    fs.rmSync(outDir, {recursive: true, force: true})
-  })
-
   test("parses HTML", async () => {
+    fs.rmSync(outDir, {recursive: true, force: true})
     const outputFunc = async (context: SsgContext, info: SsgFile) => {
       try {
         context.log("Writing", info.name)
