@@ -83,6 +83,10 @@ export class HtmlSsgFile extends SsgFile {
   static read(context: SsgContext, fileName: string): HtmlSsgFile {
     const fileInfo = super.read(context, fileName)
     const fileContents = fileInfo.contents
+    return this.create(fileInfo, fileContents)
+  }
+
+  static create(fileInfo: SsgFile, fileContents: string): HtmlSsgFile {
     const dom = new JSDOM(fileContents)
     let title: string | undefined
     const doc = dom.window.document
