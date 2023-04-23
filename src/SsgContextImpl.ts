@@ -124,20 +124,22 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
   readOrNew(fileName: string, outDir: string) {
     const filePath = path.join(outDir, fileName)
     const encoding = this._outputFile?.encoding
+    let outFile: SsgFile
     try {
-      return this.readFile(filePath)
+      outFile = this.readFile(filePath)
     } catch (e) {
       if ((e as any).code === "ENOENT") {
         const lang = SsgFile.getLang(this, fileName)
         if (filePath.endsWith(".html")) {
           const fileInfo: SsgFile = new SsgFile(filePath, encoding || "utf-8", "", new Date(), lang)
-          return HtmlSsgFile.create(fileInfo, "")
+          outFile = HtmlSsgFile.create(fileInfo, "")
         } else {
-          return new SsgFile(filePath, "utf8", "", new Date(), lang)
+          outFile = new SsgFile(filePath, "utf8", "", new Date(), lang)
         }
       } else {
         throw e
       }
     }
+    this.outputFile = outFile
   }
 }
