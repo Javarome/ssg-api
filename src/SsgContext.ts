@@ -1,4 +1,4 @@
-import {SsgFile} from "./util/file/SsgFile"
+import {SsgFile} from "./util"
 import {Logger} from "./Logger"
 
 export interface SsgContext<V = any> extends Logger {
@@ -46,5 +46,9 @@ export interface SsgContext<V = any> extends Logger {
    * Restores parent context.
    */
   pop(): SsgContext
+
+  read(fileName: string): void
+
+  readOrNew(fileName: string, outDir: string): void
 }
 

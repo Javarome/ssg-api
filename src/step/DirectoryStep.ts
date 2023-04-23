@@ -1,7 +1,7 @@
 import {SsgStep} from "./SsgStep"
 import {SsgConfig} from "../Ssg"
 import {SsgContext} from "../SsgContext"
-import {FileUtil, SsgFile} from "../util"
+import {FileUtil} from "../util"
 
 export interface DirectoryResult {
   directoryCount: number
@@ -20,13 +20,13 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
 
   /**
    * Execute the directory step by:
-   * 1. finding all the subdirs of each this.dirs
+   * 1. finding all the subdirectories of each this.dirs
    * 2. processing the found directories through the `processDirs()` method.
    * 3. returning the count of processed directories
    */
   async execute(context: SsgContext): Promise<DirectoryResult> {
-    context.inputFile = SsgFile.read(context, this.template)
-    context.outputFile = SsgFile.readOrNew(context, `${this.config.outDir}/${this.template}`)
+    context.read(this.template)
+    context.readOrNew(this.template, this.config.outDir)
     const dirNames = (await this.findDirs(this.dirs))
       .filter(dirName => !this.excludedDirs.includes(dirName))
     await this.processDirs(context, dirNames)

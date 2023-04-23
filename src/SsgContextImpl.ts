@@ -1,8 +1,10 @@
-import {SsgFile} from "./util/file/SsgFile"
+import {SsgFile} from "./util"
 import {SsgContext} from "./SsgContext"
 import {ObjectUtil} from "./util/ObjectUtil"
 import {DefaultLogger} from "./DefaultLogger"
 import {Logger} from "./Logger"
+import path from "path"
+import {HtmlSsgFile} from "./util"
 
 export class SsgContextImpl<V = any> implements SsgContext<V> {
 
@@ -107,5 +109,19 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
       this.name = this.stack[lastLevel]
     }
     return this
+  }
+
+  read(fileName: string) {
+    this.inputFile = fileName.endsWith(".html")
+      ? HtmlSsgFile.read(this, fileName)
+      : SsgFile.read(this, fileName)
+  }
+
+  readOrNew(fileName: string, outDir: string) {
+    const filePath = path.join(outDir, fileName)
+    const encoding = this._outputFile?.encoding
+    this.outputFile = fileName.endsWith(".html")
+      ? HtmlSsgFile.readOrNew(this, filePath, encoding)
+      : SsgFile.readOrNew(this, filePath, encoding)
   }
 }
