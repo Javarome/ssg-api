@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.0] - 2023-09-16
+
+### Added
+
+- HtmlSsgFile:meta.description
+
 ## [1.4.5] - 2023-04-23
 
 ### Fixed

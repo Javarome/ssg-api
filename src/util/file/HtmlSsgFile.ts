@@ -6,6 +6,7 @@ export type HtmlMeta = {
   url?: string
   author: string[]
   copyright?: string
+  description?: string
 }
 
 export enum LinkType {
@@ -100,7 +101,8 @@ export class HtmlSsgFile extends SsgFile {
     const url = HtmlSsgFile.getMeta("url", doc)[0]
     const author = HtmlSsgFile.getMeta("author", doc)
     const copyright = HtmlSsgFile.getMeta("copyright", doc)[0]
-    const meta: HtmlMeta = {url, author, copyright}
+    const description = HtmlSsgFile.getMeta("description", doc)[0]
+    const meta: HtmlMeta = {url, author, copyright, description}
     const start = HtmlSsgFile.getLink(LinkType.start, doc)
     const contents = HtmlSsgFile.getLink(LinkType.contents, doc)
     const prev = HtmlSsgFile.getLink(LinkType.prev, doc)
