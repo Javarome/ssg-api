@@ -1,5 +1,6 @@
-import {AngularExpressionReplaceCommand} from "./AngularExpressionReplaceCommand"
-import {testUtil} from "../../../../../test/TestUtil"
+import { AngularExpressionReplaceCommand } from './AngularExpressionReplaceCommand';
+import { testUtil } from '../../../../../test/TestUtil';
+import { describe, expect, test } from '@javarome/testscript';
 
 describe("AngularExpressionReplaceCommand", () => {
 

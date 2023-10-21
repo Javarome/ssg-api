@@ -1,4 +1,5 @@
-import {DefaultLogger, LogConsole} from "./DefaultLogger"
+import { DefaultLogger, LogConsole } from './DefaultLogger';
+import { describe, expect, test } from '@javarome/testscript';
 
 class TestConsole implements LogConsole {
   _info: any[] = []

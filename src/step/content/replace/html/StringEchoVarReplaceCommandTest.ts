@@ -1,6 +1,7 @@
-import {testUtil} from "../../../../../test/TestUtil"
-import {HtmlSsgFile} from "../../../../util/file/HtmlSsgFile"
-import {StringEchoVarReplaceCommand} from "./StringEchoVarReplaceCommand"
+import { testUtil } from '../../../../../test/TestUtil';
+import { HtmlSsgFile } from '../../../../util';
+import { StringEchoVarReplaceCommand } from './StringEchoVarReplaceCommand';
+import { describe, expect, test } from '@javarome/testscript';
 
 describe("StringEchoVarReplaceCommand", () => {
 

@@ -1,9 +1,9 @@
-import * as fs from "fs"
-import {promises as fsAsync} from "fs"
-import detectCharacterEncoding from "detect-character-encoding"
-import path from "path"
-import {readdir} from "fs/promises"
-import cpy from "cpy"
+import * as fs from 'fs';
+import { promises as fsAsync } from 'fs';
+import detectCharacterEncoding from 'detect-character-encoding';
+import path from 'path';
+import { readdir } from 'fs/promises';
+import cpy, { Options } from 'cpy';
 
 export class FileUtil {
 
@@ -67,8 +67,8 @@ export class FileUtil {
       .map(dirent => dirent.name)
   }
 
-  static async ssgCopy(to: string, ...from: string[]): Promise<string[]> {
-    return cpy(from, to)
+  static async ssgCopy(to: string, from: string[], options?: Options): Promise<string[]> {
+    return cpy(from, to, options);
   }
 
   static getContentType(html: HTMLElement): BufferEncoding | undefined {

@@ -1,4 +1,5 @@
-import {SsgContextImpl} from "./SsgContextImpl"
+import { SsgContextImpl } from './SsgContextImpl';
+import { describe, expect, test } from '@javarome/testscript';
 
 interface MyVars {
   someVar?: string

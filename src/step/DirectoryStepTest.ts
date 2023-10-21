@@ -1,6 +1,7 @@
-import {DirectoryStep} from "./DirectoryStep"
-import {SsgContextImpl} from "../SsgContextImpl"
-import {SsgContext} from "../SsgContext"
+import { DirectoryStep } from './DirectoryStep';
+import { SsgContextImpl } from '../SsgContextImpl';
+import { SsgContext } from '../SsgContext';
+import { describe, expect, test } from '@javarome/testscript';
 
 describe("DirectoryStep", () => {
 

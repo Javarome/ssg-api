@@ -1,6 +1,7 @@
-import {testUtil} from "../../../../../test/TestUtil"
-import {SsgFile} from "../../../../util/file/SsgFile"
-import {HtAccessToNetlifyConfigReplaceCommand} from "./HtAccessToNetlifyConfigReplaceCommand"
+import { testUtil } from '../../../../../test/TestUtil';
+import { SsgFile } from '../../../../util';
+import { HtAccessToNetlifyConfigReplaceCommand } from './HtAccessToNetlifyConfigReplaceCommand';
+import { describe, expect, test } from '@javarome/testscript';
 
 describe("HtAccessToNetlifyConfigReplaceCommand", () => {
 

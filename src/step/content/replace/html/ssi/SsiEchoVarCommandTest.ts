@@ -1,7 +1,8 @@
-import {SsiEchoVarReplaceCommand} from "./SsiEchoVarCommand"
-import {RegexReplacer} from "../../RegexReplacer"
-import {HtmlSsgContext} from "../../../../../HtmlSsgContext"
-import {testUtil} from "../../../../../../test/TestUtil"
+import { SsiEchoVarReplaceCommand } from './SsiEchoVarCommand';
+import { RegexReplacer } from '../../RegexReplacer';
+import { HtmlSsgContext } from '../../../../../HtmlSsgContext';
+import { testUtil } from '../../../../../../test/TestUtil';
+import { describe, expect, test } from '@javarome/testscript';
 
 describe("SsiEchoVarReplaceCommand", () => {
 

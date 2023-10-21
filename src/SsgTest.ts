@@ -1,7 +1,8 @@
-import {Ssg} from "./Ssg"
-import {SsgContextImpl} from "./SsgContextImpl"
-import {SsgStep} from "./step"
-import {SsgContext} from "./SsgContext"
+import { Ssg } from './Ssg';
+import { SsgContextImpl } from './SsgContextImpl';
+import { SsgStep } from './step';
+import { SsgContext } from './SsgContext';
+import { describe, expect, test } from '@javarome/testscript';
 
 describe("Ssg", function () {
 

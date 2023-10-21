@@ -2,7 +2,7 @@
   "name": "ssg-api",
   "type": "module",
   "author": "Jérôme Beau <javarome@gmail.com> (https://javarome.com)",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Static Site Generation TypeScript API",
   "exports": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -19,7 +19,8 @@
     "prebuild": "npm install",
     "build": "rm -Rf dist && tsc --project tsconfig.prod.json",
     "prepublishOnly": "npm run build && npm test",
-    "test": "rm -Rf out && NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
+    "test": "rm -Rf out && tsx src/test.ts",
+    "test-one": "rm -Rf out && tsx src/step/DirectoryStepTest.ts",
     "test-ci": "rm -Rf out && NODE_OPTIONS=--experimental-vm-modules jest --coverage --runInBand"
   },
   "dependencies": {
