@@ -3,6 +3,7 @@ import { SsgConfig } from '../Ssg';
 import { SsgContext } from '../SsgContext';
 import { FileUtil } from '../util';
 import * as process from 'process';
+import { IOptions } from 'glob';
 
 export type CopyStepResult = {
   files: string[]
@@ -15,7 +16,7 @@ export class CopyStep<C extends SsgContext = SsgContext> implements SsgStep<C, C
 
   readonly name = 'copy';
 
-  constructor(protected copies: string[], protected config: SsgConfig) {
+  constructor(protected copies: string[], protected config: SsgConfig, protected options?: IOptions) {
   }
 
   async execute(context: SsgContext): Promise<CopyStepResult> {
@@ -23,7 +24,7 @@ export class CopyStep<C extends SsgContext = SsgContext> implements SsgStep<C, C
     const dest = this.config.outDir;
     try {
       context.log('Copying to', dest, copies);
-      const copiedFiles = await FileUtil.ssgCopy(dest, copies);
+      const copiedFiles = await FileUtil.ssgCopy(dest, copies, this.options);
       const cwd = process.cwd();
       const files = copiedFiles.map(file => file.startsWith(cwd) ? file.substring(cwd.length + 1) : file);
       return {files};

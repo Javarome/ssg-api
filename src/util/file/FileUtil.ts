@@ -3,7 +3,8 @@ import { promises as fsAsync } from 'fs';
 import detectCharacterEncoding from 'detect-character-encoding';
 import path from 'path';
 import { readdir } from 'fs/promises';
-import cpy, { Options } from 'cpy';
+import { promise as glob } from 'glob-promise';
+import { IOptions } from 'glob';
 
 export class FileUtil {
 
@@ -47,13 +48,18 @@ export class FileUtil {
     return charSet
   }
 
-  static ensureDirectoryExistence(filePath: string) {
-    const dirname = path.dirname(filePath)
-    if (fs.existsSync(dirname)) {
-      return true
+  /**
+   * Checks if a directory exists and, if not, creates it.
+   *
+   * @param dir The path of the directory that must exist.
+   */
+  static ensureDirectoryExistence(dir: string): string {
+    const dirname = path.dirname(dir);
+    if (!fs.existsSync(dirname)) {
+      this.ensureDirectoryExistence(dirname); // Recursive to create the whole directories chain.
+      fs.mkdirSync(dirname);
     }
-    this.ensureDirectoryExistence(dirname)
-    fs.mkdirSync(dirname)
+    return path.resolve(dir);
   }
 
   static async writeFile(fileName: string, contents: string, encoding: BufferEncoding): Promise<void> {
@@ -67,8 +73,39 @@ export class FileUtil {
       .map(dirent => dirent.name)
   }
 
-  static async ssgCopy(to: string, from: string[], options?: Options): Promise<string[]> {
-    return cpy(from, to, options);
+  /**
+   * Copy files to a destination directory.
+   *
+   * @param toDir the destination directory path.
+   * @param sourcePatterns An array of file nmes.
+   * @param options
+   * @return the list of output files.
+   */
+  static async ssgCopy(toDir: string, sourcePatterns: string[], options?: IOptions): Promise<string[]> {
+    let result: string[] = [];
+    for (const sourcePattern of sourcePatterns) {
+      const sourceFiles = await glob(sourcePattern, options);
+      const copied = this.copyFiles(sourceFiles, toDir);
+      result = result.concat(copied);
+    }
+    return result;
+  }
+
+  static copyFiles(sourceFiles: string[], toDir: string): string[] {
+    const result: string[] = [];
+    for (const sourceFile of sourceFiles) {
+      const to = this.copyFile(sourceFile, toDir);
+      result.push(to);
+    }
+    return result;
+  }
+
+  static copyFile(sourceFile: string, toDir: string): string {
+    const from = path.resolve(sourceFile);
+    const to = path.join(toDir, sourceFile);
+    this.ensureDirectoryExistence(to);
+    fs.copyFileSync(from, to);
+    return to;
   }
 
   static getContentType(html: HTMLElement): BufferEncoding | undefined {

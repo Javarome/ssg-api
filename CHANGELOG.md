@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.2] - 2023-11-02
+
+### Fixed
+
+`FileUtil.ssgCopy()` removed `cpy` dependency which has a bug causing output dir not always applied.
+
 ## [1.5.1] - 2023-10-21
 
 ### Fixed
