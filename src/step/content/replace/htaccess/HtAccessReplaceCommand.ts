@@ -44,4 +44,8 @@ export abstract class HtAccessReplaceCommand implements ReplaceCommand<SsgContex
   protected abstract handleDirectoryIndex(args: string[], result: string): string
 
   protected abstract handleRedirect(from: string, to: string): string
+
+  async contentStepEnd() {
+    // NOP
+  }
 }

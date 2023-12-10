@@ -37,4 +37,8 @@ export abstract class RegexReplaceCommand<V = any, C extends SsgContext = SsgCon
    * @protected
    */
   protected abstract createReplacer(context: C): Promise<RegexReplacer>
+
+  async contentStepEnd() {
+    // NOP
+  }
 }

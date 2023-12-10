@@ -1,4 +1,4 @@
-import {SsgFile} from "../../../util/file/SsgFile"
+import {SsgFile} from '../../../util'
 import {SsgContext} from "../../../SsgContext"
 
 export interface ReplaceCommand<C extends SsgContext> {
@@ -9,4 +9,9 @@ export interface ReplaceCommand<C extends SsgContext> {
    * @return The output file.
    */
   execute(context: C): Promise<SsgFile>
+
+  /**
+   * Called when content step is terminating.
+   */
+  contentStepEnd(): Promise<void>
 }

@@ -2,8 +2,8 @@ import {SsgStep} from "../SsgStep"
 import {SsgContext} from "../../SsgContext"
 import {OutputFunc} from "../../Ssg"
 import {promise as glob} from "glob-promise"
-import {ReplaceCommand} from "./replace/ReplaceCommand"
-import {SsgFile} from "../../util/file/SsgFile"
+import {ReplaceCommand} from './replace'
+import {SsgFile} from '../../util'
 import {HtmlSsgFile} from "../../util"
 import fs from "fs"
 
@@ -50,6 +50,11 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
     let contentCount = 0
     for (const contents of this.contents) {
       contentCount += await this.processRoots(context, contents)
+    }
+    for (const contents of this.contents) {
+      for (const replacement of contents.replacements) {
+        await replacement.contentStepEnd()
+      }
     }
     return {
       contentCount

@@ -1,5 +1,5 @@
 import {ReplaceCommand} from "./ReplaceCommand"
-import {SsgFile} from "../../../util/file/SsgFile"
+import {SsgFile} from '../../../util'
 import {HtmlSsgContext} from "../../../HtmlSsgContext"
 import {DomReplacer} from "./DomReplacer"
 
@@ -45,5 +45,9 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C e
    */
   protected async postExecute(context: C): Promise<void> {
     // Do nothing by default.
+  }
+
+  async contentStepEnd() {
+    // NOP
   }
 }
