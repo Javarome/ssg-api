@@ -1,28 +1,10 @@
-import {SsgStep} from "../SsgStep.js"
-import {SsgContext} from "../../SsgContext.js"
-import {OutputFunc} from "../../Ssg.js"
-import {ReplaceCommand} from './replace/index.js'
-import {SsgFile, HtmlSsgFile} from '../../util/index.js'
-import fs from "fs"
-import {promise as glob} from "glob-promise"
-
-export type ContentStepConfig<C extends SsgContext = SsgContext> = {
-  /**
-   * The glob roots of contents to process.
-   */
-  roots: string[],
-
-  /**
-   * The replacements to process on contents.
-   */
-  replacements: ReplaceCommand<C>[],
-
-  /**
-   * @param context
-   * @return the file where to output.
-   */
-  getOutputFile(context: C): SsgFile
-}
+import fs from 'fs';
+import { promise as glob } from 'glob-promise';
+import { SsgStep } from '../SsgStep.js';
+import { SsgContext } from '../../SsgContext.js';
+import { HtmlSsgFile } from '../../util/index.js';
+import { ContentStepConfig } from './ContentStepConfig.js';
+import { OutputFunc } from '../../OutputFunc';
 
 export type ContentStepResult = {
   contentCount: number

@@ -1,11 +1,7 @@
-import {SsgContext} from "./SsgContext.js"
-import {SsgStep} from './step/index.js'
-import {SsgFile} from './util/index.js'
+import { SsgContext } from './SsgContext.js';
+import { SsgStep } from './step/index.js';
+import { SsgConfig } from './SsgConfig';
 
-
-export type SsgConfig = {
-  outDir: string
-}
 
 /**
  * Result of a Ssg.start().
@@ -13,8 +9,6 @@ export type SsgConfig = {
 export type SsgResult = {
   [stepName: string]: any
 }
-
-export type OutputFunc = (context: SsgContext, outputFile: SsgFile) => Promise<void>
 
 /**
  * Static Site Generator

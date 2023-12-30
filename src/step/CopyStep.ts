@@ -1,9 +1,9 @@
 import { SsgStep } from './SsgStep.js';
-import { SsgConfig } from '../Ssg.js';
 import { SsgContext } from '../SsgContext.js';
 import { FileUtil } from '../util/index.js';
 import * as process from 'process';
 import { IOptions } from 'glob';
+import { SsgConfig } from '../SsgConfig';
 
 export type CopyStepResult = {
   files: string[]
