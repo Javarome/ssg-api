@@ -2,12 +2,12 @@
   "name": "ssg-api",
   "type": "module",
   "author": "Jérôme Beau <javarome@gmail.com> (https://javarome.com)",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "description": "Static Site Generation TypeScript API",
   "exports": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
   "engines": {
-    "node": ">=16.2.0"
+    "node": ">=18"
   },
   "license": "MIT",
   "homepage": "https://github.com/Javarome/ssg-api#readme",
