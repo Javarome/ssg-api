@@ -1,6 +1,6 @@
 import {SsgContext} from "./SsgContext"
-import {SsgStep} from "./step/SsgStep"
-import {SsgFile} from "./util/file/SsgFile"
+import {SsgStep} from './step'
+import {SsgFile} from './util'
 
 
 export type SsgConfig = {

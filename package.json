@@ -2,9 +2,22 @@
   "name": "ssg-api",
   "type": "module",
   "author": "Jérôme Beau <javarome@gmail.com> (https://javarome.com)",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Static Site Generation TypeScript API",
-  "exports": "./dist/src/index.js",
+  "exports": {
+    ".": "./dist/src/index.js",
+    "./step": "./dist/src/step/index.js",
+    "./step/content": "./dist/src/step/content/index.js",
+    "./step/content/replace": "./dist/src/step/content/replace/index.js",
+    "./step/content/replace/angular": "./dist/src/step/content/replace/angular/index.js",
+    "./step/content/replace/htaccess": "./dist/src/step/content/replace/htaccess/index.js",
+    "./step/content/replace/html": "./dist/src/step/content/replace/html/index.js",
+    "./step/content/replace/html/class": "./dist/src/step/content/replace/html/class/index.js",
+    "./step/content/replace/html/ssi": "./dist/src/step/content/replace/html/ssi/index.js",
+    "./step/content/replace/html/tag": "./dist/src/step/content/replace/html/tag/index.js",
+    "./util": "./dist/src/util/index.js",
+    "./util/file": "./dist/src/util/file/index.js"
+  },
   "types": "./dist/src/index.d.ts",
   "engines": {
     "node": ">=16.2.0"

@@ -2,5 +2,7 @@
 .circleci/*
 jest*.*
 *.test.*
+**/*Test.*
 test/**/*
 src/**/*
+out/**/*

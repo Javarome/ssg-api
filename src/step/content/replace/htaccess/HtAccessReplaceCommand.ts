@@ -1,5 +1,5 @@
 import {ReplaceCommand} from "../ReplaceCommand"
-import {SsgFile} from "../../../../util/file/SsgFile"
+import {SsgFile} from '../../../../util'
 import {SsgContext} from "../../../../SsgContext"
 
 enum HtAccessCommands {
