@@ -1,11 +1,10 @@
-import {SsgStep} from "../SsgStep"
-import {SsgContext} from "../../SsgContext"
-import {OutputFunc} from "../../Ssg"
-import {promise as glob} from "glob-promise"
-import {ReplaceCommand} from './replace'
-import {SsgFile} from '../../util'
-import {HtmlSsgFile} from "../../util"
+import {SsgStep} from "../SsgStep.js"
+import {SsgContext} from "../../SsgContext.js"
+import {OutputFunc} from "../../Ssg.js"
+import {ReplaceCommand} from './replace/index.js'
+import {SsgFile, HtmlSsgFile} from '../../util/index.js'
 import fs from "fs"
+import {promise as glob} from "glob-promise"
 
 export type ContentStepConfig<C extends SsgContext = SsgContext> = {
   /**

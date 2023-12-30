@@ -1,6 +1,6 @@
-import {RegexReplacer} from "../RegexReplacer"
-import {StringContextHandler} from "./StringContextHandler"
-import {SsgContext} from "../../../../SsgContext"
+import {RegexReplacer} from "../RegexReplacer.js"
+import {StringContextHandler} from "./StringContextHandler.js"
+import {SsgContext} from "../../../../SsgContext.js"
 
 export class VarRegexReplacer<V = any, C extends SsgContext = SsgContext> implements RegexReplacer {
 

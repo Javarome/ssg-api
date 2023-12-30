@@ -1,6 +1,6 @@
-import {ReplaceCommand} from "../ReplaceCommand"
-import {SsgFile} from '../../../../util'
-import {SsgContext} from "../../../../SsgContext"
+import {ReplaceCommand} from "../ReplaceCommand.js"
+import {SsgFile} from '../../../../util/index.js'
+import {SsgContext} from "../../../../SsgContext.js"
 
 enum HtAccessCommands {
   Options = "Options",

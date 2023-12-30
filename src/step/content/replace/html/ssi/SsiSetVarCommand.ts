@@ -1,6 +1,6 @@
-import {RegexReplaceCommand} from "../../RegexReplaceCommand"
-import {RegexReplaceCallback, RegexReplacer} from "../../RegexReplacer"
-import {SsgContext} from "../../../../../SsgContext"
+import { RegexReplaceCommand } from '../../RegexReplaceCommand.js';
+import { RegexReplaceCallback, RegexReplacer } from '../../RegexReplacer.js';
+import { SsgContext } from '../../../../../SsgContext.js';
 
 /**
  * A Regex replace command that looks for SSI variable settings
@@ -8,7 +8,7 @@ import {SsgContext} from "../../../../../SsgContext"
  */
 export class SsiSetVarReplaceCommand extends RegexReplaceCommand {
 
-  protected replacer: RegexReplacer
+  protected replacer: RegexReplacer;
 
   /**
    *
@@ -16,11 +16,11 @@ export class SsiSetVarReplaceCommand extends RegexReplaceCommand {
    * @param ssiVarReplacer The replacer that will provide the replacement string.
    */
   constructor(varName: string, ssiVarReplacer: RegexReplaceCallback) {
-    super(new RegExp(`<!--\\s*#set\\s+var="${varName}"\\s+value="(.+?)"\\s*-->`, "gs"))
-    this.replacer = {replace: ssiVarReplacer}
+    super(new RegExp(`<!--\\s*#set\\s+var="${varName}"\\s+value="(.+?)"\\s*-->`, 'gs'));
+    this.replacer = {replace: ssiVarReplacer};
   }
 
   protected async createReplacer(context: SsgContext): Promise<RegexReplacer> {
-    return this.replacer
+    return this.replacer;
   }
 }

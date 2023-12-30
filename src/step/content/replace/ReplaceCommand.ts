@@ -1,5 +1,5 @@
-import {SsgFile} from '../../../util'
-import {SsgContext} from "../../../SsgContext"
+import {SsgFile} from '../../../util/index.js'
+import {SsgContext} from "../../../SsgContext.js"
 
 export interface ReplaceCommand<C extends SsgContext> {
   /**

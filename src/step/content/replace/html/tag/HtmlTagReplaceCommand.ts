@@ -1,7 +1,7 @@
-import {ReplacerFactory} from "../../ReplacerFactory"
-import {DomReplaceCommand} from "../../DomReplaceCommand"
-import {DomReplacer} from "../../DomReplacer"
-import {HtmlSsgContext} from "../../../../../HtmlSsgContext"
+import {ReplacerFactory} from "../../ReplacerFactory.js"
+import {DomReplaceCommand} from "../../DomReplaceCommand.js"
+import {DomReplacer} from "../../DomReplacer.js"
+import {HtmlSsgContext} from "../../../../../HtmlSsgContext.js"
 
 /**
  * Command to replace HTML tags by name.

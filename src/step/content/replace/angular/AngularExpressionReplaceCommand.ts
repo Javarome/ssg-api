@@ -1,6 +1,6 @@
-import {RegexReplacer} from "../RegexReplacer"
-import {RegexReplaceCommand} from "../RegexReplaceCommand"
-import {HtmlSsgContext} from "../../../../HtmlSsgContext"
+import {RegexReplacer} from "../RegexReplacer.js"
+import {RegexReplaceCommand} from "../RegexReplaceCommand.js"
+import {HtmlSsgContext} from "../../../../HtmlSsgContext.js"
 
 export class AngularExpressionReplaceCommand extends RegexReplaceCommand<HtmlSsgContext> {
 

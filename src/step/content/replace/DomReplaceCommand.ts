@@ -1,7 +1,7 @@
-import {ReplaceCommand} from "./ReplaceCommand"
-import {SsgFile} from '../../../util'
-import {HtmlSsgContext} from "../../../HtmlSsgContext"
-import {DomReplacer} from "./DomReplacer"
+import {ReplaceCommand} from "./ReplaceCommand.js"
+import {SsgFile} from '../../../util/index.js'
+import {HtmlSsgContext} from "../../../HtmlSsgContext.js"
+import {DomReplacer} from "./DomReplacer.js"
 
 export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C extends HtmlSsgContext = HtmlSsgContext> implements ReplaceCommand<C> {
 

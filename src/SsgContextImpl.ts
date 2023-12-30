@@ -1,10 +1,9 @@
-import {SsgFile} from "./util"
-import {SsgContext} from "./SsgContext"
-import {ObjectUtil} from "./util/ObjectUtil"
-import {DefaultLogger} from "./DefaultLogger"
-import {Logger} from "./Logger"
+import {SsgFile, HtmlSsgFile} from "./util/index.js"
+import {SsgContext} from "./SsgContext.js"
+import {ObjectUtil} from "./util/ObjectUtil.js"
+import {DefaultLogger} from "./DefaultLogger.js"
+import {Logger} from "./Logger.js"
 import path from "path"
-import {HtmlSsgFile} from "./util"
 
 export class SsgContextImpl<V = any> implements SsgContext<V> {
 

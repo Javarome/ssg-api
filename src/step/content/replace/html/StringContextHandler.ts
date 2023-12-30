@@ -1,4 +1,4 @@
-import {SsgContext} from "../../../../SsgContext"
+import {SsgContext} from "../../../../SsgContext.js"
 
 /**
  * @returns a string or undefined, depending on context.

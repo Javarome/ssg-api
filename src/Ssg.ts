@@ -1,6 +1,6 @@
-import {SsgContext} from "./SsgContext"
-import {SsgStep} from './step'
-import {SsgFile} from './util'
+import {SsgContext} from "./SsgContext.js"
+import {SsgStep} from './step/index.js'
+import {SsgFile} from './util/index.js'
 
 
 export type SsgConfig = {

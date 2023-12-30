@@ -1,7 +1,7 @@
-import {RegexReplaceCommand} from "../../RegexReplaceCommand"
-import {ReplacerFactory} from "../../ReplacerFactory"
-import {RegexReplacer} from "../../RegexReplacer"
-import {SsgContext} from "../../../../../SsgContext"
+import {RegexReplaceCommand} from "../../RegexReplaceCommand.js"
+import {ReplacerFactory} from "../../ReplacerFactory.js"
+import {RegexReplacer} from "../../RegexReplacer.js"
+import {SsgContext} from "../../../../../SsgContext.js"
 
 /**
  * @deprecated Can't work tags with regexes. Use ClassReplaceCommand

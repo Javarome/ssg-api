@@ -1,7 +1,7 @@
-import {RegexReplacer} from "./RegexReplacer"
-import {ReplaceCommand} from "./ReplaceCommand"
-import {SsgFile} from "../../../util/file/SsgFile"
-import {SsgContext} from "../../../SsgContext"
+import {RegexReplacer} from "./RegexReplacer.js"
+import {ReplaceCommand} from "./ReplaceCommand.js"
+import {SsgFile} from "../../../util/file/SsgFile.js"
+import {SsgContext} from "../../../SsgContext.js"
 
 /**
  * A command that performs replacements using a Regular Expression.

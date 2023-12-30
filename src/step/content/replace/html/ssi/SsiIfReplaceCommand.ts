@@ -1,6 +1,6 @@
-import {RegexReplaceCommand} from "../../RegexReplaceCommand"
-import {RegexReplacer} from "../../RegexReplacer"
-import {SsgContext} from "../../../../../SsgContext"
+import {RegexReplaceCommand} from "../../RegexReplaceCommand.js"
+import {RegexReplacer} from "../../RegexReplacer.js"
+import {SsgContext} from "../../../../../SsgContext.js"
 
 export class SsiIfReplaceCommand extends RegexReplaceCommand {
 

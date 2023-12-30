@@ -1,4 +1,4 @@
-import {HtAccessReplaceCommand} from "./HtAccessReplaceCommand"
+import {HtAccessReplaceCommand} from "./HtAccessReplaceCommand.js"
 
 
 export class HtAccessToNetlifyConfigReplaceCommand extends HtAccessReplaceCommand {

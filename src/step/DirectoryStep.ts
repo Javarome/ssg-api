@@ -1,7 +1,7 @@
-import {SsgStep} from "./SsgStep"
-import {SsgConfig} from "../Ssg"
-import {SsgContext} from "../SsgContext"
-import {FileUtil} from "../util"
+import {SsgStep} from "./SsgStep.js"
+import {SsgConfig} from "../Ssg.js"
+import {SsgContext} from "../SsgContext.js"
+import {FileUtil} from "../util/index.js"
 
 export interface DirectoryResult {
   directoryCount: number

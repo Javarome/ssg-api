@@ -1,5 +1,5 @@
-import {SsgContext} from "../../SsgContext"
-import {SsgFile, SsgFileLang} from "./SsgFile"
+import {SsgContext} from "../../SsgContext.js"
+import {SsgFile, SsgFileLang} from "./SsgFile.js"
 import {JSDOM} from "jsdom"
 
 export type HtmlMeta = {

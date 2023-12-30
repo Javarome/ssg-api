@@ -1,4 +1,4 @@
-import {SsgContext} from "../SsgContext"
+import {SsgContext} from "../SsgContext.js"
 
 export interface SsgStep<C extends SsgContext = SsgContext, R = any> {
 

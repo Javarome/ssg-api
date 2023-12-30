@@ -1,8 +1,8 @@
 import fs from "fs"
-import {SsgContext} from "../../SsgContext"
+import {SsgContext} from "../../SsgContext.js"
 import {JSDOM} from "jsdom"
-import {ObjectUtil} from "../ObjectUtil"
-import {FileUtil} from "./FileUtil"
+import {ObjectUtil} from "../ObjectUtil.js"
+import {FileUtil} from "./FileUtil.js"
 
 /**
  * Language info about a file.

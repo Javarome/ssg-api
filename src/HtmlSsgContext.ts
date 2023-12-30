@@ -1,5 +1,5 @@
-import {SsgContext} from "./SsgContext"
-import {HtmlSsgFile} from './util'
+import {SsgContext} from "./SsgContext.js"
+import {HtmlSsgFile} from './util/index.js'
 
 export interface HtmlSsgContext<V = any> extends SsgContext<V> {
 
