@@ -1,2 +1,2 @@
-export * from "./ClassDomReplaceCommand"
-export * from "./ClassDomRegexReplaceCommand"
+export * from "./ClassDomReplaceCommand.js"
+export * from "./ClassDomRegexReplaceCommand.js"

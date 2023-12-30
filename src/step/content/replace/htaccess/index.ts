@@ -1,3 +1,3 @@
-export * from "./HtAccessReplaceCommand"
-export * from "./HtAccessToNetlifyConfigReplaceCommand"
-export * from "./HtAccessToNetlifyRedirectsReplaceCommand"
+export * from "./HtAccessReplaceCommand.js"
+export * from "./HtAccessToNetlifyConfigReplaceCommand.js"
+export * from "./HtAccessToNetlifyRedirectsReplaceCommand.js"

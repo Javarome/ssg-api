@@ -1,1 +1,1 @@
-export * from "./AngularExpressionReplaceCommand"
+export * from "./AngularExpressionReplaceCommand.js"

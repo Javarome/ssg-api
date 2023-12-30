@@ -6,3 +6,4 @@ jest*.*
 test/**/*
 src/**/*
 out/**/*
+dist/test/**/*

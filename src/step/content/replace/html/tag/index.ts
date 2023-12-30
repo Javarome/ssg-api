@@ -1,2 +1,2 @@
-export * from "./RegexHtmlTagReplaceCommand"
-export * from "./HtmlTagReplaceCommand"
+export * from "./RegexHtmlTagReplaceCommand.js"
+export * from "./HtmlTagReplaceCommand.js"

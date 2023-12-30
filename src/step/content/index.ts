@@ -1,2 +1,2 @@
-export * from "./replace"
-export * from "./ContentStep"
+export * from "./replace/index.js"
+export * from "./ContentStep.js"
