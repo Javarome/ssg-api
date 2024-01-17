@@ -70,15 +70,16 @@ export class HtmlSsgFile extends SsgFile {
     const document = this.document;
     this.meta.generator = this.meta.generator || 'ssg-api'
     for (const metaName in this.meta) {
-      const newContent = this.meta[metaName];
-      if ((!Array.isArray(newContent) && newContent) || newContent.length > 0) {
+      const newContent = this.meta[metaName as keyof HtmlMeta];
+      const contents = newContent ? Array.isArray(newContent) ? newContent : [newContent] : []
+      for (const content of contents) {
         let metaElem = document.querySelector(`meta[name="${metaName}"]`);
         if (!metaElem) {
           metaElem = document.createElement('meta') as HTMLMetaElement;
           metaElem.setAttribute('name', metaName);
           document.head.append(metaElem);
         }
-        metaElem.setAttribute('content', newContent);
+        metaElem.setAttribute('content', content);
       }
     }
     return this.dom.serialize();
