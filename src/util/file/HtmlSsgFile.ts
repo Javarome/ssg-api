@@ -67,11 +67,39 @@ export class HtmlSsgFile extends SsgFile {
    * Converts document's state to an HTML string.
    */
   serialize(): string {
+    this.updateMetaTags();
+    this.updateLinkTags();
+    return this.dom.serialize();
+  }
+
+  private updateLinkTags() {
     const document = this.document;
-    this.meta.generator = this.meta.generator || 'ssg-api'
-    for (const metaName in this.meta) {
-      const newContent = this.meta[metaName as keyof HtmlMeta];
-      const contents = newContent ? Array.isArray(newContent) ? newContent : [newContent] : []
+    const links = this.links;
+    for (const linkRel in links) {
+      const link = links[linkRel as keyof HtmlLinks];
+      if (link) {
+        const rel = link.type;
+        let linkElem = document.querySelector(`link[rel="${rel}"]`);
+        if (!linkElem) {
+          linkElem = document.createElement('link') as HTMLLinkElement;
+          linkElem.setAttribute('rel', rel);
+          document.head.append(linkElem);
+        }
+        linkElem.setAttribute('href', link.url);
+        if (link.text) {
+          linkElem.setAttribute('title', link.text);
+        }
+      }
+    }
+  }
+
+  private updateMetaTags() {
+    const document = this.document;
+    const meta = this.meta;
+    meta.generator = meta.generator || 'ssg-api';
+    for (const metaName in meta) {
+      const newContent = meta[metaName as keyof HtmlMeta];
+      const contents = newContent ? Array.isArray(newContent) ? newContent : [newContent] : [];
       for (const content of contents) {
         let metaElem = document.querySelector(`meta[name="${metaName}"]`);
         if (!metaElem) {
@@ -82,7 +110,6 @@ export class HtmlSsgFile extends SsgFile {
         metaElem.setAttribute('content', content);
       }
     }
-    return this.dom.serialize();
   }
 
   set dom(newDom: JSDOM) {
