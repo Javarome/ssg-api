@@ -1,4 +1,4 @@
-import { DefaultLogger, LogConsole } from './DefaultLogger';
+import { ConsoleLogger, LogConsole } from './ConsoleLogger';
 import { describe, expect, test } from '@javarome/testscript';
 
 class TestConsole implements LogConsole {
@@ -29,7 +29,7 @@ describe("DefaultLogger", () => {
   test("default log levels", () => {
     const console = new TestConsole()
     const name = "test logger"
-    const logger = new DefaultLogger(name, console)
+    const logger = new ConsoleLogger(name, console)
     const someInfo = "some info"
     logger.log(someInfo)
     expect(console._info).toEqual([[name + ":", someInfo]])
@@ -38,7 +38,7 @@ describe("DefaultLogger", () => {
   test("error only", () => {
     const console = new TestConsole()
     const name = "test logger"
-    const logger = new DefaultLogger(name, console, ["error"])
+    const logger = new ConsoleLogger(name, console, ["error"])
     const someInfo = "some info"
     logger.log(someInfo)
     expect(console._info).toEqual([])

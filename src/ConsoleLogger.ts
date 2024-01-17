@@ -17,7 +17,7 @@ export interface LogConsole {
 
 const defaultConsole = console
 
-export class DefaultLogger implements Logger {
+export class ConsoleLogger implements Logger {
 
   readonly log = this.logLevels.includes("info") ? (...data: any[]) => this.console.log(this.name + ":", ...data) : NOP
   readonly debug = this.logLevels.includes("debug") ? (...data: any[]) => this.console.debug(this.name + ":",

@@ -1,7 +1,7 @@
 import {SsgFile, HtmlSsgFile} from "./util/index.js"
 import {SsgContext} from "./SsgContext.js"
 import {ObjectUtil} from "./util/ObjectUtil.js"
-import {DefaultLogger} from "./DefaultLogger.js"
+import {ConsoleLogger} from "./ConsoleLogger"
 import {Logger} from "./Logger.js"
 import path from "path"
 
@@ -19,7 +19,7 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
 
   constructor(readonly locale: string, protected vars: Map<string, any> = new Map<string, any>(),
               name = SsgContextImpl.DEFAULT_NAME,
-              readonly logger: Logger = new DefaultLogger(name),
+              readonly logger: Logger = new ConsoleLogger(name),
               currentFile: SsgFile | undefined = undefined) {
     this._inputFile = this._outputFile = currentFile
     this.stack.push(name)

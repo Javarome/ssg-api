@@ -28,6 +28,6 @@ describe("DomReplaceCommand", () => {
     expect(command.postExecuted).toBe(false)
     const outFile = await command.execute(context)
     expect(command.postExecuted).toBe(true)
-    expect(outFile.contents).toBe(`<html><head></head><body><a href="link" data-prop="value">text</a></body></html>`)
+    expect(outFile.contents).toBe(`<html><head><meta name="generator" content="ssg-api"></head><body><a href="link" data-prop="value">text</a></body></html>`)
   })
 })

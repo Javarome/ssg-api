@@ -20,6 +20,6 @@ describe("HtmlTagReplaceCommand", () => {
     })
     const context = testUtil.newHtmlContext("test.xml", `<a href="link">text</a>`)
     const outFile = await command.execute(context)
-    expect(outFile.contents).toBe(`<html><head></head><body><a href="link" data-prop="value">text</a></body></html>`)
+    expect(outFile.contents).toBe(`<html><head><meta name="generator" content="ssg-api"></head><body><a href="link" data-prop="value">text</a></body></html>`)
   })
 })
