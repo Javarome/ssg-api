@@ -1,10 +1,10 @@
-import * as fs from 'fs';
-import { promises as fsAsync } from 'fs';
-import detectCharacterEncoding from 'detect-character-encoding';
-import path from 'path';
-import { readdir } from 'fs/promises';
-import { promise as glob } from 'glob-promise';
-import { IOptions } from 'glob';
+import * as fs from "fs"
+import { promises as fsAsync } from "fs"
+import { detectEncoding } from "char-encoding-detector"
+import path from "path"
+import { readdir } from "fs/promises"
+import { promise as glob } from "glob-promise"
+import { IOptions } from "glob"
 
 export class FileUtil {
 
@@ -27,14 +27,14 @@ export class FileUtil {
     const fileBuffer = fs.readFileSync(fileName)
     let guessedEncoding = undefined
     try {
-      guessedEncoding = detectCharacterEncoding(fileBuffer)
+      guessedEncoding = detectEncoding(fileBuffer)
     } catch (e) {
       if ((e as Error).message !== "Failed to detect charset.") {
         throw e
       }
     }
     if (guessedEncoding) {
-      return this.toBufferEncoding(guessedEncoding.encoding)
+      return this.toBufferEncoding(guessedEncoding)
     }
   }
 
@@ -54,12 +54,12 @@ export class FileUtil {
    * @param dir The path of the directory that must exist.
    */
   static ensureDirectoryExistence(dir: string): string {
-    const dirname = path.dirname(dir);
+    const dirname = path.dirname(dir)
     if (!fs.existsSync(dirname)) {
-      this.ensureDirectoryExistence(dirname); // Recursive to create the whole directories chain.
-      fs.mkdirSync(dirname);
+      this.ensureDirectoryExistence(dirname) // Recursive to create the whole directories chain.
+      fs.mkdirSync(dirname)
     }
-    return path.resolve(dir);
+    return path.resolve(dir)
   }
 
   static async writeFile(fileName: string, contents: string, encoding: BufferEncoding): Promise<void> {
@@ -82,30 +82,30 @@ export class FileUtil {
    * @return the list of output files.
    */
   static async ssgCopy(toDir: string, sourcePatterns: string[], options?: IOptions): Promise<string[]> {
-    let result: string[] = [];
+    let result: string[] = []
     for (const sourcePattern of sourcePatterns) {
-      const sourceFiles = await glob(sourcePattern, options);
-      const copied = this.copyFiles(sourceFiles, toDir);
-      result = result.concat(copied);
+      const sourceFiles = await glob(sourcePattern, options)
+      const copied = this.copyFiles(sourceFiles, toDir)
+      result = result.concat(copied)
     }
-    return result;
+    return result
   }
 
   static copyFiles(sourceFiles: string[], toDir: string): string[] {
-    const result: string[] = [];
+    const result: string[] = []
     for (const sourceFile of sourceFiles) {
-      const to = this.copyFile(sourceFile, toDir);
-      result.push(to);
+      const to = this.copyFile(sourceFile, toDir)
+      result.push(to)
     }
-    return result;
+    return result
   }
 
   static copyFile(sourceFile: string, toDir: string): string {
-    const from = path.resolve(sourceFile);
-    const to = path.join(toDir, sourceFile);
-    this.ensureDirectoryExistence(to);
-    fs.copyFileSync(from, to);
-    return to;
+    const from = path.resolve(sourceFile)
+    const to = path.join(toDir, sourceFile)
+    this.ensureDirectoryExistence(to)
+    fs.copyFileSync(from, to)
+    return to
   }
 
   static getContentType(html: HTMLElement): BufferEncoding | undefined {
