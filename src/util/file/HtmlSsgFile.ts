@@ -67,9 +67,18 @@ export class HtmlSsgFile extends SsgFile {
    * Converts document's state to an HTML string.
    */
   serialize(): string {
+    this.updateTitle();
     this.updateMetaTags();
     this.updateLinkTags();
     return this.dom.serialize();
+  }
+
+  private updateTitle() {
+    const document = this.document;
+    const title = this.title;
+    if (title && document.title !== title) {
+      document.title = title
+    }
   }
 
   private updateLinkTags() {

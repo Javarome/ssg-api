@@ -14,7 +14,7 @@ export interface DirectoryResult {
  */
 export abstract class DirectoryStep<C extends SsgContext = SsgContext> implements SsgStep<C, DirectoryResult> {
 
-  constructor(protected dirs: string[], protected excludedDirs: string[], protected template: string,
+  constructor(readonly dirs: string[], protected excludedDirs: string[], protected template: string,
               protected config: SsgConfig, readonly name = "directory") {
   }
 

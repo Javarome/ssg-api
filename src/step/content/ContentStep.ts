@@ -55,26 +55,45 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
     context.debug("Processing root", contentsRoot)
     const contentFiles = await glob(contentsRoot)
     for (const filePath of contentFiles) {
-      fileCount = await this.processFile(context, filePath, contentsConfig, fileCount)
+      fileCount += await this.processFile(context, filePath, contentsConfig) ? 1 : 0
     }
     return fileCount
   }
 
-  protected async processFile(context: C, filePath: string, contentsConfig: ContentStepConfig,
-                              fileCount: number): Promise<number> {
+  /**
+   * Process one content file (found in content root).
+   *
+   * This method can be overriden to perform some additional task at each file processing.
+   *
+   * @param context
+   * @param filePath
+   * @param contentsConfig
+   * @return If the file was processed.
+   * @see #shouldProcess(context)
+   * @protected
+   */
+  protected async processFile(context: C, filePath: string, contentsConfig: ContentStepConfig): Promise<boolean> {
     context.debug("Processing file", filePath)
     context.inputFile = HtmlSsgFile.read(context, filePath)
     context.outputFile = contentsConfig.getOutputFile(context)
-    if (this.shouldProcess(context)) {
+    const processed = this.shouldProcess(context);
+    if (processed) {
       for (const replacement of contentsConfig.replacements) {
         context.outputFile = await replacement.execute(context)
       }
-      fileCount++
       await this.output(context, context.outputFile)
     }
-    return fileCount
+    return processed
   }
 
+  /**
+   * Override this method if you want to use a different strategy than file date to decide if a file should be
+   * processed (return true to always process for instance).
+   *
+   * @param context
+   * @return If the for this context should be processed or not.
+   * @protected
+   */
   protected shouldProcess(context: C): boolean {
     let process: boolean
     const exists = fs.existsSync(context.outputFile.name)

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.3] - 2024-04-10
+
+### Fixed
+Update document title from SsgFile title.
+
+### Changed
+`ContentStep.processFile()` hasn't `fileCount` parameter anymore and returns a `boolean`.
+
 ## [1.7.2] - 2024-02-22
 
 ### Changed
