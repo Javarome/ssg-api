@@ -145,6 +145,10 @@ export class HtmlSsgFile extends SsgFile {
     const dom = new JSDOM(fileContents);
     let title: string | undefined;
     const doc = dom.window.document;
+    let docLang = doc.documentElement.lang;
+    if (docLang) {
+      fileInfo.lang.lang = docLang
+    }
     let titleElem = doc.querySelector('title');
     if (titleElem) {
       const elemTitle = titleElem.textContent ? titleElem.textContent.trim() : '';

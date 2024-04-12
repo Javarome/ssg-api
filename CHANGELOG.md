@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.4] - 2024-04-13
+
+### Fixed
+HTML lang overrides lang from filename.
+
 ## [1.7.3] - 2024-04-10
 
 ### Fixed
