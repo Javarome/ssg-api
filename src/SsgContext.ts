@@ -1,4 +1,4 @@
-import {Logger} from "./Logger.js"
+import { Logger } from "./Logger.js"
 import { SsgFile } from "./util"
 
 export interface SsgContext<V = any> extends Logger {
@@ -54,10 +54,10 @@ export interface SsgContext<V = any> extends Logger {
    */
   getInputFrom(fileName: string): SsgFile
 
-/**
- * Reads or create (if not found) a file and assign it to the context output.
- *
- * By default (if the file is not found), output contents are equal to input contents.
- */
- setOutputFrom(filePath: string): SsgFile
+  /**
+   * Reads or create (if not found) a file and assign it to the context output.
+   *
+   * By default (if the file is not found), output contents are equal to input contents.
+   */
+  setOutputFrom(filePath: string): SsgFile
 }

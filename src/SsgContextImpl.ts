@@ -1,7 +1,7 @@
-import {SsgContext} from "./SsgContext.js"
-import {ObjectUtil} from "./util/ObjectUtil.js"
-import {ConsoleLogger} from "./ConsoleLogger"
-import {Logger} from "./Logger.js"
+import { SsgContext } from "./SsgContext.js"
+import { ObjectUtil } from "./util/ObjectUtil.js"
+import { ConsoleLogger } from "./ConsoleLogger"
+import { Logger } from "./Logger.js"
 import { HtmlSsgFile, SsgFile, SsgFileLang } from "./util"
 
 export class SsgContextImpl<V = any> implements SsgContext<V> {
@@ -143,7 +143,8 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
           lang = {lang: this.locale, variants: []}
         }
         if (filePath.endsWith(".html")) {
-          const fileInfo: SsgFile = new SsgFile(filePath, encoding || "utf-8", this.inputFile.contents, new Date(), lang)
+          const fileInfo: SsgFile = new SsgFile(filePath, encoding || "utf-8", this.inputFile.contents, new Date(),
+            lang)
           outFile = HtmlSsgFile.create(fileInfo)
         } else {
           outFile = new SsgFile(filePath, "utf8", this.inputFile.contents, new Date(), lang)

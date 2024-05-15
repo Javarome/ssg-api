@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.7.5] - 2024-05-15
+
+### Changed
+
+- `SsgContext.read(filename)` becomes `SsgContext.getInputFrom(filename)` to denote it affects the context's `inputFile`.
+- `SsgContext.readOrNew(filename, dir)` becomes `SsgContext.setOutputFrom(filename)` to denote it affects the context's `outputFile`.
+- `HtmlSsgFile.create(fileInfo, fileContents)` becomes `HtmlSsgFile.create(fileInfo)` to denote it uses `fileInfo`'s `contents`.
+
 ## [1.7.4] - 2024-04-13
 
 ### Fixed
@@ -34,20 +42,16 @@ Serialize meta info.
 ## [1.6.0] - 2023-12-10
 
 ### Added
-
 `ReplaceCommand.contentStepEnd()` callback when the relevant ContentStep is terminating.
-
 
 ## [1.5.2] - 2023-11-02
 
 ### Fixed
-
 `FileUtil.ssgCopy()` removed `cpy` dependency which has a bug causing output dir not always applied.
 
 ## [1.5.1] - 2023-10-21
 
 ### Fixed
-
 Replaced jest by testscript
 
 ## [1.5.0] - 2023-09-16
