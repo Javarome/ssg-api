@@ -1,8 +1,8 @@
-import { SsgFile, HtmlSsgFile, SsgFileLang } from "./util/index.js"
 import {SsgContext} from "./SsgContext.js"
 import {ObjectUtil} from "./util/ObjectUtil.js"
 import {ConsoleLogger} from "./ConsoleLogger"
 import {Logger} from "./Logger.js"
+import { HtmlSsgFile, SsgFile, SsgFileLang } from "./util"
 
 export class SsgContextImpl<V = any> implements SsgContext<V> {
 
