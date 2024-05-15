@@ -1,10 +1,11 @@
-import {SsgStep} from "./SsgStep.js"
-import {SsgContext} from "../SsgContext.js"
-import {FileUtil} from "../util/index.js"
+import { SsgStep } from './SsgStep.js';
+import { SsgContext } from '../SsgContext.js';
+import { FileUtil } from '../util/index.js';
 import { SsgConfig } from '../SsgConfig';
+import path from "path"
 
 export interface DirectoryResult {
-  directoryCount: number
+  directoryCount: number;
 }
 
 /**
@@ -14,8 +15,17 @@ export interface DirectoryResult {
  */
 export abstract class DirectoryStep<C extends SsgContext = SsgContext> implements SsgStep<C, DirectoryResult> {
 
-  constructor(readonly dirs: string[], protected excludedDirs: string[], protected template: string,
-              protected config: SsgConfig, readonly name = "directory") {
+  /**
+   * Creates a new directory step.
+   *
+   * @param rootDirs A list of directories to look into.
+   * @param excludedDirs A list of directories to avoid looking into.
+   * @param templateFileName The name of the file containing the <--#echo var="directories"--> tag
+   * @param config The SSG configuration.
+   * @param name The step name ("directory" by default)
+   */
+  constructor(readonly rootDirs: string[], protected excludedDirs: string[], protected templateFileName: string,
+              protected config: SsgConfig, readonly name = 'directory') {
   }
 
   /**
@@ -25,12 +35,13 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
    * 3. returning the count of processed directories
    */
   async execute(context: SsgContext): Promise<DirectoryResult> {
-    context.read(this.template)
-    context.readOrNew(this.template, this.config.outDir)
-    const dirNames = (await this.findDirs(this.dirs))
-      .filter(dirName => !this.excludedDirs.includes(dirName))
-    await this.processDirs(context, dirNames)
-    return {directoryCount: dirNames.length}
+    context.getInputFrom(this.templateFileName);
+    const outputFilePath = path.join(this.config.outDir, this.templateFileName)
+    context.setOutputFrom(outputFilePath);
+    const dirNames = (await this.findDirs(this.rootDirs))
+      .filter(dirName => !this.excludedDirs.includes(dirName));
+    await this.processDirs(context, dirNames);
+    return {directoryCount: dirNames.length};
   }
 
   /**
@@ -41,31 +52,31 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
    */
   protected abstract processDirs(context: SsgContext, dirames: string[]): Promise<void>
 
-  private async findDirs(fromDirs: string[]) {
-    let dirNames: string[] = []
+  protected async findDirs(fromDirs: string[]): Promise<string[]> {
+    let dirNames: string[] = [];
     for (let fromDir of fromDirs) {
-      const subDirs = await this.findSubDirs(fromDir)
-      dirNames = dirNames.concat(subDirs)
+      const subDirs = await this.findSubDirs(fromDir);
+      dirNames = dirNames.concat(subDirs);
     }
-    return dirNames
+    return dirNames;
   }
 
-  private async findSubDirs(ofDir: string): Promise<string[]> {
-    let subDirs: string[] = []
-    if (ofDir.endsWith("/*/")) {
-      const baseDir = ofDir.substring(0, ofDir.length - 3)
-      if (baseDir.endsWith("/*")) {
-        const dirs = (await this.findDirs([baseDir + "/"]))
-          .filter(dirName => !this.excludedDirs.includes(dirName))
+  protected async findSubDirs(ofDir: string): Promise<string[]> {
+    let subDirs: string[] = [];
+    if (ofDir.endsWith('/*/')) {
+      const baseDir = ofDir.substring(0, ofDir.length - 3);
+      if (baseDir.endsWith('/*')) {
+        const dirs = (await this.findDirs([baseDir + '/']))
+          .filter(dirName => !this.excludedDirs.includes(dirName));
         for (const dir of dirs) {
-          subDirs = subDirs.concat(await this.findDirs([dir + "/*/"]))
+          subDirs = subDirs.concat(await this.findDirs([dir + '/*/']));
         }
       } else {
-        subDirs = (await FileUtil.dirNames(baseDir)).map(x => baseDir + "/" + x)
+        subDirs = (await FileUtil.dirNames(baseDir)).map(x => baseDir + '/' + x);
       }
     } else {
-      subDirs = [ofDir]
+      subDirs = [ofDir];
     }
-    return subDirs
+    return subDirs;
   }
 }

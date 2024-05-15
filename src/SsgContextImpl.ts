@@ -1,9 +1,8 @@
-import {SsgFile, HtmlSsgFile} from "./util/index.js"
+import { SsgFile, HtmlSsgFile, SsgFileLang } from "./util/index.js"
 import {SsgContext} from "./SsgContext.js"
 import {ObjectUtil} from "./util/ObjectUtil.js"
 import {ConsoleLogger} from "./ConsoleLogger"
 import {Logger} from "./Logger.js"
-import path from "path"
 
 export class SsgContextImpl<V = any> implements SsgContext<V> {
 
@@ -110,35 +109,50 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     return this
   }
 
+  /**
+   * Reads a file in this context.
+   *
+   * @param fileName The name of the file.
+   * @protected
+   */
   protected readFile(fileName: string) {
     return fileName.endsWith(".html")
       ? HtmlSsgFile.read(this, fileName)
       : SsgFile.read(this, fileName)
   }
 
-  read(fileName: string) {
-    this.inputFile = this.readFile(fileName)
+  getInputFrom(filePath: string): SsgFile {
+    this.inputFile = this.readFile(filePath)
+    return this.inputFile
   }
 
-  readOrNew(fileName: string, outDir: string) {
-    const filePath = path.join(outDir, fileName)
+  setOutputFrom(filePath: string): SsgFile {
     const encoding = this._outputFile?.encoding
     let outFile: SsgFile
     try {
       outFile = this.readFile(filePath)
     } catch (e) {
       if ((e as any).code === "ENOENT") {
-        const lang = SsgFile.getLang(this, fileName)
+        let lang: SsgFileLang
+        try {
+          lang = SsgFile.getLang(this, filePath)
+        } catch (e) {
+          if ((e as any).errno !== -2) {
+            throw e
+          }
+          lang = {lang: this.locale, variants: []}
+        }
         if (filePath.endsWith(".html")) {
-          const fileInfo: SsgFile = new SsgFile(filePath, encoding || "utf-8", "", new Date(), lang)
-          outFile = HtmlSsgFile.create(fileInfo, "")
+          const fileInfo: SsgFile = new SsgFile(filePath, encoding || "utf-8", this.inputFile.contents, new Date(), lang)
+          outFile = HtmlSsgFile.create(fileInfo)
         } else {
-          outFile = new SsgFile(filePath, "utf8", "", new Date(), lang)
+          outFile = new SsgFile(filePath, "utf8", this.inputFile.contents, new Date(), lang)
         }
       } else {
         throw e
       }
     }
     this.outputFile = outFile
+    return this.outputFile
   }
 }

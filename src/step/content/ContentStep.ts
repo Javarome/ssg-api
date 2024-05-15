@@ -1,10 +1,9 @@
-import fs from 'fs';
-import { promise as glob } from 'glob-promise';
-import { SsgStep } from '../SsgStep.js';
-import { SsgContext } from '../../SsgContext.js';
-import { HtmlSsgFile } from '../../util/index.js';
-import { ContentStepConfig } from './ContentStepConfig.js';
-import { OutputFunc } from '../../OutputFunc';
+import fs from "fs"
+import { promise as glob } from "glob-promise"
+import { SsgStep } from "../SsgStep.js"
+import { SsgContext } from "../../SsgContext.js"
+import { ContentStepConfig } from "./ContentStepConfig.js"
+import { OutputFunc } from "../../OutputFunc"
 
 export type ContentStepResult = {
   contentCount: number
@@ -37,9 +36,7 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
         await replacement.contentStepEnd()
       }
     }
-    return {
-      contentCount
-    }
+    return {contentCount}
   }
 
   protected async processRoots(context: C, contentsConfig: ContentStepConfig): Promise<number> {
@@ -74,9 +71,9 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    */
   protected async processFile(context: C, filePath: string, contentsConfig: ContentStepConfig): Promise<boolean> {
     context.debug("Processing file", filePath)
-    context.inputFile = HtmlSsgFile.read(context, filePath)
-    context.outputFile = contentsConfig.getOutputFile(context)
-    const processed = this.shouldProcess(context);
+    context.getInputFrom(filePath)
+    context.setOutputFrom(contentsConfig.getOutputFile(context).name)
+    const processed = this.shouldProcess(context)
     if (processed) {
       for (const replacement of contentsConfig.replacements) {
         context.outputFile = await replacement.execute(context)

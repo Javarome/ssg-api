@@ -37,6 +37,7 @@ export class Ssg {
         context.name = stepName
       }
       context.log(`Executing:`)
+      context.inputFile = context.outputFile  // Next step input is previous step's output
       const stepResult = await step.execute(context)
       context.log(`Completed:`, stepResult)
       result[stepName] = stepResult

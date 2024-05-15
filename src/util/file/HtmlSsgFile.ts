@@ -137,12 +137,11 @@ export class HtmlSsgFile extends SsgFile {
 
   static read(context: SsgContext, fileName: string): HtmlSsgFile {
     const fileInfo = super.read(context, fileName);
-    const fileContents = fileInfo.contents;
-    return this.create(fileInfo, fileContents);
+    return this.create(fileInfo);
   }
 
-  static create(fileInfo: SsgFile, fileContents: string): HtmlSsgFile {
-    const dom = new JSDOM(fileContents);
+  static create(fileInfo: SsgFile): HtmlSsgFile {
+    const dom = new JSDOM(fileInfo.contents);
     let title: string | undefined;
     const doc = dom.window.document;
     let docLang = doc.documentElement.lang;

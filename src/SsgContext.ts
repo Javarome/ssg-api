@@ -47,8 +47,17 @@ export interface SsgContext<V = any> extends Logger {
    */
   pop(): SsgContext
 
-  read(fileName: string): void
+  /**
+   * Reads a file and assign it to the context input.
+   *
+   * @param fileName
+   */
+  getInputFrom(fileName: string): SsgFile
 
-  readOrNew(fileName: string, outDir: string): void
+/**
+ * Reads or create (if not found) a file and assign it to the context output.
+ *
+ * By default (if the file is not found), output contents are equal to input contents.
+ */
+ setOutputFrom(filePath: string): SsgFile
 }
-
