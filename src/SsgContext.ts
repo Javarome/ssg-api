@@ -57,7 +57,7 @@ export interface SsgContext<V = any> extends Logger {
   /**
    * Reads or create (if not found) a file and assign it to the context output.
    *
-   * By default (if the file is not found), output contents are equal to input contents.
+   * By default, (if the file is not found), output contents are equal to input contents.
    */
-  setOutputFrom(filePath: string): SsgFile
+  getOutputFrom(filePath: string): SsgFile
 }

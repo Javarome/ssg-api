@@ -5,10 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [1.7.5] - 2024-05-15
+## [1.7.6] - 2024-05-17
 
 ### Changed
 
+- `SsgContext.setOutputFrom(filename)` instead of `SsgContext.setOutputFrom(filename)` to unify apis.
+
+### Fixed
+
+- make sure context `inputFile` and `outputFile` are assigned.
+
+## [1.7.5] - 2024-05-15
+
+### Changed
 - `SsgContext.read(filename)` becomes `SsgContext.getInputFrom(filename)` to denote it affects the context's `inputFile`.
 - `SsgContext.readOrNew(filename, dir)` becomes `SsgContext.setOutputFrom(filename)` to denote it affects the context's `outputFile`.
 - `HtmlSsgFile.create(fileInfo, fileContents)` becomes `HtmlSsgFile.create(fileInfo)` to denote it uses `fileInfo`'s `contents`.

@@ -71,8 +71,8 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    */
   protected async processFile(context: C, filePath: string, contentsConfig: ContentStepConfig): Promise<boolean> {
     context.debug("Processing file", filePath)
-    context.getInputFrom(filePath)
-    context.setOutputFrom(contentsConfig.getOutputFile(context).name)
+    context.inputFile = context.getInputFrom(filePath)
+    context.outputFile = context.getOutputFrom(contentsConfig.getOutputFile(context).name)
     const processed = this.shouldProcess(context)
     if (processed) {
       for (const replacement of contentsConfig.replacements) {

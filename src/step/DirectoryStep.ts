@@ -35,9 +35,9 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
    * 3. returning the count of processed directories
    */
   async execute(context: SsgContext): Promise<DirectoryResult> {
-    context.getInputFrom(this.templateFileName)
+    context.inputFile = context.getInputFrom(this.templateFileName)
     const outputFilePath = path.join(this.config.outDir, this.templateFileName)
-    context.setOutputFrom(outputFilePath)
+    context.outputFile = context.getOutputFrom(outputFilePath)
     const dirNames = (await this.findDirs(this.rootDirs))
       .filter(dirName => !this.excludedDirs.includes(dirName))
     await this.processDirs(context, dirNames)

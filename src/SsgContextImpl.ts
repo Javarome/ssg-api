@@ -109,16 +109,20 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     return this
   }
 
-  /**
-   * Reads a file in this context.
-   *
-   * @param fileName The name of the file.
-   * @protected
-   */
-  protected readFile(fileName: string) {
-    return fileName.endsWith(".html")
-      ? HtmlSsgFile.read(this, fileName)
-      : SsgFile.read(this, fileName)
+  getOutputFrom(filePath: string): SsgFile {
+    let outFile: SsgFile
+    try {
+      outFile = this.readFile(filePath)
+      this.logger.debug("Read output file", outFile.name)
+    } catch (e) {
+      if ((e as any).code === "ENOENT") {
+        outFile = this.createOutput(filePath, this._outputFile?.encoding || "utf-8")
+      } else {
+        throw e
+      }
+    }
+    this.outputFile = outFile
+    return this.outputFile
   }
 
   getInputFrom(filePath: string): SsgFile {
@@ -126,34 +130,38 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     return this.inputFile
   }
 
-  setOutputFrom(filePath: string): SsgFile {
-    const encoding = this._outputFile?.encoding
+  createOutput(filePath: string, encoding: BufferEncoding): SsgFile {
     let outFile: SsgFile
+    let lang: SsgFileLang
     try {
-      outFile = this.readFile(filePath)
+      lang = SsgFile.getLang(this, filePath)
     } catch (e) {
-      if ((e as any).code === "ENOENT") {
-        let lang: SsgFileLang
-        try {
-          lang = SsgFile.getLang(this, filePath)
-        } catch (e) {
-          if ((e as any).errno !== -2) {
-            throw e
-          }
-          lang = {lang: this.locale, variants: []}
-        }
-        if (filePath.endsWith(".html")) {
-          const fileInfo: SsgFile = new SsgFile(filePath, encoding || "utf-8", this.inputFile.contents, new Date(),
-            lang)
-          outFile = HtmlSsgFile.create(fileInfo)
-        } else {
-          outFile = new SsgFile(filePath, "utf8", this.inputFile.contents, new Date(), lang)
-        }
-      } else {
+      if ((e as any).errno !== -2) {
         throw e
       }
+      lang = {lang: this.locale, variants: []}
     }
-    this.outputFile = outFile
-    return this.outputFile
+    const creationDate = new Date()
+    if (filePath.endsWith(".html")) {
+      const fileInfo: SsgFile = new SsgFile(filePath, encoding, this.inputFile.contents, creationDate, lang)
+      outFile = HtmlSsgFile.create(fileInfo)
+    } else {
+      outFile = new SsgFile(filePath, encoding, this.inputFile.contents, creationDate, lang)
+    }
+    this.logger.debug("Created new output file", outFile.name)
+    return outFile
+  }
+
+  /**
+   * Reads a file in this context.
+   *
+   * @param fileName The name of the file.
+   * @returns {SsgFile}
+   * @protected
+   */
+  protected readFile(fileName: string): SsgFile {
+    return fileName.endsWith(".html")
+      ? HtmlSsgFile.read(this, fileName)
+      : SsgFile.read(this, fileName)
   }
 }
