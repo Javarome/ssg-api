@@ -1,6 +1,6 @@
-import { SsgContext } from '../../SsgContext';
-import { ReplaceCommand } from './replace';
-import { SsgFile } from '../../util';
+import { SsgContext } from "../../SsgContext"
+import { ReplaceCommand } from "./replace"
+import { SsgFile } from "../../util"
 
 export type ContentStepConfig<C extends SsgContext = SsgContext> = {
   /**
@@ -17,5 +17,5 @@ export type ContentStepConfig<C extends SsgContext = SsgContext> = {
    * @param context
    * @return the file where to output.
    */
-  getOutputFile(context: C): SsgFile
+  getOutputFile(context: C): SsgFile | string
 }

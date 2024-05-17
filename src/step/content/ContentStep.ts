@@ -4,6 +4,7 @@ import { SsgStep } from "../SsgStep.js"
 import { SsgContext } from "../../SsgContext.js"
 import { ContentStepConfig } from "./ContentStepConfig.js"
 import { OutputFunc } from "../../OutputFunc"
+import { SsgFile } from "../../util"
 
 export type ContentStepResult = {
   contentCount: number
@@ -72,7 +73,8 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
   protected async processFile(context: C, filePath: string, contentsConfig: ContentStepConfig): Promise<boolean> {
     context.debug("Processing file", filePath)
     context.inputFile = context.getInputFrom(filePath)
-    context.outputFile = context.getOutputFrom(contentsConfig.getOutputFile(context).name)
+    const outputFile = contentsConfig.getOutputFile(context)
+    context.outputFile = outputFile instanceof SsgFile ? outputFile : context.getOutputFrom(outputFile)
     const processed = this.shouldProcess(context)
     if (processed) {
       for (const replacement of contentsConfig.replacements) {

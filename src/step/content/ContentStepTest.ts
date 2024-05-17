@@ -1,10 +1,10 @@
-import { ContentStep } from './ContentStep';
-import { SsgContext } from '../../SsgContext';
-import { HtmlSsgFile, SsgFile } from '../../util';
-import { SsgContextImpl } from '../../SsgContextImpl';
-import path from 'path';
-import fs from 'fs';
-import { describe, expect, test } from '@javarome/testscript';
+import { ContentStep } from "./ContentStep"
+import { SsgContext } from "../../SsgContext"
+import { HtmlSsgFile, SsgFile } from "../../util"
+import { SsgContextImpl } from "../../SsgContextImpl"
+import path from "path"
+import fs from "fs"
+import { describe, expect, test } from "@javarome/testscript"
 
 describe("ContentStep", () => {
 
@@ -24,9 +24,7 @@ describe("ContentStep", () => {
       roots: ["test/*.html"],
       replacements: [],
       getOutputFile(context: SsgContext) {
-        let outputFile = context.outputFile
-        outputFile.name = path.join(outDir, context.inputFile.name)
-        return outputFile
+        return path.join(outDir, context.inputFile.name)
       }
     }]
     const step = new ContentStep(contentConfigs, outputFunc)
