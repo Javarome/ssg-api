@@ -4,7 +4,6 @@ import { SsgStep } from "../SsgStep.js"
 import { SsgContext } from "../../SsgContext.js"
 import { ContentStepConfig } from "./ContentStepConfig.js"
 import { OutputFunc } from "../../OutputFunc"
-import { SsgFile } from "../../util"
 
 export type ContentStepResult = {
   contentCount: number
@@ -21,18 +20,18 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
 
   /**
    *
-   * @param contents The content roots and associated replacements to perform.
+   * @param contentsConfigs The content roots and associated replacements to perform.
    * @param output The function that writes the output contents once they are ready.
    */
-  constructor(protected contents: ContentStepConfig<C>[], protected output: OutputFunc) {
+  constructor(protected contentsConfigs: ContentStepConfig<C>[], protected output: OutputFunc) {
   }
 
   async execute(context: C): Promise<ContentStepResult> {
     let contentCount = 0
-    for (const contents of this.contents) {
-      contentCount += await this.processRoots(context, contents)
+    for (const contentsConfig of this.contentsConfigs) {
+      contentCount += await this.processRoots(context, contentsConfig)
     }
-    for (const contents of this.contents) {
+    for (const contents of this.contentsConfigs) {
       for (const replacement of contents.replacements) {
         await replacement.contentStepEnd()
       }
@@ -72,15 +71,15 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    */
   protected async processFile(context: C, filePath: string, contentsConfig: ContentStepConfig): Promise<boolean> {
     context.debug("Processing file", filePath)
-    context.inputFile = context.getInputFrom(filePath)
-    const outputFile = contentsConfig.getOutputFile(context)
-    context.outputFile = outputFile instanceof SsgFile ? outputFile : context.getOutputFrom(outputFile)
-    const processed = this.shouldProcess(context)
+    context.file = context.getInputFrom(filePath)
+    const outputPath = contentsConfig.getOutputFile(context)
+    const outputFile = context.getOutputFrom(outputPath)
+    const processed = this.shouldProcess(context, contentsConfig)
     if (processed) {
       for (const replacement of contentsConfig.replacements) {
-        context.outputFile = await replacement.execute(context)
+        await replacement.execute(context)
       }
-      await this.output(context, context.outputFile)
+      await this.output(context, outputFile)
     }
     return processed
   }
@@ -90,21 +89,23 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    * processed (return true to always process for instance).
    *
    * @param context
+   * @param contentsConfig
    * @return If the for this context should be processed or not.
    * @protected
    */
-  protected shouldProcess(context: C): boolean {
-    let process: boolean
-    const exists = fs.existsSync(context.outputFile.name)
-    if (exists) {
-      const outStats = fs.statSync(context.outputFile.name)
-      process = outStats.mtime < context.inputFile.lastModified
-      if (!process) {
-        console.debug(context.inputFile.name, "is not older that current out file")
+  protected shouldProcess(context: C, contentsConfig: ContentStepConfig): boolean {
+    let inputHasChanged: boolean
+    const outputPath = contentsConfig.getOutputFile(context)
+    const outputExists = fs.existsSync(outputPath)
+    if (outputExists) {
+      const outputStats = fs.statSync(outputPath)
+      inputHasChanged = context.file.lastModified > outputStats.mtime
+      if (!inputHasChanged) {
+        console.debug(context.file.name, "is not older that current out file")
       }
     } else {
-      process = true
+      inputHasChanged = true
     }
-    return process
+    return inputHasChanged
   }
 }

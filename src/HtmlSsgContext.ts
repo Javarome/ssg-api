@@ -1,11 +1,9 @@
-import {SsgContext} from "./SsgContext.js"
-import {HtmlSsgFile} from './util/index.js'
+import { SsgContext } from "./SsgContext.js"
+import { HtmlSsgFile } from "./util"
 
 export interface HtmlSsgContext<V = any> extends SsgContext<V> {
 
-  inputFile: HtmlSsgFile
-
-  outputFile: HtmlSsgFile
+  file: HtmlSsgFile
 
   getVar(varName: string): string | undefined
 

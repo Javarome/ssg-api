@@ -1,4 +1,4 @@
-import {HtAccessReplaceCommand} from "./HtAccessReplaceCommand.js"
+import { HtAccessReplaceCommand } from "./HtAccessReplaceCommand.js"
 
 
 export class HtAccessToNetlifyConfigReplaceCommand extends HtAccessReplaceCommand {
@@ -7,8 +7,7 @@ export class HtAccessToNetlifyConfigReplaceCommand extends HtAccessReplaceComman
     super()
   }
 
-  protected handleDirectoryIndex(args: string[], result: string): string {
-    return ""
+  protected handleDirectoryIndex(args: string[], result: string[]): void {
   }
 
   protected handleRedirect(from: string, to: string): string {

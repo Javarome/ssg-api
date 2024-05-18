@@ -20,14 +20,9 @@ export interface SsgContext<V = any> extends Logger {
   readonly locale: string
 
   /**
-   * The file that has been read (a template for instance).
+   * The file that is being processed (a template for instance).
    */
-  inputFile: SsgFile
-
-  /**
-   * The file that will be written.
-   */
-  outputFile: SsgFile
+  file: SsgFile
 
   getVar(varName: string): string | undefined
 

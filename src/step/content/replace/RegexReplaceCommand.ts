@@ -1,7 +1,6 @@
-import {RegexReplacer} from "./RegexReplacer.js"
-import {ReplaceCommand} from "./ReplaceCommand.js"
-import {SsgFile} from "../../../util/file/SsgFile.js"
-import {SsgContext} from "../../../SsgContext.js"
+import { RegexReplacer } from "./RegexReplacer.js"
+import { ReplaceCommand } from "./ReplaceCommand.js"
+import { SsgContext } from "../../../SsgContext.js"
 
 /**
  * A command that performs replacements using a Regular Expression.
@@ -16,8 +15,8 @@ export abstract class RegexReplaceCommand<V = any, C extends SsgContext = SsgCon
    *
    * @param context
    */
-  async execute(context: C): Promise<SsgFile> {
-    const fileInfo = context.inputFile
+  async execute(context: C): Promise<void> {
+    const fileInfo = context.file
     let contents = fileInfo.contents
     let result = contents
     const replacer = await this.createReplacer(context)
@@ -26,8 +25,7 @@ export abstract class RegexReplaceCommand<V = any, C extends SsgContext = SsgCon
       contents = result
       result = contents.replace(this.regex, replaceFunc)
     } while (result != contents)
-    fileInfo.contents = result
-    return fileInfo
+    context.file.contents = result
   }
 
   /**

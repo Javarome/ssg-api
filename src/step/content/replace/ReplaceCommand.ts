@@ -1,5 +1,4 @@
-import {SsgFile} from '../../../util/index.js'
-import {SsgContext} from "../../../SsgContext.js"
+import { SsgContext } from "../../../SsgContext.js"
 
 export interface ReplaceCommand<C extends SsgContext> {
   /**
@@ -8,7 +7,7 @@ export interface ReplaceCommand<C extends SsgContext> {
    * @param context
    * @return The output file.
    */
-  execute(context: C): Promise<SsgFile>
+  execute(context: C): Promise<void>
 
   /**
    * Called when content step is terminating.

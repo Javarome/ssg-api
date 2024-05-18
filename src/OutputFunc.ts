@@ -1,4 +1,4 @@
-import { SsgContext } from './SsgContext.js';
-import { SsgFile } from './util/index.js';
+import { SsgContext } from "./SsgContext.js"
+import { SsgFile } from "./util"
 
 export type OutputFunc = (context: SsgContext, outputFile: SsgFile) => Promise<void>

@@ -1,6 +1,5 @@
-import {ReplaceCommand} from "../ReplaceCommand.js"
-import {SsgFile} from '../../../../util/index.js'
-import {SsgContext} from "../../../../SsgContext.js"
+import { ReplaceCommand } from "../ReplaceCommand.js"
+import { SsgContext } from "../../../../SsgContext.js"
 
 enum HtAccessCommands {
   Options = "Options",
@@ -17,31 +16,31 @@ enum HtAccessCommands {
 
 export abstract class HtAccessReplaceCommand implements ReplaceCommand<SsgContext> {
 
-  async execute(context: SsgContext): Promise<SsgFile> {
-    const inputFileInfo = context.inputFile
+  async execute(context: SsgContext): Promise<void> {
+    const inputFileInfo = context.file
     const contents = inputFileInfo.contents
     const lines = contents.split("\n").map(line => line.trim())
-    let result = ""
+    let outLines = []
     for (const line of lines) {
       const args = line.split(" ")
       const command = args[0] as HtAccessCommands
       if (command) {
+        let commandOutLines: string[] = []
         switch (command) {
           case HtAccessCommands.DirectoryIndex:
-            result = this.handleDirectoryIndex(args, result)
+            this.handleDirectoryIndex(args, commandOutLines)
             break
           case HtAccessCommands.Redirect:
-            result += this.handleRedirect(args[1], args[2])
+            commandOutLines.push(this.handleRedirect(args[1], args[2]))
             break
         }
+        outLines.push(...commandOutLines)
       }
     }
-    const outputFileInfo = context.outputFile
-    outputFileInfo.contents += result
-    return outputFileInfo
+    context.file.contents = outLines.join("\n")
   }
 
-  protected abstract handleDirectoryIndex(args: string[], result: string): string
+  protected abstract handleDirectoryIndex(args: string[], result: string[]): void
 
   protected abstract handleRedirect(from: string, to: string): string
 

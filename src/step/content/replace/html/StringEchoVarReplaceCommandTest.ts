@@ -1,7 +1,6 @@
-import { testUtil } from '../../../../../test/TestUtil';
-import { HtmlSsgFile } from '../../../../util';
-import { StringEchoVarReplaceCommand } from './StringEchoVarReplaceCommand';
-import { describe, expect, test } from '@javarome/testscript';
+import { testUtil } from "../../../../../test/TestUtil"
+import { StringEchoVarReplaceCommand } from "./StringEchoVarReplaceCommand"
+import { describe, expect, test } from "@javarome/testscript"
 
 describe("StringEchoVarReplaceCommand", () => {
 
@@ -11,8 +10,7 @@ describe("StringEchoVarReplaceCommand", () => {
       `<a href="mailto:\$\{mail\}">Commentaires</a>`)
     context.setVar("mail", "javarome@gmail.com")
     expect(context.getVar("mail")).toBe("javarome@gmail.com")
-    const file = await command.execute(context) as HtmlSsgFile
-    expect(file.contents).toBe(`<a href="mailto:javarome@gmail.com">Commentaires</a>`)
+    await command.execute(context)
+    expect(context.file.contents).toBe(`<a href="mailto:javarome@gmail.com">Commentaires</a>`)
   })
 })
-

@@ -1,6 +1,6 @@
-import {RegexReplacer} from "../RegexReplacer.js"
-import {RegexReplaceCommand} from "../RegexReplaceCommand.js"
-import {HtmlSsgContext} from "../../../../HtmlSsgContext.js"
+import { RegexReplacer } from "../RegexReplacer.js"
+import { RegexReplaceCommand } from "../RegexReplaceCommand.js"
+import { HtmlSsgContext } from "../../../../HtmlSsgContext.js"
 
 export class AngularExpressionReplaceCommand extends RegexReplaceCommand<HtmlSsgContext> {
 
@@ -10,7 +10,7 @@ export class AngularExpressionReplaceCommand extends RegexReplaceCommand<HtmlSsg
 
   protected async createReplacer(context: HtmlSsgContext): Promise<RegexReplacer> {
     return {
-      replace(substring: string, ...args: any[]): string {
+      replace(_substring: string, ...args: any[]): string {
         const varName = args[0]
         let replacement = context.getVar(varName)
         const filter = args[1]

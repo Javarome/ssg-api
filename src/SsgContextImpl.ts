@@ -20,7 +20,7 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
               name = SsgContextImpl.DEFAULT_NAME,
               readonly logger: Logger = new ConsoleLogger(name),
               currentFile: SsgFile | undefined = undefined) {
-    this._inputFile = this._outputFile = currentFile
+    this._file = currentFile
     this.stack.push(name)
     this.name = name
   }
@@ -40,27 +40,14 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     this.logger.name = this.stack.join(":")
   }
 
-  protected _inputFile: SsgFile | undefined
+  protected _file: SsgFile | undefined
 
-  get inputFile(): SsgFile {
-    return ObjectUtil.asSet(this._inputFile, "Should have a inputFile")
+  get file(): SsgFile {
+    return ObjectUtil.asSet(this._file, "Should have a inputFile")
   }
 
-  set inputFile(value: SsgFile) {
-    this._inputFile = value
-    if (!this._outputFile) {
-      this._outputFile = this._inputFile
-    }
-  }
-
-  protected _outputFile: SsgFile | undefined
-
-  get outputFile(): SsgFile {
-    return ObjectUtil.asSet(this._outputFile, "Should have a outputFile")
-  }
-
-  set outputFile(value: SsgFile) {
-    this._outputFile = value
+  set file(value: SsgFile) {
+    this._file = value
   }
 
   getVar(varName: string): string | undefined {
@@ -91,7 +78,7 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
   }
 
   clone(): SsgContext<V> {
-    return new SsgContextImpl(this.locale, this.vars, this.name, this.logger, this._inputFile)
+    return new SsgContextImpl(this.locale, this.vars, this.name, this.logger, this._file)
   }
 
   push(newName: string): SsgContext {
@@ -116,18 +103,17 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
       this.logger.debug("Read output file", outFile.name)
     } catch (e) {
       if ((e as any).code === "ENOENT") {
-        outFile = this.createOutput(filePath, this._outputFile?.encoding || "utf-8")
+        outFile = this.createOutput(filePath, this._file?.encoding || "utf-8")
       } else {
         throw e
       }
     }
-    this.outputFile = outFile
-    return this.outputFile
+    return outFile
   }
 
   getInputFrom(filePath: string): SsgFile {
-    this.inputFile = this.readFile(filePath)
-    return this.inputFile
+    this.file = this.readFile(filePath)
+    return this.file
   }
 
   createOutput(filePath: string, encoding: BufferEncoding): SsgFile {
@@ -143,10 +129,10 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     }
     const creationDate = new Date()
     if (filePath.endsWith(".html")) {
-      const fileInfo: SsgFile = new SsgFile(filePath, encoding, this.inputFile.contents, creationDate, lang)
+      const fileInfo: SsgFile = new SsgFile(filePath, encoding, this.file.contents, creationDate, lang)
       outFile = HtmlSsgFile.create(fileInfo)
     } else {
-      outFile = new SsgFile(filePath, encoding, this.inputFile.contents, creationDate, lang)
+      outFile = new SsgFile(filePath, encoding, this.file.contents, creationDate, lang)
     }
     this.logger.debug("Created new output file", outFile.name)
     return outFile

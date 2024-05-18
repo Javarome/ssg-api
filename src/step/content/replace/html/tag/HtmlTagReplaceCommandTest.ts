@@ -1,9 +1,9 @@
-import { HtmlTagReplaceCommand } from './HtmlTagReplaceCommand';
-import { ReplacerFactory } from '../../ReplacerFactory';
-import { SsgContext } from '../../../../../SsgContext';
-import { testUtil } from '../../../../../../test/TestUtil';
-import { DomReplacer } from '../../DomReplacer';
-import { describe, expect, test } from '@javarome/testscript';
+import { HtmlTagReplaceCommand } from "./HtmlTagReplaceCommand"
+import { ReplacerFactory } from "../../ReplacerFactory"
+import { SsgContext } from "../../../../../SsgContext"
+import { testUtil } from "../../../../../../test/TestUtil"
+import { DomReplacer } from "../../DomReplacer"
+import { describe, expect, test } from "@javarome/testscript"
 
 describe("HtmlTagReplaceCommand", () => {
 
@@ -19,7 +19,8 @@ describe("HtmlTagReplaceCommand", () => {
       }
     })
     const context = testUtil.newHtmlContext("test.xml", `<a href="link">text</a>`)
-    const outFile = await command.execute(context)
-    expect(outFile.contents).toBe(`<html><head><meta name="generator" content="ssg-api"></head><body><a href="link" data-prop="value">text</a></body></html>`)
+    await command.execute(context)
+    expect(context.file.contents).toBe(
+      `<html><head><meta name="generator" content="ssg-api"></head><body><a href="link" data-prop="value">text</a></body></html>`)
   })
 })

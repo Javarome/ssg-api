@@ -1,15 +1,14 @@
-import {ReplaceCommand} from "./ReplaceCommand.js"
-import {SsgFile} from '../../../util/index.js'
-import {HtmlSsgContext} from "../../../HtmlSsgContext.js"
-import {DomReplacer} from "./DomReplacer.js"
+import { ReplaceCommand } from "./ReplaceCommand.js"
+import { HtmlSsgContext } from "../../../HtmlSsgContext.js"
+import { DomReplacer } from "./DomReplacer.js"
 
 export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C extends HtmlSsgContext = HtmlSsgContext> implements ReplaceCommand<C> {
 
   constructor(protected selector: string) {
   }
 
-  async execute(context: C): Promise<SsgFile> {
-    const inputFile = context.inputFile
+  async execute(context: C): Promise<void> {
+    const inputFile = context.file
     let contents = inputFile.contents
     let result = contents
     const replacer = await this.createReplacer(context)
@@ -25,9 +24,8 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C e
         result = inputFile.serialize()
       }
     } while (result != contents)
-    context.outputFile.contents = result
+    context.file.contents = result
     await this.postExecute(context)
-    return inputFile
   }
 
   /**

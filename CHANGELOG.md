@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.8.0] - 2024-05-18
+
+### Changed
+
+- `SsgContext.inputFile` and `SsgContext.inputFile` are replaced by `SsgContext.file`
+
 ## [1.7.7] - 2024-05-17
 
 ### Changed

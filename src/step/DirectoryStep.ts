@@ -2,7 +2,7 @@ import { SsgStep } from "./SsgStep.js"
 import { SsgContext } from "../SsgContext.js"
 import { SsgConfig } from "../SsgConfig"
 import path from "path"
-import { FileUtil } from "../util"
+import { FileUtil, SsgFile } from "../util"
 
 export interface DirectoryResult {
   directoryCount: number;
@@ -35,12 +35,12 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
    * 3. returning the count of processed directories
    */
   async execute(context: SsgContext): Promise<DirectoryResult> {
-    context.inputFile = context.getInputFrom(this.templateFileName)
+    context.file = context.getInputFrom(this.templateFileName)
     const outputFilePath = path.join(this.config.outDir, this.templateFileName)
-    context.outputFile = context.getOutputFrom(outputFilePath)
+    const outputFile = context.getOutputFrom(outputFilePath)
     const dirNames = (await this.findDirs(this.rootDirs))
       .filter(dirName => !this.excludedDirs.includes(dirName))
-    await this.processDirs(context, dirNames)
+    await this.processDirs(context, dirNames, outputFile)
     return {directoryCount: dirNames.length}
   }
 
@@ -50,7 +50,7 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
    * The implementation of this method is responsible for writing the outputfile (using
    * `writeFileInfo(context.outputFile)` typically), if any.
    */
-  protected abstract processDirs(context: SsgContext, dirames: string[]): Promise<void>
+  protected abstract processDirs(context: SsgContext, dirNames: string[], outputFile: SsgFile): Promise<void>
 
   protected async findDirs(fromDirs: string[]): Promise<string[]> {
     let dirNames: string[] = []

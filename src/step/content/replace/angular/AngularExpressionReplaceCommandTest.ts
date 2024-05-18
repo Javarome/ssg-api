@@ -1,6 +1,6 @@
-import { AngularExpressionReplaceCommand } from './AngularExpressionReplaceCommand';
-import { testUtil } from '../../../../../test/TestUtil';
-import { describe, expect, test } from '@javarome/testscript';
+import { AngularExpressionReplaceCommand } from "./AngularExpressionReplaceCommand"
+import { testUtil } from "../../../../../test/TestUtil"
+import { describe, expect, test } from "@javarome/testscript"
 
 describe("AngularExpressionReplaceCommand", () => {
 
@@ -10,7 +10,7 @@ describe("AngularExpressionReplaceCommand", () => {
     context.setVar("name", "Jérôme")
     const command = new AngularExpressionReplaceCommand()
     await command.execute(context)
-    expect(context.outputFile.contents).toBe(`my name is Jérôme`)
+    expect(context.file.contents).toBe(`my name is Jérôme`)
   })
 
   test("replace numbers", async () => {
@@ -19,7 +19,7 @@ describe("AngularExpressionReplaceCommand", () => {
     context.setVar("price", 39500)
     const command = new AngularExpressionReplaceCommand()
     await command.execute(context)
-    expect(context.outputFile.contents).toBe(`The price is 39 500`)
+    expect(context.file.contents).toBe(`The price is 39 500`)
   })
 
   test("replace context value", async () => {
@@ -29,6 +29,6 @@ describe("AngularExpressionReplaceCommand", () => {
     context.setVar("price", 39500)
     const command = new AngularExpressionReplaceCommand()
     await command.execute(context)
-    expect(context.outputFile.contents).toBe(`The context is My context`)
+    expect(context.file.contents).toBe(`The context is My context`)
   })
 })

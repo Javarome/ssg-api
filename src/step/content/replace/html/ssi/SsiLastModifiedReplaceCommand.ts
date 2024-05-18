@@ -1,6 +1,6 @@
-import { RegexReplaceCommand } from '../../RegexReplaceCommand.js';
-import { RegexReplacer } from '../../RegexReplacer.js';
-import { SsgContext } from '../../../../../SsgContext.js';
+import { RegexReplaceCommand } from "../../RegexReplaceCommand.js"
+import { RegexReplacer } from "../../RegexReplacer.js"
+import { SsgContext } from "../../../../../SsgContext.js"
 
 export class SsiLastModifiedReplaceCommand extends RegexReplaceCommand {
 
@@ -12,7 +12,7 @@ export class SsiLastModifiedReplaceCommand extends RegexReplaceCommand {
     return {
       replace: (substring: string, ...args: any[]): string => {
         const timeFormat = args[0];  // TODO: Support it
-        const fileInfo = context.inputFile;
+        const fileInfo = context.file
         return fileInfo.lastModified.toLocaleDateString(context.locale, this.options);
       }
     };

@@ -1,4 +1,4 @@
-import {HtAccessReplaceCommand} from "./HtAccessReplaceCommand.js"
+import { HtAccessReplaceCommand } from "./HtAccessReplaceCommand.js"
 
 export class HtAccessToNetlifyRedirectsReplaceCommand extends HtAccessReplaceCommand {
 
@@ -14,15 +14,14 @@ export class HtAccessToNetlifyRedirectsReplaceCommand extends HtAccessReplaceCom
       const trailingTo = path.endsWith("/")
       path += (trailingTo ? "" : "/") + ":splat"
     }
-    return `${from} /${path}\n`
+    return `${from} /${path}`
   }
 
-  protected handleDirectoryIndex(args: string[], result: string): string {
+  protected handleDirectoryIndex(args: string[], result: string[]): void {
     const files = args.splice(1)
     for (const file of files) {
-      result += `/* ${file}\n`
+      result.push(`/* ${file}`)
     }
-    //result += `/*/ /:splat/${args[1]}\n`
-    return result
+    //result.push(`/*/ /:splat/${args[1]}`)
   }
 }

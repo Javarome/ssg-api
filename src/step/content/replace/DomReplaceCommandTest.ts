@@ -1,8 +1,8 @@
-import { DomReplaceCommand } from './DomReplaceCommand';
-import { HtmlSsgContext } from '../../../HtmlSsgContext';
-import { DomReplacer } from './DomReplacer';
-import { testUtil } from '../../../../test/TestUtil';
-import { describe, expect, test } from '@javarome/testscript';
+import { DomReplaceCommand } from "./DomReplaceCommand"
+import { HtmlSsgContext } from "../../../HtmlSsgContext"
+import { DomReplacer } from "./DomReplacer"
+import { testUtil } from "../../../../test/TestUtil"
+import { describe, expect, test } from "@javarome/testscript"
 
 describe("DomReplaceCommand", () => {
 
@@ -26,8 +26,9 @@ describe("DomReplaceCommand", () => {
     }("a")
     const context = testUtil.newHtmlContext("test.xml", `<a href="link">text</a>`)
     expect(command.postExecuted).toBe(false)
-    const outFile = await command.execute(context)
+    await command.execute(context)
     expect(command.postExecuted).toBe(true)
-    expect(outFile.contents).toBe(`<html><head><meta name="generator" content="ssg-api"></head><body><a href="link" data-prop="value">text</a></body></html>`)
+    expect(context.file.contents).toBe(
+      `<html><head><meta name="generator" content="ssg-api"></head><body><a href="link" data-prop="value">text</a></body></html>`)
   })
 })
