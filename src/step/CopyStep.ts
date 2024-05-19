@@ -1,9 +1,15 @@
-import { SsgStep } from './SsgStep.js';
-import { SsgContext } from '../SsgContext.js';
-import { FileUtil } from '../util/index.js';
-import * as process from 'process';
-import { IOptions } from 'glob';
-import { SsgConfig } from '../SsgConfig';
+import { SsgStep } from "./SsgStep.js"
+import { SsgContext } from "../SsgContext.js"
+import * as process from "process"
+import { IOptions } from "glob"
+import { SsgConfig } from "../SsgConfig"
+import { FileUtil } from "../util"
+import path from "path"
+
+export interface CopyStepConfig extends SsgConfig {
+  readonly copies: string[]
+  readonly options?: IOptions
+}
 
 export type CopyStepResult = {
   files: string[]
@@ -16,15 +22,16 @@ export class CopyStep<C extends SsgContext = SsgContext> implements SsgStep<C, C
 
   readonly name = 'copy';
 
-  constructor(protected copies: string[], protected config: SsgConfig, protected options?: IOptions) {
+  constructor(protected config: CopyStepConfig) {
   }
 
   async execute(context: SsgContext): Promise<CopyStepResult> {
-    const copies: string[] = this.copies;
-    const dest = this.config.outDir;
+    const copies: string[] = this.config.copies
+    const destPath = this.config.getOutputPath(context)
+    const dest = path.dirname(destPath)
     try {
       context.log('Copying to', dest, copies);
-      const copiedFiles = await FileUtil.ssgCopy(dest, copies, this.options);
+      const copiedFiles = await FileUtil.ssgCopy(dest, copies, this.config.options)
       const cwd = process.cwd();
       const files = copiedFiles.map(file => file.startsWith(cwd) ? file.substring(cwd.length + 1) : file);
       return {files};

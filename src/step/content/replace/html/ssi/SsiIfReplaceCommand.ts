@@ -1,7 +1,12 @@
-import {RegexReplaceCommand} from "../../RegexReplaceCommand.js"
-import {RegexReplacer} from "../../RegexReplacer.js"
-import {SsgContext} from "../../../../../SsgContext.js"
+import { RegexReplaceCommand } from "../../RegexReplaceCommand.js"
+import { RegexReplacer } from "../../RegexReplacer.js"
+import { SsgContext } from "../../../../../SsgContext.js"
 
+/**
+ * Replaces by a value or another, depending on the evaluation of an expression.
+ * Syntax is SSI-like:
+ * <!--#if expr="someVar=someValue" -->result if true<!--#else-->result if false<!--#endif-->
+ */
 export class SsiIfReplaceCommand extends RegexReplaceCommand {
 
   protected readonly replacer = {

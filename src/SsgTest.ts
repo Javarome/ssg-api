@@ -1,13 +1,19 @@
-import { Ssg } from './Ssg';
-import { SsgContextImpl } from './SsgContextImpl';
-import { SsgStep } from './step';
-import { SsgContext } from './SsgContext';
-import { describe, expect, test } from '@javarome/testscript';
+import { Ssg } from "./Ssg"
+import { SsgContextImpl } from "./SsgContextImpl"
+import { SsgStep } from "./step"
+import { SsgContext } from "./SsgContext"
+import { describe, expect, test } from "@javarome/testscript"
+import { SsgConfig } from "./SsgConfig"
+import path from "path"
 
 describe("Ssg", function () {
 
   test("start", async () => {
-    const config = {outDir: "out/"}
+    const config: SsgConfig = {
+      getOutputPath(context: SsgContext): string {
+        return path.join("out", context.name)
+      }
+    }
     const step1 = new class implements SsgStep {
       async execute(context: SsgContext): Promise<any> {
         context.log("Doing step 1")

@@ -21,9 +21,9 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
   /**
    *
    * @param contentsConfigs The content roots and associated replacements to perform.
-   * @param output The function that writes the output contents once they are ready.
+   * @param write The function that writes the output contents once they are ready.
    */
-  constructor(protected contentsConfigs: ContentStepConfig<C>[], protected output: OutputFunc) {
+  constructor(protected contentsConfigs: ContentStepConfig<C>[], protected write: OutputFunc) {
   }
 
   async execute(context: C): Promise<ContentStepResult> {
@@ -70,16 +70,19 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    * @protected
    */
   protected async processFile(context: C, filePath: string, contentsConfig: ContentStepConfig): Promise<boolean> {
-    context.debug("Processing file", filePath)
-    context.file = context.getInputFrom(filePath)
-    const outputPath = contentsConfig.getOutputFile(context)
-    const outputFile = context.getOutputFrom(outputPath)
+    context.file = context.read(filePath)
     const processed = this.shouldProcess(context, contentsConfig)
     if (processed) {
+      context.debug("Processing", filePath)
       for (const replacement of contentsConfig.replacements) {
         await replacement.execute(context)
       }
-      await this.output(context, outputFile)
+      const outputPath = contentsConfig.getOutputPath(context)
+      const output = context.newOutput(outputPath)
+      context.debug("Writing", output.name)
+      await this.write(context, output)
+    } else {
+      context.debug("Not orocessing", filePath)
     }
     return processed
   }
@@ -95,7 +98,7 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    */
   protected shouldProcess(context: C, contentsConfig: ContentStepConfig): boolean {
     let inputHasChanged: boolean
-    const outputPath = contentsConfig.getOutputFile(context)
+    const outputPath = contentsConfig.getOutputPath(context)
     const outputExists = fs.existsSync(outputPath)
     if (outputExists) {
       const outputStats = fs.statSync(outputPath)

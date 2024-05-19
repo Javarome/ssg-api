@@ -21,10 +21,10 @@ describe("ContentStep", () => {
         context.error(info.name, e)
       }
     }
-    const contentConfigs = [{
+    const contentConfigs: ContentStepConfig[] = [{
       roots: ["test/*.html"],
       replacements: [],
-      getOutputFile(context: SsgContext) {
+      getOutputPath(context: SsgContext) {
         return path.join(outDir, context.file.name)
       }
     }]

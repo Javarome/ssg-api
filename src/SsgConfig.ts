@@ -1,3 +1,9 @@
-export type SsgConfig = {
-  outDir: string
+import { SsgContext } from "./SsgContext"
+
+export interface SsgConfig<C extends SsgContext = SsgContext> {
+  /**
+   * @param context
+   * @return the file where to output.
+   */
+  getOutputPath(context: C): string
 }

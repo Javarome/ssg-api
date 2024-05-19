@@ -1,8 +1,24 @@
 import { SsgStep } from "./SsgStep.js"
 import { SsgContext } from "../SsgContext.js"
 import { SsgConfig } from "../SsgConfig"
-import path from "path"
 import { FileUtil, SsgFile } from "../util"
+
+export interface DirectoryStepConfig extends SsgConfig {
+  /**
+   * A list of directories to look into.
+   */
+  readonly rootDirs: string[]
+
+  /**
+   * A list of directories to avoid looking into.
+   */
+  readonly excludedDirs: string[]
+
+  /**
+   * The name of the file containing the <--#echo var="directories"--> tag
+   */
+  readonly templateFileName: string
+}
 
 export interface DirectoryResult {
   directoryCount: number;
@@ -18,14 +34,10 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
   /**
    * Creates a new directory step.
    *
-   * @param rootDirs A list of directories to look into.
-   * @param excludedDirs A list of directories to avoid looking into.
-   * @param templateFileName The name of the file containing the <--#echo var="directories"--> tag
-   * @param config The SSG configuration.
+   * @param config The step configuration.
    * @param name The step name ("directory" by default)
    */
-  constructor(readonly rootDirs: string[], protected excludedDirs: string[], protected templateFileName: string,
-              protected config: SsgConfig, readonly name = "directory") {
+  constructor(protected config: DirectoryStepConfig, readonly name = "directory") {
   }
 
   /**
@@ -35,11 +47,11 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
    * 3. returning the count of processed directories
    */
   async execute(context: SsgContext): Promise<DirectoryResult> {
-    context.file = context.getInputFrom(this.templateFileName)
-    const outputFilePath = path.join(this.config.outDir, this.templateFileName)
-    const outputFile = context.getOutputFrom(outputFilePath)
-    const dirNames = (await this.findDirs(this.rootDirs))
-      .filter(dirName => !this.excludedDirs.includes(dirName))
+    context.file = context.read(this.config.templateFileName)
+    const outputFilePath = this.config.getOutputPath(context)
+    const outputFile = context.newOutput(outputFilePath)
+    const dirNames = (await this.findDirs(this.config.rootDirs))
+      .filter(dirName => !this.config.excludedDirs.includes(dirName))
     await this.processDirs(context, dirNames, outputFile)
     return {directoryCount: dirNames.length}
   }
@@ -67,7 +79,7 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
       const baseDir = ofDir.substring(0, ofDir.length - 3)
       if (baseDir.endsWith("/*")) {
         const dirs = (await this.findDirs([baseDir + "/"]))
-          .filter(dirName => !this.excludedDirs.includes(dirName))
+          .filter(dirName => !this.config.excludedDirs.includes(dirName))
         for (const dir of dirs) {
           subDirs = subDirs.concat(await this.findDirs([dir + "/*/"]))
         }

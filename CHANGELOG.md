@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.9.0] - 2024-05-20
+
+### Changed
+
+- `SsgConfig.outDir` is now `SsgConfig.getOutputPath(context)`
+- All steps configs now extend `SsgConfig` to benefit from output path resolution.
+
 ## [1.8.0] - 2024-05-18
 
 ### Changed

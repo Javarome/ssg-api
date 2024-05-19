@@ -96,27 +96,15 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     return this
   }
 
-  getOutputFrom(filePath: string): SsgFile {
-    let outFile: SsgFile
-    try {
-      outFile = this.readFile(filePath)
-      this.logger.debug("Read output file", outFile.name)
-    } catch (e) {
-      if ((e as any).code === "ENOENT") {
-        outFile = this.createOutput(filePath, this._file?.encoding || "utf-8")
-      } else {
-        throw e
-      }
-    }
-    return outFile
-  }
-
-  getInputFrom(filePath: string): SsgFile {
-    this.file = this.readFile(filePath)
+  read(filePath: string): SsgFile {
+    this.debug("Reading", filePath)
+    this.file = filePath.endsWith(".html")
+      ? HtmlSsgFile.read(this, filePath)
+      : SsgFile.read(this, filePath)
     return this.file
   }
 
-  createOutput(filePath: string, encoding: BufferEncoding): SsgFile {
+  newOutput(filePath: string, encoding: BufferEncoding = this._file?.encoding || "utf-8"): SsgFile {
     let outFile: SsgFile
     let lang: SsgFileLang
     try {
@@ -136,18 +124,5 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     }
     this.logger.debug("Created new output file", outFile.name)
     return outFile
-  }
-
-  /**
-   * Reads a file in this context.
-   *
-   * @param fileName The name of the file.
-   * @returns {SsgFile}
-   * @protected
-   */
-  protected readFile(fileName: string): SsgFile {
-    return fileName.endsWith(".html")
-      ? HtmlSsgFile.read(this, fileName)
-      : SsgFile.read(this, fileName)
   }
 }
