@@ -3,6 +3,7 @@ import { ObjectUtil } from "./util/ObjectUtil.js"
 import { ConsoleLogger } from "./ConsoleLogger"
 import { Logger } from "./Logger.js"
 import { HtmlSsgFile, SsgFile, SsgFileLang } from "./util"
+import * as assert from "node:assert"
 
 export class SsgContextImpl<V = any> implements SsgContext<V> {
 
@@ -43,7 +44,8 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
   protected _file: SsgFile | undefined
 
   get file(): SsgFile {
-    return ObjectUtil.asSet(this._file, "Should have a inputFile")
+    assert.ok(this._file, "Should have a file")
+    return this._file
   }
 
   set file(value: SsgFile) {

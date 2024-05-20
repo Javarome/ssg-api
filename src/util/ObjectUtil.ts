@@ -1,8 +1,4 @@
-export class AssertionError extends Error {
-  constructor(message: string) {
-    super(message)
-  }
-}
+import * as assert from "node:assert"
 
 export class ObjectUtil {
 
@@ -15,9 +11,7 @@ export class ObjectUtil {
   }
 
   static asSet<T>(obj?: T | null, msg?: string): T {
-    if (this.isNotSet(obj)) {
-      throw new AssertionError(msg ?? "value is not set")
-    }
+    assert.ok(!this.isNotSet(obj))
     return obj!
   }
 }

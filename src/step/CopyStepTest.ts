@@ -7,18 +7,19 @@ import { SsgContext } from "../SsgContext"
 describe("CopyStep", () => {
 
   test("copy", async () => {
-    const outDir = "out"
+    const destDir = "out/"
     const config: CopyStepConfig = {
-      copies: ["**/test.html", "**/*.bpmn"],
+      destDir,
+      sourcePatterns: ["**/test.html", "**/*.bpmn"],
       getOutputPath(context: SsgContext): string {
-        return path.join(outDir, context.name)
+        return path.join(destDir, context.name)
       },
-      options: {ignore: "out/**"}
+      options: {ignore: path.join(destDir, "**")}
     }
     const step = new CopyStep(config)
     const context = new SsgContextImpl("fr")
     const result = await step.execute(context)
     expect(result).toEqual(
-      {files: [outDir + "/test/test.html", outDir + "/test/dir/example.bpmn"]})
+      {files: [path.join(destDir, "test/test.html"), path.join(destDir, "test/dir/example.bpmn")]})
   })
 })

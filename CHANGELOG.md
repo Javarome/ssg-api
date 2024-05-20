@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.9.1] - 2024-05-20
+
+### Changed
+
+- `DirectoryStep.config` visibility to public readonly.
+
+### Fixed
+
+- `CopyStep` now uses its config `outDir`.
+
 ## [1.9.0] - 2024-05-20
 
 ### Changed

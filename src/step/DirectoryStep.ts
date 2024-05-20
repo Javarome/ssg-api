@@ -37,7 +37,7 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
    * @param config The step configuration.
    * @param name The step name ("directory" by default)
    */
-  constructor(protected config: DirectoryStepConfig, readonly name = "directory") {
+  constructor(readonly config: DirectoryStepConfig, readonly name = "directory") {
   }
 
   /**
