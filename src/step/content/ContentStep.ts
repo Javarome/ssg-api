@@ -82,7 +82,7 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
       context.debug("Writing", output.name)
       await this.write(context, output)
     } else {
-      context.debug("Not orocessing", filePath)
+      context.debug("Skipping", filePath)
     }
     return processed
   }

@@ -2,6 +2,7 @@ import { SsgStep } from "./SsgStep.js"
 import { SsgContext } from "../SsgContext.js"
 import { SsgConfig } from "../SsgConfig"
 import { FileUtil, SsgFile } from "../util"
+import path from "path"
 
 export interface DirectoryStepConfig extends SsgConfig {
   /**
@@ -84,7 +85,7 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
           subDirs = subDirs.concat(await this.findDirs([dir + "/*/"]))
         }
       } else {
-        subDirs = (await FileUtil.dirNames(baseDir)).map(x => baseDir + "/" + x)
+        subDirs = (await FileUtil.dirNames(baseDir)).map(x => path.join(baseDir, x))
       }
     } else {
       subDirs = [ofDir]
