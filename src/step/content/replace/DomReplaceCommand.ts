@@ -12,10 +12,14 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C e
     let contents = inputFile.contents
     let result = contents
     const replacer = await this.createReplacer(context)
+    const doc = inputFile.document
+    if (!doc) {
+      throw Error(inputFile.name + " has is not an HTML file")
+    }
+    const docEl = doc.documentElement
     do {
       contents = result
-      const doc = inputFile.document.documentElement
-      const elements = doc.querySelectorAll<T>(this.selector)
+      const elements = docEl.querySelectorAll<T>(this.selector)
       if (elements.length > 0) {
         for (const element of elements) {
           const replaced = await replacer.replace(element)
