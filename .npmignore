@@ -5,5 +5,4 @@ jest*.*
 **/*Test.*
 test/**/*
 src/**/*
-out/**/*
 dist/test/**/*

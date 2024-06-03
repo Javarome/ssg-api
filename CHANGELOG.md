@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.10.0] - 2024-06-03
+
+### Changed
+
+- the `VarRegexReplacer` used by `StringEchoVarReplaceCommand` and `SsiEchoVarCommand` defaults to generic replacements when no variable name is specified.
+
 ## [1.9.1] - 2024-05-20
 
 ### Changed
@@ -47,6 +53,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.7.5] - 2024-05-15
 
 ### Changed
+
 - `SsgContext.read(filename)` becomes `SsgContext.getInputFrom(filename)` to denote it affects the context's `inputFile`.
 - `SsgContext.readOrNew(filename, dir)` becomes `SsgContext.setOutputFrom(filename)` to denote it affects the context's `outputFile`.
 - `HtmlSsgFile.create(fileInfo, fileContents)` becomes `HtmlSsgFile.create(fileInfo)` to denote it uses `fileInfo`'s `contents`.
@@ -54,42 +61,51 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.7.4] - 2024-04-13
 
 ### Fixed
+
 HTML lang overrides lang from filename.
 
 ## [1.7.3] - 2024-04-10
 
 ### Fixed
+
 Update document title from SsgFile title.
 
 ### Changed
+
 `ContentStep.processFile()` hasn't `fileCount` parameter anymore and returns a `boolean`.
 
 ## [1.7.2] - 2024-02-22
 
 ### Changed
+
 Replaced native charset detection by JS one.
 
 ## [1.7.0] - 2024-01-17
 
 ### Added
+
 Add `generator` meta info as `ssg-api` by default.
 
 ### Fixed
+
 Serialize meta info.
 
 ## [1.6.0] - 2023-12-10
 
 ### Added
+
 `ReplaceCommand.contentStepEnd()` callback when the relevant ContentStep is terminating.
 
 ## [1.5.2] - 2023-11-02
 
 ### Fixed
+
 `FileUtil.ssgCopy()` removed `cpy` dependency which has a bug causing output dir not always applied.
 
 ## [1.5.1] - 2023-10-21
 
 ### Fixed
+
 Replaced jest by testscript
 
 ## [1.5.0] - 2023-09-16
@@ -108,13 +124,13 @@ Replaced jest by testscript
 
 ### Fixed
 
-- Read files from context now read HTML files as such. 
+- Read files from context now read HTML files as such.
 
 ## [1.4.3] - 2023-04-23
 
 ### Fixed
 
-- Read files from context now read HTML files as such. 
+- Read files from context now read HTML files as such.
 
 ## [1.4.2] - 2023-01-22
 

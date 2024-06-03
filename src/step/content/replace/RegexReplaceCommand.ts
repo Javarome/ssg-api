@@ -24,7 +24,7 @@ export abstract class RegexReplaceCommand<V = any, C extends SsgContext = SsgCon
     do {
       contents = result
       result = contents.replace(this.regex, replaceFunc)
-    } while (result != contents)
+    } while (result !== contents)
     context.file.contents = result
   }
 
