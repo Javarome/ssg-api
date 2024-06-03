@@ -6,7 +6,7 @@ import { describe, expect, test } from "@javarome/testscript"
 
 describe("SsiEchoVarReplaceCommand", () => {
 
-  test("", async () => {
+  test("replace a var", async () => {
     const command = new class extends SsiEchoVarReplaceCommand {
       protected async createReplacer(context: HtmlSsgContext): Promise<RegexReplacer> {
         return {
