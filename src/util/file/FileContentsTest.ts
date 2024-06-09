@@ -1,7 +1,7 @@
 import { FileContents } from "./FileContents"
 import { describe, expect, test } from "@javarome/testscript"
 
-describe('SsgFile', () => {
+describe("FileContents", () => {
 
   test('lang', () => {
     const langDefault = FileContents.getLang("test/test.html")

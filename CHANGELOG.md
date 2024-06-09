@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.10.3] - 2024-06-09
+
+### Fixed
+
+- Leave literal template unchanged if no var is found with this name.
+
 ## [1.10.1] - 2024-06-03
 
 ### Fixed
@@ -44,7 +50,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-- `ContentStepConfig.getOutputFile(context)` can now return SsgFile or file path
+- `ContentStepConfig.getOutputFile(context)` can now return FileContents or file path
 
 ## [1.7.6] - 2024-05-17
 
@@ -62,7 +68,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - `SsgContext.read(filename)` becomes `SsgContext.getInputFrom(filename)` to denote it affects the context's `inputFile`.
 - `SsgContext.readOrNew(filename, dir)` becomes `SsgContext.setOutputFrom(filename)` to denote it affects the context's `outputFile`.
-- `HtmlSsgFile.create(fileInfo, fileContents)` becomes `HtmlSsgFile.create(fileInfo)` to denote it uses `fileInfo`'s `contents`.
+- `HtmlFileContents.create(fileInfo, fileContents)` becomes `HtmlFileContents.create(fileInfo)` to denote it uses `fileInfo`'s `contents`.
 
 ## [1.7.4] - 2024-04-13
 
@@ -74,7 +80,7 @@ HTML lang overrides lang from filename.
 
 ### Fixed
 
-Update document title from SsgFile title.
+Update document title from FileContents title.
 
 ### Changed
 
@@ -118,7 +124,7 @@ Replaced jest by testscript
 
 ### Added
 
-- HtmlSsgFile:meta.description
+- HtmlFileContents:meta.description
 
 ## [1.4.5] - 2023-04-23
 
@@ -238,7 +244,7 @@ Replaced jest by testscript
 
 ### Added
 
-- `SsgFileLang.variants` can contain `""` if there is the same file is found without language suffix.
+- `FileContentsLang.variants` can contain `""` if there is the same file is found without language suffix.
 
 ## [1.2.5] - 2022-11-13
 
@@ -250,13 +256,13 @@ Replaced jest by testscript
 
 ### Fixed
 
-- `SsgFile.lang.variants` don't include current `SsgFile.lang.lang`
+- `FileContents.lang.variants` don't include current `FileContents.lang.lang`
 
 ## [1.2.3] - 2022-11-13
 
 ### Fixed
 
-- Find `SsgFile.lang.variants` for path with no directory.
+- Find `FileContents.lang.variants` for path with no directory.
 
 ## [1.2.2] - 2022-11-13
 
@@ -274,7 +280,7 @@ Replaced jest by testscript
 
 ### Changed
 
-- `SsgFile.lang` changed from a single string to a `{ lang, variants }` so that you can know which variants of a file exist.
+- `FileContents.lang` changed from a single string to a `{ lang, variants }` so that you can know which variants of a file exist.
 
 ## [1.1.1] - 2022-11-11
 
@@ -294,14 +300,14 @@ _However it contains a regression that prevents HTML files to be parsed, so use 
 
 ### Added
 
-- `SsgFile.readOrNew()` to allow creating a SsgFile in memory that doesn't exist on disk.
+- `FileContents.readOrNew()` to allow creating a FileContents in memory that doesn't exist on disk.
 
 ### Changed
 
-- `FileInfo` renamed as `SsgFile` to both improve consistency and avoid name collisions.
-- `HtmlFileInfo` renamed as `HtmlSsgFile` for the same reasons.
-- `writeFileInfo()` becomes `ssgFile.write()`
-- `getFileInfo()` becomes `SsgFile.read()`
+- `FileInfo` renamed as `FileContents` to both improve consistency and avoid name collisions.
+- `HtmlFileInfo` renamed as `HtmlFileContents` for the same reasons.
+- `writeFileInfo()` becomes `FileContents.write()`
+- `getFileInfo()` becomes `FileContents.read()`
 - `SsgContext.locale` becomes a single string (not an array of strings anymore) as you cannot output for multiple languages at once (use one context per language if you need to do so).
 
 ### Fixed

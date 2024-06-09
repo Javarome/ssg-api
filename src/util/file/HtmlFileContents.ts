@@ -1,4 +1,4 @@
-import { FileContents, SsgFileLang } from "./FileContents"
+import { FileContents, FileContentsLang } from "./FileContents"
 import { JSDOM } from "jsdom"
 import { HtmlUtil } from "./HtmlUtil"
 
@@ -37,12 +37,12 @@ export type HtmlLinks = {
  *   - `<link>` tags values
  *   - `<title>` tag content
  */
-export class HtmlSsgFile extends FileContents {
+export class HtmlFileContents extends FileContents {
 
   static readonly generator = "ssg-api"
 
   constructor(
-    name: string, encoding: BufferEncoding, contents: string, lastModified: Date, lang: SsgFileLang,
+    name: string, encoding: BufferEncoding, contents: string, lastModified: Date, lang: FileContentsLang,
     readonly meta: HtmlMeta, readonly links: HtmlLinks, public title?: string) {
     super(name, encoding, contents, lastModified, lang)
   }
@@ -77,17 +77,17 @@ export class HtmlSsgFile extends FileContents {
     this._contents = value
   }
 
-  static read(fileName: string): HtmlSsgFile {
+  static read(fileName: string): HtmlFileContents {
     const fileInfo = super.read(fileName)
     return this.create(fileInfo)
   }
 
   /**
-   * Create an HtmlSsgFile from a SsgFile
+   * Create an HtmlFileContents from a FileContents
    *
    * @param fileInfo
    */
-  static create(fileInfo: FileContents): HtmlSsgFile {
+  static create(fileInfo: FileContents): HtmlFileContents {
     const dom = new JSDOM(fileInfo.contents)
     const declaredEncoding = HtmlUtil.getHtmlDeclaredEncoding(dom)
     if (declaredEncoding !== fileInfo.encoding) {
@@ -106,18 +106,19 @@ export class HtmlSsgFile extends FileContents {
       title = split > 0 ? elemTitle.substring(0, split) : elemTitle
       title = title?.replace(/\s{2,}/g, " ").replace(/[\n\t]/, " ")
     }
-    const url = HtmlSsgFile.getMeta("url", doc)[0]
-    const author = HtmlSsgFile.getMeta("author", doc)
-    const copyright = HtmlSsgFile.getMeta("copyright", doc)[0]
-    const description = HtmlSsgFile.getMeta("description", doc)[0]
-    const generator = HtmlSsgFile.getMeta("generator", doc)[0] || HtmlSsgFile.generator
+    const url = HtmlFileContents.getMeta("url", doc)[0]
+    const author = HtmlFileContents.getMeta("author", doc)
+    const copyright = HtmlFileContents.getMeta("copyright", doc)[0]
+    const description = HtmlFileContents.getMeta("description", doc)[0]
+    const generator = HtmlFileContents.getMeta("generator", doc)[0] || HtmlFileContents.generator
     const meta: HtmlMeta = {url, author, copyright, description, generator}
-    const start = HtmlSsgFile.getLink(LinkType.start, doc)
-    const contents = HtmlSsgFile.getLink(LinkType.contents, doc)
-    const prev = HtmlSsgFile.getLink(LinkType.prev, doc)
-    const next = HtmlSsgFile.getLink(LinkType.next, doc)
+    const start = HtmlFileContents.getLink(LinkType.start, doc)
+    const contents = HtmlFileContents.getLink(LinkType.contents, doc)
+    const prev = HtmlFileContents.getLink(LinkType.prev, doc)
+    const next = HtmlFileContents.getLink(LinkType.next, doc)
     const links: HtmlLinks = {start, contents, prev, next}
-    return new HtmlSsgFile(fileInfo.name, fileInfo.encoding, fileInfo.contents, fileInfo.lastModified, fileInfo.lang,
+    return new HtmlFileContents(fileInfo.name, fileInfo.encoding, fileInfo.contents, fileInfo.lastModified,
+      fileInfo.lang,
       meta, links, title)
   }
 

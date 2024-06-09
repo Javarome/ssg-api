@@ -1,6 +1,6 @@
 import { ContentStep } from "./ContentStep"
 import { SsgContext } from "../../SsgContext"
-import { FileContents, HtmlSsgFile } from "../../util"
+import { FileContents, HtmlFileContents } from "../../util"
 import { SsgContextImpl } from "../../SsgContextImpl"
 import path from "path"
 import fs from "fs"
@@ -36,7 +36,7 @@ describe("ContentStep", () => {
     const context = new SsgContextImpl("fr")
     const result = await step.execute(context)
     expect(result).toEqual({contentCount: 4})
-    const outputFile = context.file as HtmlSsgFile
+    const outputFile = context.file as HtmlFileContents
     expect(outputFile.meta.author).toEqual(["Jérôme Beau"])
     expect(outputFile.meta.url).toBe("https://rr0.org/tech/info/soft")
     expect(outputFile.meta.copyright).toBe("RR0")

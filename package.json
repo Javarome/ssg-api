@@ -2,7 +2,7 @@
   "name": "ssg-api",
   "type": "module",
   "author": "Jérôme Beau <javarome@gmail.com> (https://javarome.com)",
-  "version": "1.10.2",
+  "version": "1.10.3",
   "description": "Static Site Generation TypeScript API",
   "exports": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -16,9 +16,9 @@
     "url": "git+https://github.com/Javarome/ssg-api.git"
   },
   "scripts": {
-    "prebuild": "npm install",
+    "prebuild": "npm install && npm test",
     "build": "rm -Rf dist && tsc --project tsconfig.prod.json",
-    "prepublishOnly": "npm run build && npm test",
+    "prepublishOnly": "npm run build",
     "test": "rm -Rf out && tsx src/testAll.ts",
     "test-one": "rm -Rf out && tsx src/step/content/replace/html/StringEchoVarReplaceCommandTest.ts",
     "test-ci": "rm -Rf out && tsx src/testAll.ts"

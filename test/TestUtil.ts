@@ -1,5 +1,5 @@
 import { ObjectUtil } from "../src/util/ObjectUtil"
-import { FileContents, HtmlSsgContext, HtmlSsgFile, SsgContext, SsgContextImpl } from "../src"
+import { FileContents, HtmlFileContents, HtmlSsgContext, SsgContext, SsgContextImpl } from "../src"
 
 class TestUtil {
 
@@ -22,7 +22,7 @@ class TestUtil {
       title = titleExec && titleExec.length > 0 ? titleExec[1].trim() : undefined
     }
     const currentFile = context.file
-    context.file = new HtmlSsgFile(currentFile.name, currentFile.encoding, currentFile.contents,
+    context.file = new HtmlFileContents(currentFile.name, currentFile.encoding, currentFile.contents,
       currentFile.lastModified, currentFile.lang, {author: []}, {}, title)
     return context as HtmlSsgContext
   }

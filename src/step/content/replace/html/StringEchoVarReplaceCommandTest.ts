@@ -17,10 +17,16 @@ describe("StringEchoVarReplaceCommand", () => {
   test("replaces alls var in string", async () => {
     const command = new StringEchoVarReplaceCommand()
     const context = testUtil.newHtmlContext("Contact.html",
-      `<a href="mailto:\$\{mail\}">Ecrire à \$\{mail\}</a>`)
+      `<script>
+var x = 12; console.log('x = \${x}')
+</script>
+<a href="mailto:\$\{mail\}">Ecrire à \$\{mail\}</a>`)
     context.setVar("mail", "javarome@gmail.com")
     expect(context.getVar("mail")).toBe("javarome@gmail.com")
     await command.execute(context)
-    expect(context.file.contents).toBe(`<a href="mailto:javarome@gmail.com">Ecrire à javarome@gmail.com</a>`)
+    expect(context.file.contents).toBe(`<script>
+var x = 12; console.log('x = \${x}')
+</script>
+<a href="mailto:javarome@gmail.com">Ecrire à javarome@gmail.com</a>`)
   })
 })

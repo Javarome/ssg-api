@@ -5,7 +5,7 @@ import { FileUtil } from "./FileUtil.js"
 /**
  * Language info about a file.
  */
-export type SsgFileLang = {
+export type FileContentsLang = {
   /**
    * The detected language for the file ("fr" for instance).
    */
@@ -55,7 +55,7 @@ export class FileContents {
     /**
      * Language info about the file.
      */
-    readonly lang: SsgFileLang
+    readonly lang: FileContentsLang
   ) {
   }
 
@@ -68,7 +68,7 @@ export class FileContents {
   }
 
   /**
-   * Read a file to produce a SsgFile, or fail if the file doesn't exist.
+   * Read a file to produce a FileContents, or fail if the file doesn't exist.
    *
    * @param fileName
    * @param declaredEncoding The encoding for enforce, if any (if you know the guess will be wrong for instance).
@@ -81,7 +81,7 @@ export class FileContents {
   }
 
   /**
-   * Read a file or instantiate a brand new SsgFile if it doesn't exist.
+   * Read a file or instantiate a brand new FileContents if it doesn't exist.
    *
    * @param fileName
    * @param declaredEncoding The encoding for enforce, if any (if you know the guess will be wrong for instance).
@@ -104,7 +104,7 @@ export class FileContents {
    *
    * @param filePath The path of the file to guess language for.
    */
-  static getLang(filePath: string): SsgFileLang {
+  static getLang(filePath: string): FileContentsLang {
     const exec = FileContents.filePathRegex.exec(filePath)
     let lang: string | undefined
     let variants: string[] = []

@@ -1,11 +1,11 @@
-import { HtmlSsgFile, LinkType } from "./HtmlSsgFile"
+import { HtmlFileContents, LinkType } from "./HtmlFileContents"
 import { describe, expect, test } from "@javarome/testscript"
 
-describe("HtmlSsgFile", () => {
+describe("HtmlFileContents", () => {
 
   test("defined title", () => {
     const fileName = "test/test.html"
-    const inputFile = HtmlSsgFile.read(fileName)
+    const inputFile = HtmlFileContents.read(fileName)
     expect(inputFile.title).toBe("Some title")
     expect(inputFile.meta.author).toEqual(["Jérôme Beau"])
     expect(inputFile.meta.url).toBe("https://rr0.org/tech/info/soft")
@@ -16,7 +16,7 @@ describe("HtmlSsgFile", () => {
 
   test("undefined title", () => {
     const fileName = "test/test.html"
-    const inputFile = HtmlSsgFile.read(fileName)
+    const inputFile = HtmlFileContents.read(fileName)
     expect(inputFile.title).toBe("Some title")  // // TODO: Fix mocking to really have undefined title
     expect(inputFile.meta.author).toEqual(["Jérôme Beau"])
     expect(inputFile.meta.url).toBe("https://rr0.org/tech/info/soft")
@@ -25,7 +25,7 @@ describe("HtmlSsgFile", () => {
 
   test("split title", () => {
     const fileName = "test/test_split.html"
-    const inputFile = HtmlSsgFile.read(fileName)
+    const inputFile = HtmlFileContents.read(fileName)
     expect(inputFile.title).toBe("Some split title")  // // TODO: Fix mocking to really have undefined title
   })
 })

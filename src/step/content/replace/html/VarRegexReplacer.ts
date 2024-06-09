@@ -9,12 +9,12 @@ export class VarRegexReplacer<C extends SsgContext = SsgContext> implements Rege
               protected defaultHandlers: StringContextHandler<C>[] = []) {
   }
 
-  replace(_match: string, ...args: any[]): string {
+  replace(match: string, ...args: any[]): string {
     let varStr: string | undefined = this.context.getVar(
       this.varName === VarRegexReplacer.REGEXP_DEFAULT ? args[0] : this.varName)
     if (!varStr) {
       this.defaultHandlers.some(handle => !varStr && (varStr = handle(this.context)))
     }
-    return varStr || ""
+    return varStr || match
   }
 }

@@ -2,7 +2,7 @@ import { SsgContext } from "./SsgContext.js"
 import { ObjectUtil } from "./util/ObjectUtil.js"
 import { ConsoleLogger } from "./ConsoleLogger"
 import { Logger } from "./Logger.js"
-import { FileContents, HtmlSsgFile, SsgFileLang } from "./util"
+import { FileContents, FileContentsLang, HtmlFileContents } from "./util"
 import * as assert from "node:assert"
 
 export class SsgContextImpl<V = any> implements SsgContext<V> {
@@ -101,14 +101,14 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
   read(filePath: string): FileContents {
     this.debug("Reading", filePath)
     this.file = filePath.endsWith(".html")
-      ? HtmlSsgFile.read(filePath)
+      ? HtmlFileContents.read(filePath)
       : FileContents.read(filePath)
     return this.file
   }
 
   newOutput(filePath: string, encoding: BufferEncoding = this._file?.encoding || "utf-8"): FileContents {
     let outFile: FileContents
-    let lang: SsgFileLang
+    let lang: FileContentsLang
     try {
       lang = FileContents.getLang(filePath)
     } catch (e) {
@@ -120,7 +120,7 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     const creationDate = new Date()
     if (filePath.endsWith(".html")) {
       const fileInfo: FileContents = new FileContents(filePath, encoding, this.file.contents, creationDate, lang)
-      outFile = HtmlSsgFile.create(fileInfo)
+      outFile = HtmlFileContents.create(fileInfo)
     } else {
       outFile = new FileContents(filePath, encoding, this.file.contents, creationDate, lang)
     }
