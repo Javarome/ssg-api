@@ -30,7 +30,7 @@ export class CopyStep<C extends SsgContext = SsgContext> implements SsgStep<C, C
     const dest = this.config.destDir
     try {
       context.log("Copying to", dest, copies)
-      const copiedFiles = await FileUtil.ssgCopy(dest, copies, this.config.options)
+      const copiedFiles = await FileUtil.copy(dest, copies, this.config.options)
       const cwd = process.cwd()
       const files = copiedFiles.map(file => file.startsWith(cwd) ? file.substring(cwd.length + 1) : file)
       return {files}

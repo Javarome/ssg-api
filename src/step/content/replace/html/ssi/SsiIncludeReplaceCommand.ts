@@ -2,7 +2,7 @@ import path from "path"
 import { RegexReplaceCommand } from "../../RegexReplaceCommand.js"
 import { RegexReplacer } from "../../RegexReplacer.js"
 import { SsgContext } from "../../../../../SsgContext.js"
-import { SsgFile } from "../../../../../util/index.js"
+import { FileContents } from "../../../../../util"
 
 /**
  * Replaces SSI's `<!-- #include virtual="myFileName" -->` by fileName's contents.
@@ -29,7 +29,7 @@ export class SsiIncludeReplaceCommand extends RegexReplaceCommand {
           }
         }
         const fileName = path.join(currentDir, toInclude)
-        const replacement = SsgFile.read(context, fileName)
+        const replacement = FileContents.read(fileName)
         return replacement.contents
       }
     }

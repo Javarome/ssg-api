@@ -1,8 +1,7 @@
 import { SsgStep } from "./SsgStep.js"
 import { SsgContext } from "../SsgContext.js"
 import { SsgConfig } from "../SsgConfig"
-import { FileUtil, SsgFile } from "../util"
-import path from "path"
+import { FileContents, FileUtil } from "../util"
 
 export interface DirectoryStepConfig extends SsgConfig {
   /**
@@ -51,8 +50,7 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
     context.file = context.read(this.config.templateFileName)
     const outputFilePath = this.config.getOutputPath(context)
     const outputFile = context.newOutput(outputFilePath)
-    const dirNames = (await this.findDirs(this.config.rootDirs))
-      .filter(dirName => !this.config.excludedDirs.includes(dirName))
+    const dirNames = await FileUtil.findDirs(this.config.rootDirs, this.config.excludedDirs)
     await this.processDirs(context, dirNames, outputFile)
     return {directoryCount: dirNames.length}
   }
@@ -63,33 +61,5 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
    * The implementation of this method is responsible for writing the outputfile (using
    * `writeFileInfo(context.outputFile)` typically), if any.
    */
-  protected abstract processDirs(context: SsgContext, dirNames: string[], outputFile: SsgFile): Promise<void>
-
-  protected async findDirs(fromDirs: string[]): Promise<string[]> {
-    let dirNames: string[] = []
-    for (let fromDir of fromDirs) {
-      const subDirs = await this.findSubDirs(fromDir)
-      dirNames = dirNames.concat(subDirs)
-    }
-    return dirNames
-  }
-
-  protected async findSubDirs(ofDir: string): Promise<string[]> {
-    let subDirs: string[] = []
-    if (ofDir.endsWith("/*/")) {
-      const baseDir = ofDir.substring(0, ofDir.length - 3)
-      if (baseDir.endsWith("/*")) {
-        const dirs = (await this.findDirs([baseDir + "/"]))
-          .filter(dirName => !this.config.excludedDirs.includes(dirName))
-        for (const dir of dirs) {
-          subDirs = subDirs.concat(await this.findDirs([dir + "/*/"]))
-        }
-      } else {
-        subDirs = (await FileUtil.dirNames(baseDir)).map(x => path.join(baseDir, x))
-      }
-    } else {
-      subDirs = [ofDir]
-    }
-    return subDirs
-  }
+  protected abstract processDirs(context: SsgContext, dirNames: string[], outputFile: FileContents): Promise<void>
 }

@@ -2,7 +2,7 @@ import { SsgContext } from "./SsgContext.js"
 import { ObjectUtil } from "./util/ObjectUtil.js"
 import { ConsoleLogger } from "./ConsoleLogger"
 import { Logger } from "./Logger.js"
-import { HtmlSsgFile, SsgFile, SsgFileLang } from "./util"
+import { FileContents, HtmlSsgFile, SsgFileLang } from "./util"
 import * as assert from "node:assert"
 
 export class SsgContextImpl<V = any> implements SsgContext<V> {
@@ -20,7 +20,7 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
   constructor(readonly locale: string, protected vars: Map<string, any> = new Map<string, any>(),
               name = SsgContextImpl.DEFAULT_NAME,
               readonly logger: Logger = new ConsoleLogger(name),
-              currentFile: SsgFile | undefined = undefined) {
+              currentFile: FileContents | undefined = undefined) {
     this._file = currentFile
     this.stack.push(name)
     this.name = name
@@ -41,14 +41,14 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     this.logger.name = this.stack.join(":")
   }
 
-  protected _file: SsgFile | undefined
+  protected _file: FileContents | undefined
 
-  get file(): SsgFile {
+  get file(): FileContents {
     assert.ok(this._file, "Should have a file")
     return this._file
   }
 
-  set file(value: SsgFile) {
+  set file(value: FileContents) {
     this._file = value
   }
 
@@ -98,19 +98,19 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     return this
   }
 
-  read(filePath: string): SsgFile {
+  read(filePath: string): FileContents {
     this.debug("Reading", filePath)
     this.file = filePath.endsWith(".html")
-      ? HtmlSsgFile.read(this, filePath)
-      : SsgFile.read(this, filePath)
+      ? HtmlSsgFile.read(filePath)
+      : FileContents.read(filePath)
     return this.file
   }
 
-  newOutput(filePath: string, encoding: BufferEncoding = this._file?.encoding || "utf-8"): SsgFile {
-    let outFile: SsgFile
+  newOutput(filePath: string, encoding: BufferEncoding = this._file?.encoding || "utf-8"): FileContents {
+    let outFile: FileContents
     let lang: SsgFileLang
     try {
-      lang = SsgFile.getLang(this, filePath)
+      lang = FileContents.getLang(filePath)
     } catch (e) {
       if ((e as any).errno !== -2) {
         throw e
@@ -119,10 +119,10 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     }
     const creationDate = new Date()
     if (filePath.endsWith(".html")) {
-      const fileInfo: SsgFile = new SsgFile(filePath, encoding, this.file.contents, creationDate, lang)
+      const fileInfo: FileContents = new FileContents(filePath, encoding, this.file.contents, creationDate, lang)
       outFile = HtmlSsgFile.create(fileInfo)
     } else {
-      outFile = new SsgFile(filePath, encoding, this.file.contents, creationDate, lang)
+      outFile = new FileContents(filePath, encoding, this.file.contents, creationDate, lang)
     }
     this.logger.debug("Created new output file", outFile.name)
     return outFile

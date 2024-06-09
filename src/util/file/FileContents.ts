@@ -1,8 +1,6 @@
 import fs from "fs"
-import {SsgContext} from "../../SsgContext.js"
-import {JSDOM} from "jsdom"
-import {ObjectUtil} from "../ObjectUtil.js"
-import {FileUtil} from "./FileUtil.js"
+import { ObjectUtil } from "../ObjectUtil.js"
+import { FileUtil } from "./FileUtil.js"
 
 /**
  * Language info about a file.
@@ -26,7 +24,7 @@ export type SsgFileLang = {
 /**
  * A file as handled by Ssg.
  */
-export class SsgFile {
+export class FileContents {
   /**
    * A file path with "directory/prefix[_lang].ext"
    */
@@ -72,31 +70,29 @@ export class SsgFile {
   /**
    * Read a file to produce a SsgFile, or fail if the file doesn't exist.
    *
-   * @param context
    * @param fileName
    * @param declaredEncoding The encoding for enforce, if any (if you know the guess will be wrong for instance).
    */
-  static read(context: SsgContext, fileName: string, declaredEncoding?: BufferEncoding): SsgFile {
+  static read(fileName: string, declaredEncoding?: BufferEncoding): FileContents {
     const fileStats = fs.statSync(fileName)
-    const {encoding, contents} = SsgFile.getContents(context, fileName, declaredEncoding)
-    const langInfo = SsgFile.getLang(context, fileName)
-    return new SsgFile(fileName, encoding, contents, fileStats.mtime, langInfo)
+    const {encoding, contents} = FileContents.getContents(fileName, declaredEncoding)
+    const langInfo = FileContents.getLang(fileName)
+    return new FileContents(fileName, encoding, contents, fileStats.mtime, langInfo)
   }
 
   /**
    * Read a file or instantiate a brand new SsgFile if it doesn't exist.
    *
-   * @param context
    * @param fileName
    * @param declaredEncoding The encoding for enforce, if any (if you know the guess will be wrong for instance).
    */
-  static readOrNew(context: SsgContext, fileName: string, declaredEncoding?: BufferEncoding): SsgFile {
+  static readOrNew(fileName: string, declaredEncoding?: BufferEncoding): FileContents {
     try {
-      return SsgFile.read(context, fileName, declaredEncoding)
+      return FileContents.read(fileName, declaredEncoding)
     } catch (e) {
       if ((e as any).code === "ENOENT") {
-        const lang = SsgFile.getLang(context, fileName)
-        return new SsgFile(fileName, "utf8", "", new Date(), lang)
+        const lang = FileContents.getLang(fileName)
+        return new FileContents(fileName, "utf8", "", new Date(), lang)
       } else {
         throw e
       }
@@ -106,11 +102,10 @@ export class SsgFile {
   /**
    * Guess a file language and its language file variants in the same directory.
    *
-   * @param context
    * @param filePath The path of the file to guess language for.
    */
-  static getLang(context: SsgContext, filePath: string): SsgFileLang {
-    const exec = SsgFile.filePathRegex.exec(filePath)
+  static getLang(filePath: string): SsgFileLang {
+    const exec = FileContents.filePathRegex.exec(filePath)
     let lang: string | undefined
     let variants: string[] = []
     if (exec) {
@@ -122,7 +117,7 @@ export class SsgFile {
       const unique = new Set(files
         .filter(f => f.startsWith(fileName) && f.endsWith(ext)) // Only with same filename prefix and same ext
         .map(f => {
-          const fileExec = SsgFile.fileRegex.exec(f)
+          const fileExec = FileContents.fileRegex.exec(f)
           return fileExec ? fileExec[2] || "" : undefined
         })
         .filter(v => !ObjectUtil.isUndefined(v) && v != lang)
@@ -135,34 +130,20 @@ export class SsgFile {
   /**
    * Get the text contents of a file, and how it is encoded.
    *
-   * @param context
    * @param fileName
    * @param declaredEncoding The encoding for enforce, if any (if you know the guess will be wrong for instance).
    */
-  static getContents(context: SsgContext, fileName: string,
-                     declaredEncoding?: BufferEncoding): { encoding: BufferEncoding, contents: string } {
-    const initialContents = fs.readFileSync(fileName, {encoding: "utf-8"})
+  static getContents(fileName: string, declaredEncoding?: BufferEncoding): {
+    encoding: BufferEncoding;
+    contents: string
+  } {
     let detectedEncoding
     if (!declaredEncoding) {
-      if (fileName.endsWith(".html")) {
-        declaredEncoding = SsgFile.getHtmlDeclaredEncoding(initialContents)
-      }
       detectedEncoding = FileUtil.detectEncoding(fileName)
     }
     const encoding: BufferEncoding = declaredEncoding || detectedEncoding || "utf-8"
     const contents = fs.readFileSync(fileName, {encoding})
     return {encoding, contents}
-  }
-
-  /**
-   * Guess file declared encoding from file + HTML info if any.
-   *
-   * @param contents
-   */
-  static getHtmlDeclaredEncoding(contents: string): BufferEncoding | undefined {
-    const dom = new JSDOM(contents)
-    const html = dom.window.document.documentElement
-    return FileUtil.getCharSet(html) || FileUtil.getContentType(html)
   }
 
   async write(): Promise<void> {

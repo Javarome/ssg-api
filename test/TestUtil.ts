@@ -1,14 +1,14 @@
 import { ObjectUtil } from "../src/util/ObjectUtil"
-import { HtmlSsgContext, HtmlSsgFile, SsgContext, SsgContextImpl, SsgFile } from "../src"
+import { FileContents, HtmlSsgContext, HtmlSsgFile, SsgContext, SsgContextImpl } from "../src"
 
 class TestUtil {
 
   newContext(inputFileName: string, contents?: string): SsgContext {
     const context = new SsgContextImpl("fr")
     if (ObjectUtil.isUndefined(contents)) {
-      context.file = SsgFile.read(context, inputFileName)
+      context.file = FileContents.read(inputFileName)
     } else {
-      context.file = new SsgFile(inputFileName, "utf8", ObjectUtil.asSet(contents), new Date(),
+      context.file = new FileContents(inputFileName, "utf8", ObjectUtil.asSet(contents), new Date(),
         {lang: "fr", variants: []})
     }
     return context

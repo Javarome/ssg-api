@@ -1,6 +1,6 @@
-import { SsgContext } from "../../SsgContext.js"
-import { SsgFile, SsgFileLang } from "./SsgFile.js"
+import { FileContents, SsgFileLang } from "./FileContents"
 import { JSDOM } from "jsdom"
+import { HtmlUtil } from "./HtmlUtil"
 
 export type HtmlMeta = {
   url?: string
@@ -37,7 +37,7 @@ export type HtmlLinks = {
  *   - `<link>` tags values
  *   - `<title>` tag content
  */
-export class HtmlSsgFile extends SsgFile {
+export class HtmlSsgFile extends FileContents {
 
   static readonly generator = "ssg-api"
 
@@ -77,13 +77,22 @@ export class HtmlSsgFile extends SsgFile {
     this._contents = value
   }
 
-  static read(context: SsgContext, fileName: string): HtmlSsgFile {
-    const fileInfo = super.read(context, fileName)
+  static read(fileName: string): HtmlSsgFile {
+    const fileInfo = super.read(fileName)
     return this.create(fileInfo)
   }
 
-  static create(fileInfo: SsgFile): HtmlSsgFile {
+  /**
+   * Create an HtmlSsgFile from a SsgFile
+   *
+   * @param fileInfo
+   */
+  static create(fileInfo: FileContents): HtmlSsgFile {
     const dom = new JSDOM(fileInfo.contents)
+    const declaredEncoding = HtmlUtil.getHtmlDeclaredEncoding(dom)
+    if (declaredEncoding !== fileInfo.encoding) {
+      console.warn(`Encoding of ${fileInfo.name} is ${fileInfo.encoding} but declares ${declaredEncoding}`)
+    }
     let title: string | undefined
     const doc = dom.window.document
     let docLang = doc.documentElement.lang

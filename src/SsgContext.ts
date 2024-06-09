@@ -1,5 +1,5 @@
 import { Logger } from "./Logger.js"
-import { SsgFile } from "./util"
+import { FileContents } from "./util"
 
 export interface SsgContext<V = any> extends Logger {
   /**
@@ -22,7 +22,7 @@ export interface SsgContext<V = any> extends Logger {
   /**
    * The file that is being processed (a template for instance).
    */
-  file: SsgFile
+  file: FileContents
 
   getVar(varName: string): string | undefined
 
@@ -48,7 +48,7 @@ export interface SsgContext<V = any> extends Logger {
    * @abstract
    * @param filePath
    */
-  read(filePath: string): SsgFile
+  read(filePath: string): FileContents
 
   /**
    * Reads a file and assign it to the context's `file`.
@@ -57,5 +57,5 @@ export interface SsgContext<V = any> extends Logger {
    * @param filePath
    * @param encoding
    */
-  newOutput(filePath: string, encoding?: BufferEncoding): SsgFile
+  newOutput(filePath: string, encoding?: BufferEncoding): FileContents
 }
