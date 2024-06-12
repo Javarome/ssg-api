@@ -1,5 +1,5 @@
-import { testUtil } from "../../../../../test/TestUtil"
-import { HtAccessToNetlifyConfigReplaceCommand } from "./HtAccessToNetlifyConfigReplaceCommand"
+import { testUtil } from "../../../../../test/TestUtil.js"
+import { HtAccessToNetlifyConfigReplaceCommand } from "./HtAccessToNetlifyConfigReplaceCommand.js"
 import { describe, expect, test } from "@javarome/testscript"
 
 describe("HtAccessToNetlifyConfigReplaceCommand", () => {

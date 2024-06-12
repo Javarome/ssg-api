@@ -1,9 +1,9 @@
-import { Ssg } from "./Ssg"
-import { SsgContextImpl } from "./SsgContextImpl"
-import { SsgStep } from "./step"
-import { SsgContext } from "./SsgContext"
+import { Ssg } from "./Ssg.js"
+import { SsgContextImpl } from "./SsgContextImpl.js"
+import { SsgStep } from "./step/index.js"
+import { SsgContext } from "./SsgContext.js"
 import { describe, expect, test } from "@javarome/testscript"
-import { SsgConfig } from "./SsgConfig"
+import { SsgConfig } from "./SsgConfig.js"
 import path from "path"
 
 describe("Ssg", function () {

@@ -1,7 +1,7 @@
-import { DomReplaceCommand } from "./DomReplaceCommand"
-import { HtmlSsgContext } from "../../../HtmlSsgContext"
-import { DomReplacer } from "./DomReplacer"
-import { testUtil } from "../../../../test/TestUtil"
+import { DomReplaceCommand } from "./DomReplaceCommand.js"
+import { HtmlSsgContext } from "../../../HtmlSsgContext.js"
+import { DomReplacer } from "./DomReplacer.js"
+import { testUtil } from "../../../../test/TestUtil.js"
 import { describe, expect, test } from "@javarome/testscript"
 
 describe("DomReplaceCommand", () => {

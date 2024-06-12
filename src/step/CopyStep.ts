@@ -2,8 +2,8 @@ import { SsgStep } from "./SsgStep.js"
 import { SsgContext } from "../SsgContext.js"
 import * as process from "process"
 import { IOptions } from "glob"
-import { SsgConfig } from "../SsgConfig"
-import { FileUtil } from "../util"
+import { SsgConfig } from "../SsgConfig.js"
+import { FileUtil } from "../util/index.js"
 
 export interface CopyStepConfig extends SsgConfig {
   readonly sourcePatterns: string[]

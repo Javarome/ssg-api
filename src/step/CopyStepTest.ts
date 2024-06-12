@@ -1,8 +1,8 @@
-import { CopyStep, CopyStepConfig } from "./CopyStep"
-import { SsgContextImpl } from "../SsgContextImpl"
+import { CopyStep, CopyStepConfig } from "./CopyStep.js"
+import { SsgContextImpl } from "../SsgContextImpl.js"
 import { describe, expect, test } from "@javarome/testscript"
 import path from "path"
-import { SsgContext } from "../SsgContext"
+import { SsgContext } from "../SsgContext.js"
 
 describe("CopyStep", () => {
 

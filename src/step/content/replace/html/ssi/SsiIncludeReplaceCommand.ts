@@ -2,7 +2,7 @@ import path from "path"
 import { RegexReplaceCommand } from "../../RegexReplaceCommand.js"
 import { RegexReplacer } from "../../RegexReplacer.js"
 import { SsgContext } from "../../../../../SsgContext.js"
-import { FileContents } from "../../../../../util"
+import { FileContents } from "../../../../../util/index.js"
 
 /**
  * Replaces SSI's `<!-- #include virtual="myFileName" -->` by fileName's contents.

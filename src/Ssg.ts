@@ -1,6 +1,6 @@
 import { SsgContext } from "./SsgContext.js"
-import { SsgConfig } from "./SsgConfig"
-import { SsgStep } from "./step"
+import { SsgConfig } from "./SsgConfig.js"
+import { SsgStep } from "./step/index.js"
 
 
 /**

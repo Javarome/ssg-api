@@ -1,5 +1,5 @@
-import { ObjectUtil } from "../src/util/ObjectUtil"
-import { FileContents, HtmlFileContents, HtmlSsgContext, SsgContext, SsgContextImpl } from "../src"
+import { ObjectUtil } from "../src/util/ObjectUtil.js"
+import { FileContents, HtmlFileContents, HtmlSsgContext, SsgContext, SsgContextImpl } from "../src/index.js"
 
 class TestUtil {
 

@@ -1,6 +1,6 @@
-import { FileContents, FileContentsLang } from "./FileContents"
+import { FileContents, FileContentsLang } from "./FileContents.js"
 import { JSDOM } from "jsdom"
-import { HtmlUtil } from "./HtmlUtil"
+import { HtmlUtil } from "./HtmlUtil.js"
 
 export type HtmlMeta = {
   url?: string

@@ -1,7 +1,7 @@
 import { SsgStep } from "./SsgStep.js"
 import { SsgContext } from "../SsgContext.js"
-import { SsgConfig } from "../SsgConfig"
-import { FileContents, FileUtil } from "../util"
+import { SsgConfig } from "../SsgConfig.js"
+import { FileContents, FileUtil } from "../util/index.js"
 
 export interface DirectoryStepConfig extends SsgConfig {
   /**

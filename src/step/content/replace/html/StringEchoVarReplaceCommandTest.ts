@@ -1,5 +1,5 @@
-import { testUtil } from "../../../../../test/TestUtil"
-import { StringEchoVarReplaceCommand } from "./StringEchoVarReplaceCommand"
+import { testUtil } from "../../../../../test/TestUtil.js"
+import { StringEchoVarReplaceCommand } from "./StringEchoVarReplaceCommand.js"
 import { describe, expect, test } from "@javarome/testscript"
 
 describe("StringEchoVarReplaceCommand", () => {

@@ -1,5 +1,5 @@
-import { HtAccessToNetlifyRedirectsReplaceCommand } from "./HtAccessToNetlifyRedirectsReplaceCommand"
-import { testUtil } from "../../../../../test/TestUtil"
+import { HtAccessToNetlifyRedirectsReplaceCommand } from "./HtAccessToNetlifyRedirectsReplaceCommand.js"
+import { testUtil } from "../../../../../test/TestUtil.js"
 import { describe, expect, test } from "@javarome/testscript"
 
 describe("HtAccessToNetlifyRedirectsReplaceCommand", () => {

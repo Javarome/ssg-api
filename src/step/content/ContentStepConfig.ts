@@ -1,6 +1,6 @@
-import { SsgContext } from "../../SsgContext"
-import { ReplaceCommand } from "./replace"
-import { SsgConfig } from "../../SsgConfig"
+import { SsgContext } from "../../SsgContext.js"
+import { ReplaceCommand } from "./replace/index.js"
+import { SsgConfig } from "../../SsgConfig.js"
 
 export interface ContentStepConfig<C extends SsgContext = SsgContext> extends SsgConfig {
   /**

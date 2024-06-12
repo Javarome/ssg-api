@@ -1,8 +1,8 @@
-import { HtmlTagReplaceCommand } from "./HtmlTagReplaceCommand"
-import { ReplacerFactory } from "../../ReplacerFactory"
-import { SsgContext } from "../../../../../SsgContext"
-import { testUtil } from "../../../../../../test/TestUtil"
-import { DomReplacer } from "../../DomReplacer"
+import { HtmlTagReplaceCommand } from "./HtmlTagReplaceCommand.js"
+import { ReplacerFactory } from "../../ReplacerFactory.js"
+import { SsgContext } from "../../../../../SsgContext.js"
+import { testUtil } from "../../../../../../test/TestUtil.js"
+import { DomReplacer } from "../../DomReplacer.js"
 import { describe, expect, test } from "@javarome/testscript"
 
 describe("HtmlTagReplaceCommand", () => {

@@ -1,5 +1,5 @@
-import { SsiSetVarReplaceCommand } from "./SsiSetVarCommand"
-import { testUtil } from "../../../../../../test/TestUtil"
+import { SsiSetVarReplaceCommand } from "./SsiSetVarCommand.js"
+import { testUtil } from "../../../../../../test/TestUtil.js"
 import { describe, expect, test } from "@javarome/testscript"
 
 describe("SsiVarCommand", () => {

@@ -1,11 +1,11 @@
-import { ContentStep } from "./ContentStep"
-import { SsgContext } from "../../SsgContext"
-import { FileContents, HtmlFileContents } from "../../util"
-import { SsgContextImpl } from "../../SsgContextImpl"
+import { ContentStep } from "./ContentStep.js"
+import { SsgContext } from "../../SsgContext.js"
+import { FileContents, HtmlFileContents } from "../../util/index.js"
+import { SsgContextImpl } from "../../SsgContextImpl.js"
 import path from "path"
 import fs from "fs"
 import { describe, expect, test } from "@javarome/testscript"
-import { ContentStepConfig } from "./ContentStepConfig"
+import { ContentStepConfig } from "./ContentStepConfig.js"
 
 describe("ContentStep", () => {
 
