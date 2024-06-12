@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.10.4] - 2024-06-12
+
+### Fixed
+
+- ConsoleLogger export
+
+## [1.10.3] - 2024-06-10
+
+### Fixed
+
+- Don't display warning if detected encoding but no declared encoding
+
 ## [1.10.3] - 2024-06-09
 
 ### Fixed

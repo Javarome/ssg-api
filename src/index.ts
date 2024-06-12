@@ -4,7 +4,7 @@ export * from "./Logger.js"
 export * from "./SsgContext.js"
 export * from './OutputFunc.js';
 export * from "./step/index.js"
-export * from "./ConsoleLogger"
+export * from "./ConsoleLogger.js"
 export * from "./HtmlSsgContext.js"
 export * from "./Ssg.js"
 export * from "./SsgContextImpl.js"

@@ -90,7 +90,7 @@ export class HtmlFileContents extends FileContents {
   static create(fileInfo: FileContents): HtmlFileContents {
     const dom = new JSDOM(fileInfo.contents)
     const declaredEncoding = HtmlUtil.getHtmlDeclaredEncoding(dom)
-    if (declaredEncoding !== fileInfo.encoding) {
+    if (declaredEncoding && declaredEncoding !== fileInfo.encoding) {
       console.warn(`Encoding of ${fileInfo.name} is ${fileInfo.encoding} but declares ${declaredEncoding}`)
     }
     let title: string | undefined
