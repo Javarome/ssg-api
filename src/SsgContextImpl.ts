@@ -1,6 +1,6 @@
 import { SsgContext } from "./SsgContext.js"
 import { ObjectUtil } from "./util/ObjectUtil.js"
-import { ConsoleLogger } from "./ConsoleLogger"
+import { ConsoleLogger } from "./ConsoleLogger.js"
 import { Logger } from "./Logger.js"
 import { FileContents, FileContentsLang, HtmlFileContents } from "./util"
 import * as assert from "node:assert"
