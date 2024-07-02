@@ -22,6 +22,14 @@ describe("AngularExpressionReplaceCommand", () => {
     expect(context.file.contents).toBe(`The price is 39 500`)
   })
 
+  test("replace currency", async () => {
+    const context = testUtil.newHtmlContext("Contact.html",
+      `The price is {{100000000|currency:'$':0}}`)
+    const command = new AngularExpressionReplaceCommand()
+    await command.execute(context)
+    expect(context.file.contents).toBe(`The price is 100 000 000,00 $US`)
+  })
+
   test("replace context value", async () => {
     const context = testUtil.newHtmlContext("Contact.html",
       `The context is {{$context._name}}`)
