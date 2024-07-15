@@ -33,7 +33,7 @@
     "@types/jsdom": "^21.1.7",
     "typescript": "^5.5.3",
     "uuid": "^10.0.0",
-    "tsx": "4.16.0",
+    "tsx": "4.16.2",
     "@javarome/testscript": "^0.10.7"
   },
   "keywords": [
