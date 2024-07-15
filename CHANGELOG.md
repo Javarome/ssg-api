@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.12.0] - 2024-07-15
+
+### Changed
+
+- `ClassDomReplaceCommand` now support multiple class names, which implies the relevant parameter has been moved as the last one.
+
 ## [1.11.0] - 2024-07-02
 
 ### Added
