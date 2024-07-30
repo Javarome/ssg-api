@@ -1,10 +1,11 @@
 import { ReplaceCommand } from "./ReplaceCommand.js"
 import { HtmlSsgContext } from "../../../HtmlSsgContext.js"
 import { DomReplacer } from "./DomReplacer.js"
+import { ReplacerFactory } from "./ReplacerFactory"
 
-export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C extends HtmlSsgContext = HtmlSsgContext> implements ReplaceCommand<C> {
+export class DomReplaceCommand<T extends HTMLElement = HTMLElement, C extends HtmlSsgContext = HtmlSsgContext> implements ReplaceCommand<C> {
 
-  constructor(protected selector: string) {
+  constructor(protected selector: string, protected replacerFactory: ReplacerFactory<DomReplacer<T>>) {
   }
 
   async execute(context: C): Promise<void> {
@@ -27,7 +28,7 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C e
         }
         result = inputFile.serialize()
       }
-    } while (result != contents)
+    } while (result !== contents)
     context.file.contents = result
     await this.postExecute(context)
   }
@@ -38,7 +39,9 @@ export abstract class DomReplaceCommand<T extends HTMLElement = HTMLElement, C e
    * @param context
    * @protected
    */
-  protected abstract createReplacer(context: C): Promise<DomReplacer<T>>
+  protected createReplacer(context: C): Promise<DomReplacer<T>> {
+    return this.replacerFactory.create(context)
+  }
 
   /**
    * Executed as last operation of execute()

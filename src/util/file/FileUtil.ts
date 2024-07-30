@@ -4,8 +4,10 @@ import { detectEncoding as _detectEncoding } from "char-encoding-detector"
 import path from "path"
 import { readdir } from "fs/promises"
 import { promise as glob } from "glob-promise"
-import { IOptions } from "glob"
 import { Dirent } from "node:fs"
+import { SsgContextImpl } from "../../SsgContextImpl"
+import { CopyStepConfig } from "../../step"
+import { FileContents } from "./FileContents"
 
 /**
  * File utility functions
@@ -138,33 +140,33 @@ export class FileUtil {
   /**
    * Copy files to a destination directory.
    *
-   * @param toDir the destination directory path.
-   * @param sourcePatterns An array of file nmes.
-   * @param options
+   * @param context the destination directory path.
+   * @param config
    * @return the list of output files.
    */
-  static async copy(toDir: string, sourcePatterns: string[], options?: IOptions): Promise<string[]> {
+  static async copy<C extends SsgContextImpl>(context: C, config: CopyStepConfig): Promise<string[]> {
     let result: string[] = []
-    for (const sourcePattern of sourcePatterns) {
-      const sourceFiles = await glob(sourcePattern, options)
-      const copied = this.copyFiles(sourceFiles, toDir)
+    for (const sourcePattern of config.sourcePatterns) {
+      const sourceFiles = await glob(sourcePattern, config.options)
+      const copied = this.copyFiles<C>(context, sourceFiles, config)
       result = result.concat(copied)
     }
     return result
   }
 
-  static copyFiles(sourceFiles: string[], toDir: string): string[] {
+  static copyFiles<C extends SsgContextImpl>(context: C, sourceFiles: string[], config: CopyStepConfig): string[] {
     const result: string[] = []
     for (const sourceFile of sourceFiles) {
-      const to = this.copyFile(sourceFile, toDir)
+      const to = this.copyFile<C>(context, sourceFile, config)
       result.push(to)
     }
     return result
   }
 
-  static copyFile(sourceFile: string, toDir: string): string {
+  static copyFile<C extends SsgContextImpl>(context: C, sourceFile: string, config: CopyStepConfig): string {
+    context.file = new FileContents(sourceFile, "utf-8", "", new Date(), {variants: []})
+    const to = path.resolve(config.getOutputPath(context))
     const from = path.resolve(sourceFile)
-    const to = path.join(toDir, sourceFile)
     this.ensureDirectoryOf(to)
     fs.copyFileSync(from, to)
     return to

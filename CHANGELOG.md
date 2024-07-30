@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.13.1] - 2024-07-30
+
+### Changed
+
+- `DomReplaceCommand` is not abstract anymore.
+
+## [1.13.0] - 2024-07-30
+
+### Changed
+
+- `FileUtil.copy` now uses `Context` and `CopyStepConfig` parameters.
+- `CopyStepConfig` now relies on `config.getOutputPath(context)` to devise output file path. This leverages `SsgConfig.toOutputPath()` and allows to copy each file to a different target.
+
+### Removed
+
+- `HtmlTagReplaceCommand` as the generic `DomReplaceCommand` with a tag selector is enough.
+
 ## [1.12.0] - 2024-07-15
 
 ### Changed

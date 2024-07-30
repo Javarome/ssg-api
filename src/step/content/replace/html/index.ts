@@ -1,6 +1,5 @@
 export * from "./class/index.js"
 export * from "./ssi/index.js"
-export * from "./tag/index.js"
 export * from "./StringContextHandler.js"
 export * from "./StringEchoVarReplaceCommand.js"
 export * from "./VarRegexReplacer.js"

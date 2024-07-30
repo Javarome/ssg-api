@@ -9,10 +9,9 @@ describe("CopyStep", () => {
   test("copy", async () => {
     const destDir = "out/"
     const config: CopyStepConfig = {
-      destDir,
       sourcePatterns: ["**/test.html", "**/*.bpmn"],
       getOutputPath(context: SsgContext): string {
-        return path.join(destDir, context.name)
+        return path.join(destDir, context.file.name)
       },
       options: {ignore: path.join(destDir, "**")}
     }

@@ -3,6 +3,8 @@ import { HtmlSsgContext } from "../../../HtmlSsgContext.js"
 import { DomReplacer } from "./DomReplacer.js"
 import { testUtil } from "../../../../test/TestUtil.js"
 import { describe, expect, test } from "@javarome/testscript"
+import { SsgContext } from "../../../SsgContext"
+import { ReplacerFactory } from "./ReplacerFactory"
 
 describe("DomReplaceCommand", () => {
 
@@ -16,14 +18,14 @@ describe("DomReplaceCommand", () => {
     const command = new class extends DomReplaceCommand {
       postExecuted = false
 
-      protected async createReplacer(context: HtmlSsgContext): Promise<DomReplacer> {
-        return domReplacer
-      }
-
       protected async postExecute(context: HtmlSsgContext) {
         command.postExecuted = true
       }
-    }("a")
+    }("a", new class implements ReplacerFactory<DomReplacer> {
+      async create(_context: SsgContext): Promise<DomReplacer> {
+        return domReplacer
+      }
+    })
     const context = testUtil.newHtmlContext("test.xml", `<a href="link">text</a>`)
     expect(command.postExecuted).toBe(false)
     await command.execute(context)

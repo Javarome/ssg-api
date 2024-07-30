@@ -1,13 +1,12 @@
 import { SsgStep } from "./SsgStep.js"
-import { SsgContext } from "../SsgContext.js"
 import * as process from "process"
 import { IOptions } from "glob"
 import { SsgConfig } from "../SsgConfig.js"
 import { FileUtil } from "../util/index.js"
+import { SsgContextImpl } from "../SsgContextImpl"
 
 export interface CopyStepConfig extends SsgConfig {
   readonly sourcePatterns: string[]
-  readonly destDir: string
   readonly options?: IOptions
 }
 
@@ -18,24 +17,21 @@ export type CopyStepResult = {
 /**
  * Perform copies to out directory.
  */
-export class CopyStep<C extends SsgContext = SsgContext> implements SsgStep<C, CopyStepResult> {
+export class CopyStep<C extends SsgContextImpl = SsgContextImpl> implements SsgStep<C, CopyStepResult> {
 
   readonly name = "copy"
 
   constructor(protected config: CopyStepConfig) {
   }
 
-  async execute(context: SsgContext): Promise<CopyStepResult> {
-    const copies: string[] = this.config.sourcePatterns
-    const dest = this.config.destDir
+  async execute(context: C): Promise<CopyStepResult> {
     try {
-      context.log("Copying to", dest, copies)
-      const copiedFiles = await FileUtil.copy(dest, copies, this.config.options)
+      const copiedFiles = await FileUtil.copy(context, this.config)
       const cwd = process.cwd()
       const files = copiedFiles.map(file => file.startsWith(cwd) ? file.substring(cwd.length + 1) : file)
       return {files}
     } catch (e) {
-      throw Error(`Could not copy ${copies} because of ${e}`)
+      throw Error(`Could not copy ${this.config.sourcePatterns} because of ${e}`)
     }
   }
 }
