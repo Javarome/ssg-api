@@ -71,7 +71,7 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    */
   protected async processFile(context: C, filePath: string, contentsConfig: ContentStepConfig): Promise<boolean> {
     context.file = context.read(filePath)
-    const processed = this.shouldProcess(context, contentsConfig)
+    const processed = await this.shouldProcess(context, contentsConfig)
     if (processed) {
       context.debug("Processing", filePath)
       for (const replacement of contentsConfig.replacements) {
@@ -96,7 +96,7 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    * @return If the for this context should be processed or not.
    * @protected
    */
-  protected shouldProcess(context: C, contentsConfig: ContentStepConfig): boolean {
+  protected async shouldProcess(context: C, contentsConfig: ContentStepConfig): Promise<boolean> {
     let inputHasChanged: boolean
     const outputPath = contentsConfig.getOutputPath(context)
     const outputExists = fs.existsSync(outputPath)

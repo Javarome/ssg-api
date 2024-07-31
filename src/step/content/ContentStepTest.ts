@@ -1,6 +1,6 @@
 import { ContentStep } from "./ContentStep.js"
 import { SsgContext } from "../../SsgContext.js"
-import { FileContents, HtmlFileContents } from "../../util/index.js"
+import { FileContents, HtmlFileContents } from "../../util"
 import { SsgContextImpl } from "../../SsgContextImpl.js"
 import path from "path"
 import fs from "fs"
@@ -29,7 +29,7 @@ describe("ContentStep", () => {
       }
     }]
     const step = new class extends ContentStep {
-      protected shouldProcess(_context: SsgContext, _contentsConfig: ContentStepConfig): boolean {
+      protected async shouldProcess(_context: SsgContext, _contentsConfig: ContentStepConfig): Promise<boolean> {
         return true  // Always process all files even if unmodified
       }
     }(contentConfigs, outputFunc)
