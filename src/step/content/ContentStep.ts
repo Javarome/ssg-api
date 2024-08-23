@@ -1,9 +1,9 @@
 import fs from "fs"
-import { promise as glob } from "glob-promise"
 import { SsgStep } from "../SsgStep.js"
 import { SsgContext } from "../../SsgContext.js"
 import { ContentStepConfig } from "./ContentStepConfig.js"
 import { OutputFunc } from "../../OutputFunc.js"
+import { glob } from "glob"
 
 export type ContentStepResult = {
   contentCount: number

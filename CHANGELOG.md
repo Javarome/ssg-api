@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.13.3] - 2024-08-24
+
+### Changed
+
+- Use glob 11 instead of glob-promise.
+
 ## [1.13.2] - 2024-07-31
 
 ### Changed

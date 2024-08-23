@@ -3,11 +3,11 @@ import { promises as fsAsync } from "fs"
 import { detectEncoding as _detectEncoding } from "char-encoding-detector"
 import path from "path"
 import { readdir } from "fs/promises"
-import { promise as glob } from "glob-promise"
 import { Dirent } from "node:fs"
 import { SsgContextImpl } from "../../SsgContextImpl"
 import { CopyStepConfig } from "../../step"
 import { FileContents } from "./FileContents"
+import { glob } from "glob"
 
 /**
  * File utility functions

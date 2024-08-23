@@ -1,5 +1,5 @@
 import { Logger } from "./Logger.js"
-import { FileContents } from "./util/index.js"
+import { FileContents } from "./util"
 
 export interface SsgContext<V = any> extends Logger {
   /**

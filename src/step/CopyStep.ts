@@ -1,13 +1,13 @@
 import { SsgStep } from "./SsgStep.js"
 import * as process from "process"
-import { IOptions } from "glob"
+import { GlobOptionsWithFileTypesUnset } from "glob"
 import { SsgConfig } from "../SsgConfig.js"
-import { FileUtil } from "../util/index.js"
+import { FileUtil } from "../util"
 import { SsgContextImpl } from "../SsgContextImpl"
 
 export interface CopyStepConfig extends SsgConfig {
   readonly sourcePatterns: string[]
-  readonly options?: IOptions
+  readonly options?: GlobOptionsWithFileTypesUnset
 }
 
 export type CopyStepResult = {
