@@ -51,7 +51,7 @@ export class FileContents {
     /**
      * The date of last modification.
      */
-    readonly lastModified: Date,
+    public lastModified: Date,
     /**
      * Language info about the file.
      */

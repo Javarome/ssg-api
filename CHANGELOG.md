@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.13.4] - 2024-08-25
+
+### Changed
+
+- `ContentStep.shouldProcess()` is split between `shouldProcessFile()` and `shouldProcessContent()` to avoid loading file contents when not required
+
+## [1.13.4] - 2024-08-25
+
+### Fixed
+
+- output/input files date comparison for `ContentStep.shouldProcess()`
+
 ## [1.13.3] - 2024-08-24
 
 ### Changed

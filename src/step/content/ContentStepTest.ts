@@ -29,7 +29,7 @@ describe("ContentStep", () => {
       }
     }]
     const step = new class extends ContentStep {
-      protected async shouldProcess(_context: SsgContext, _contentsConfig: ContentStepConfig): Promise<boolean> {
+      protected async shouldProcessFile(_context: SsgContext, _contentsConfig: ContentStepConfig): Promise<boolean> {
         return true  // Always process all files even if unmodified
       }
     }(contentConfigs, outputFunc)

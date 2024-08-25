@@ -41,7 +41,7 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
     this.logger.name = this.stack.join(":")
   }
 
-  protected _file: FileContents | undefined
+  _file: FileContents | undefined
 
   get file(): FileContents {
     assert.ok(this._file, "Should have a file")
