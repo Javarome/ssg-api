@@ -73,8 +73,8 @@ export class ContentStep<C extends SsgContextImpl = SsgContextImpl> implements S
     context._file = {
       name: filePath
     } as any
-    const processFile = await this.shouldProcessFile(context, contentsConfig)
     context.file.lastModified = fs.statSync(context.file.name).mtime
+    const processFile = await this.shouldProcessFile(context, contentsConfig)
     if (processFile) {
       context.file = context.read(filePath)
       const processContent = await this.shouldProcessContent(context, contentsConfig)
