@@ -113,7 +113,7 @@ export class ContentStep<C extends SsgContextImpl = SsgContextImpl> implements S
       const outputStats = fs.statSync(outputPath)
       inputHasChanged = context.file.lastModified.getTime() > outputStats.mtime.getTime()
       if (!inputHasChanged) {
-        console.debug(context.file.name, "is not older that current out file")
+        console.debug(context.file.name, "is not more recent than", outputPath)
       }
     } else {
       inputHasChanged = true
