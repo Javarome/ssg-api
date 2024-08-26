@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.13.6] - 2024-08-26
+
+### Changed
+
+- `ContentStep` doesn't require a `SsgContextImpl` implementation anymore, just any `SsgContext` implementation.
+
 ## [1.13.6] - 2024-08-25
 
 ### Changed

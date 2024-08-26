@@ -3,7 +3,7 @@ import { SsgStep } from "../SsgStep.js"
 import { ContentStepConfig } from "./ContentStepConfig.js"
 import { OutputFunc } from "../../OutputFunc.js"
 import { glob } from "glob"
-import { SsgContextImpl } from "../../SsgContextImpl"
+import { SsgContext } from "../../SsgContext"
 
 export type ContentStepResult = {
   contentCount: number
@@ -12,7 +12,7 @@ export type ContentStepResult = {
 /**
  * A SsgStep that can perform replacements in files' contents.
  */
-export class ContentStep<C extends SsgContextImpl = SsgContextImpl> implements SsgStep<C, ContentStepResult> {
+export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C, ContentStepResult> {
   /**
    * Logger name
    */
@@ -70,9 +70,7 @@ export class ContentStep<C extends SsgContextImpl = SsgContextImpl> implements S
    * @protected
    */
   protected async processFile(context: C, filePath: string, contentsConfig: ContentStepConfig): Promise<boolean> {
-    context._file = {
-      name: filePath
-    } as any
+    Object.assign(context, {_file: {name: filePath}})
     context.file.lastModified = fs.statSync(context.file.name).mtime
     const processFile = await this.shouldProcessFile(context, contentsConfig)
     if (processFile) {
