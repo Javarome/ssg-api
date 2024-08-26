@@ -26,19 +26,44 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
   constructor(protected contentsConfigs: ContentStepConfig<C>[], protected write: OutputFunc) {
   }
 
+  /**
+   * Execute the step for each config,
+   * then calls `contentStepEnd()` on all content replacers.
+   *
+   * @param context
+   * @return an object with the `contentCount` of processed files.
+   */
   async execute(context: C): Promise<ContentStepResult> {
-    let contentCount = 0
+    const result = {contentCount: 0}
     for (const contentsConfig of this.contentsConfigs) {
-      contentCount += await this.processRoots(context, contentsConfig)
+      result.contentCount += await this.processRoots(context, contentsConfig)
     }
+    await this.postExecute(result)
+    return result
+  }
+
+  /**
+   * Calls `contentStepEnd()` on all content replacers.
+   *
+   * @param result
+   * @protected
+   */
+  protected async postExecute(result: ContentStepResult) {
     for (const contents of this.contentsConfigs) {
       for (const replacement of contents.replacements) {
         await replacement.contentStepEnd()
       }
     }
-    return {contentCount}
+    return result
   }
 
+  /**
+   * Process files of all roots of a content config.
+   *
+   * @param context
+   * @param contentsConfig
+   * @protected
+   */
   protected async processRoots(context: C, contentsConfig: ContentStepConfig): Promise<number> {
     let fileCount = 0
     for (const contentsRoot of contentsConfig.roots) {
@@ -47,6 +72,15 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
     return fileCount
   }
 
+  /**
+   * Process all files from a given content root.
+   *
+   * @param context
+   * @param contentsRoot
+   * @param contentsConfig
+   * @param fileCount
+   * @protected
+   */
   protected async processRoot(context: C, contentsRoot: string, contentsConfig: ContentStepConfig,
                               fileCount: number): Promise<number> {
     context.debug("Processing root", contentsRoot)
@@ -66,7 +100,8 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    * @param filePath
    * @param contentsConfig
    * @return If the file was processed.
-   * @see #shouldProcess(context)
+   * @see #shouldProcessFile(context)
+   * @see #shouldProcessFile(context)
    * @protected
    */
   protected async processFile(context: C, filePath: string, contentsConfig: ContentStepConfig): Promise<boolean> {
