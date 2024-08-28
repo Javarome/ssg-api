@@ -14,16 +14,13 @@ export type ContentStepResult = {
  */
 export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C, ContentStepResult> {
   /**
-   * Logger name
-   */
-  readonly name = "content"
-
-  /**
    *
    * @param contentsConfigs The content roots and associated replacements to perform.
    * @param write The function that writes the output contents once they are ready.
+   * @param name Logger name
    */
-  constructor(protected contentsConfigs: ContentStepConfig<C>[], protected write: OutputFunc) {
+  constructor(protected contentsConfigs: ContentStepConfig<C>[], protected write: OutputFunc,
+              readonly name = "content") {
   }
 
   /**
@@ -94,7 +91,7 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
   /**
    * Process one content file (found in content root).
    *
-   * This method can be overriden to perform some additional task at each file processing.
+   * This method can be overridden to perform some additional task at each file processing.
    *
    * @param context
    * @param filePath
