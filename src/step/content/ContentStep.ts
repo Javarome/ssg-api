@@ -6,7 +6,7 @@ import { glob } from "glob"
 import { SsgContext } from "../../SsgContext"
 
 export type ContentStepResult = {
-  contentCount: number
+  processedFiles: string[]
 }
 
 /**
@@ -31,9 +31,10 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    * @return an object with the `contentCount` of processed files.
    */
   async execute(context: C): Promise<ContentStepResult> {
-    const result = {contentCount: 0}
+    const result: ContentStepResult = {processedFiles: []}
     for (const contentsConfig of this.contentsConfigs) {
-      result.contentCount += await this.processRoots(context, contentsConfig)
+      const processedFiles = await this.processRoots(context, contentsConfig)
+      result.processedFiles = result.processedFiles.concat(processedFiles)
     }
     await this.postExecute(result)
     return result
@@ -61,12 +62,13 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    * @param contentsConfig
    * @protected
    */
-  protected async processRoots(context: C, contentsConfig: ContentStepConfig): Promise<number> {
-    let fileCount = 0
+  protected async processRoots(context: C, contentsConfig: ContentStepConfig): Promise<string[]> {
+    let rootsProcessedFiles: string[] = []
     for (const contentsRoot of contentsConfig.roots) {
-      fileCount = await this.processRoot(context, contentsRoot, contentsConfig, fileCount)
+      let processedFiles = await this.processRoot(context, contentsRoot, contentsConfig)
+      rootsProcessedFiles = rootsProcessedFiles.concat(processedFiles)
     }
-    return fileCount
+    return rootsProcessedFiles
   }
 
   /**
@@ -75,17 +77,19 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    * @param context
    * @param contentsRoot
    * @param contentsConfig
-   * @param fileCount
    * @protected
    */
-  protected async processRoot(context: C, contentsRoot: string, contentsConfig: ContentStepConfig,
-                              fileCount: number): Promise<number> {
+  protected async processRoot(context: C, contentsRoot: string, contentsConfig: ContentStepConfig): Promise<string[]> {
     context.debug("Processing root", contentsRoot)
     const contentFiles = await glob(contentsRoot)
+    const processedFiles: string[] = []
     for (const filePath of contentFiles) {
-      fileCount += await this.processFile(context, filePath, contentsConfig) ? 1 : 0
+      let processedFile = await this.processFile(context, filePath, contentsConfig)
+      if (processedFile) {
+        processedFiles.push(processedFile)
+      }
     }
-    return fileCount
+    return processedFiles
   }
 
   /**
@@ -101,7 +105,8 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    * @see #shouldProcessFile(context)
    * @protected
    */
-  protected async processFile(context: C, filePath: string, contentsConfig: ContentStepConfig): Promise<boolean> {
+  protected async processFile(context: C, filePath: string,
+                              contentsConfig: ContentStepConfig): Promise<string | undefined> {
     Object.assign(context, {_file: {name: filePath}})
     context.file.lastModified = fs.statSync(context.file.name).mtime
     const processFile = await this.shouldProcessFile(context, contentsConfig)
@@ -117,13 +122,14 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
         const output = context.newOutput(outputPath)
         context.debug("Writing", output.name)
         await this.write(context, output)
+        return output.name
       } else {
         context.debug("Skipping content of", filePath)
       }
     } else {
       context.debug("Skipping file", filePath)
     }
-    return processFile
+    return undefined
   }
 
   /**
@@ -141,9 +147,10 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
     const outputExists = fs.existsSync(outputPath)
     if (outputExists) {
       const outputStats = fs.statSync(outputPath)
-      inputHasChanged = context.file.lastModified.getTime() > outputStats.mtime.getTime()
+      const file = context.file
+      inputHasChanged = file.lastModified.getTime() > outputStats.mtime.getTime()
       if (!inputHasChanged) {
-        console.debug(context.file.name, "is not more recent than", outputPath)
+        console.debug(file.name, "is not more recent than", outputPath)
       }
     } else {
       inputHasChanged = true
