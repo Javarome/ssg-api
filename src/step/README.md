@@ -21,4 +21,4 @@ classDiagram
     SsgStep <|-- ContentStep
 ```
 
-Each step implementation is typically instantiated with a configuration. For instance
+Each step implementation is typically instantiated with a configuration.

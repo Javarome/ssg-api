@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.16.1] - 2024-09-03
+
+### Added
+
+- `SsiIncludeReplaceCommand`'s constructor `context` parameter.
+
+## [1.16.0] - 2024-09-03
+
+### Added
+
+- `SsiIncludeReplaceCommand`'s constructor now accepts an optional `transformer`s to apply before including.
+
+## [1.15.0] - 2024-08-28
+
+### Added
+
+- `ContentStep`'s `name` can be optionally specified in constructor (fix).
+
 ## [1.14.1] - 2024-08-28
 
 ### Added

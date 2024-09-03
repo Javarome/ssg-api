@@ -1,4 +1,4 @@
-import { FileUtil } from "./FileUtil.js"
+import { FileUtil } from "./FileUtil"
 import { JSDOM } from "jsdom"
 
 export class HtmlUtil {
