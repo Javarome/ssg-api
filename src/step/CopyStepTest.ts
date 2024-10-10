@@ -1,7 +1,7 @@
+import path from "path"
+import { describe, expect, test } from "@javarome/testscript"
 import { CopyStep, CopyStepConfig } from "./CopyStep.js"
 import { SsgContextImpl } from "../SsgContextImpl.js"
-import { describe, expect, test } from "@javarome/testscript"
-import path from "path"
 import { SsgContext } from "../SsgContext.js"
 
 describe("CopyStep", () => {

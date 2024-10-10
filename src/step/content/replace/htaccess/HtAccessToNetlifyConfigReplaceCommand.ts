@@ -7,7 +7,7 @@ export class HtAccessToNetlifyConfigReplaceCommand extends HtAccessReplaceComman
     super()
   }
 
-  protected handleDirectoryIndex(args: string[], result: string[]): void {
+  protected handleDirectoryIndex(args: string[], _result: string[]): void {
   }
 
   protected handleRedirect(from: string, to: string): string {

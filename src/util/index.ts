@@ -1,1 +1,2 @@
-export * from "../file/index.js"
+export * from "./ObjectUtil.js"
+export * from "./WithPropsOf.js"

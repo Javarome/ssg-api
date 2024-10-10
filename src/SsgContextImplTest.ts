@@ -1,5 +1,5 @@
-import { SsgContextImpl } from './SsgContextImpl';
-import { describe, expect, test } from '@javarome/testscript';
+import { describe, expect, test } from "@javarome/testscript"
+import { SsgContextImpl } from "./SsgContextImpl.js"
 
 interface MyVars {
   someVar?: string

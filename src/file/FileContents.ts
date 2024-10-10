@@ -1,6 +1,6 @@
 import fs from "fs"
-import { ObjectUtil } from "../util/ObjectUtil"
-import { FileUtil } from "./FileUtil"
+import { ObjectUtil } from "../util/ObjectUtil.js"
+import { FileUtil } from "./FileUtil.js"
 
 /**
  * Language info about a file.

@@ -1,5 +1,5 @@
-import { ConsoleLogger, LogConsole } from './ConsoleLogger';
-import { describe, expect, test } from '@javarome/testscript';
+import { describe, expect, test } from "@javarome/testscript"
+import { ConsoleLogger, LogConsole } from "./ConsoleLogger.js"
 
 class TestConsole implements LogConsole {
   _info: any[] = []

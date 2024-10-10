@@ -1,4 +1,4 @@
-import { FileContents } from "./FileContents"
+import { FileContents } from "./FileContents.js"
 import { describe, expect, test } from "@javarome/testscript"
 
 describe("FileContents", () => {

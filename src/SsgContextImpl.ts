@@ -1,9 +1,9 @@
+import * as assert from "node:assert"
 import { SsgContext } from "./SsgContext.js"
-import { ObjectUtil } from "./util/ObjectUtil.js"
 import { ConsoleLogger } from "./ConsoleLogger.js"
 import { Logger } from "./Logger.js"
-import { FileContents, FileContentsLang, HtmlFileContents } from "./util"
-import * as assert from "node:assert"
+import { FileContents, FileContentsLang, HtmlFileContents } from "./file/index.js"
+import { ObjectUtil } from "./util/index.js"
 
 export class SsgContextImpl<V = any> implements SsgContext<V> {
 

@@ -18,7 +18,7 @@ export abstract class HtAccessReplaceCommand implements ReplaceCommand<SsgContex
 
   async execute(context: SsgContext): Promise<void> {
     const inputFileInfo = context.file
-    const contents = inputFileInfo.contents
+    const contents = inputFileInfo.contents as string
     const lines = contents.split("\n").map(line => line.trim())
     let outLines = []
     for (const line of lines) {

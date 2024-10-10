@@ -1,24 +1,24 @@
 import { testUtil } from "../../../../../../test/TestUtil.js"
 import { describe, expect, test } from "@javarome/testscript"
-import { SsiIncludeReplaceCommand, SsiIncludeReplaceCommandTransformer } from "./SsiIncludeReplaceCommand"
-import { FileContents } from "../../../../../file"
-import { SsgContext } from "../../../../../SsgContext"
+import { SsiIncludeReplaceCommand, SsiIncludeReplaceCommandTransformer } from "./SsiIncludeReplaceCommand.js"
+import { FileContents } from "../../../../../file/index.js"
+import { SsgContext } from "../../../../../SsgContext.js"
 
 describe("SsiIncludeReplaceCommand", () => {
 
   test("replace include", async () => {
-    const includedContent = "included content"
+    const includedContent = "<!DOCTYPE html>\n<html lang=\"fr\">\n<head><title>Included</title></head>"
     const command = new class extends SsiIncludeReplaceCommand {
       protected fetchFile(fileName: string): FileContents {
         return new FileContents(fileName, "utf-8", includedContent, new Date(), {lang: "en", variants: []})
       }
     }()
-    const before = "<p>Start of included HTML:</p>"
     const after = "<p>End of included HTML.</p>"
     const context = testUtil.newHtmlContext("index.html",
-      `${before}<!--#include virtual="include.html" -->${after}`)
+      `<!--#include virtual="include.html" -->${after}`)
     await command.execute(context)
-    expect(context.file.contents).toBe(`${before}${includedContent}${after}`)
+    const contents = context.file.contents as string
+    expect(contents).toBe(`${includedContent}${after}`)
   })
 
   test("replace transformed include", async () => {
@@ -43,6 +43,7 @@ describe("SsiIncludeReplaceCommand", () => {
     const context = testUtil.newHtmlContext("index.html",
       `${before}<!--#include virtual="include.html" -->${after}`)
     await command.execute(context)
-    expect(context.file.contents).toBe(`${before}<blockquote>${includedContent}</blockquote>${after}`)
+    const contents = context.file.contents as string
+    expect(contents).toBe(`${before}<blockquote>${includedContent}</blockquote>${after}`)
   })
 })

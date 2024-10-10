@@ -2,7 +2,7 @@ import path from "path"
 import { RegexReplaceCommand } from "../../RegexReplaceCommand.js"
 import { RegexReplacer } from "../../RegexReplacer.js"
 import { SsgContext } from "../../../../../SsgContext.js"
-import { FileContents } from "../../../../../util/index.js"
+import { FileContents } from "../../../../../file/index.js"
 
 export interface SsiIncludeReplaceCommandTransformer {
   transform(context: SsgContext, includeFile: FileContents): string | undefined

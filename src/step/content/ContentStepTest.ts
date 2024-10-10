@@ -1,11 +1,11 @@
+import fs from "fs"
+import path from "path"
+import { describe, expect, test } from "@javarome/testscript"
 import { ContentStep } from "./ContentStep.js"
 import { SsgContext } from "../../SsgContext.js"
-import { FileContents, HtmlFileContents } from "../../util"
 import { SsgContextImpl } from "../../SsgContextImpl.js"
-import path from "path"
-import fs from "fs"
-import { describe, expect, test } from "@javarome/testscript"
 import { ContentStepConfig } from "./ContentStepConfig.js"
+import { FileContents, HtmlFileContents } from "../../file/index.js"
 
 describe("ContentStep", () => {
 

@@ -1,5 +1,5 @@
-import { FileUtil } from "./FileUtil"
 import { JSDOM } from "jsdom"
+import { FileUtil } from "./FileUtil.js"
 
 export class HtmlUtil {
 

@@ -1,7 +1,7 @@
 import { ReplaceCommand } from "./ReplaceCommand.js"
 import { HtmlSsgContext } from "../../../HtmlSsgContext.js"
 import { DomReplacer } from "./DomReplacer.js"
-import { ReplacerFactory } from "./ReplacerFactory"
+import { ReplacerFactory } from "./ReplacerFactory.js"
 
 export class DomReplaceCommand<T extends HTMLElement = HTMLElement, C extends HtmlSsgContext = HtmlSsgContext> implements ReplaceCommand<C> {
 

@@ -1,9 +1,9 @@
+import path from "path"
+import { describe, expect, test } from "@javarome/testscript"
 import { DirectoryStep } from "./DirectoryStep.js"
 import { SsgContextImpl } from "../SsgContextImpl.js"
 import { SsgContext } from "../SsgContext.js"
-import { describe, expect, test } from "@javarome/testscript"
-import { FileContents } from "../util/index.js"
-import path from "path"
+import { FileContents } from "../file/index.js"
 
 describe("DirectoryStep", () => {
 

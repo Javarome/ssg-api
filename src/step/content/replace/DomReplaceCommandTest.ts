@@ -1,10 +1,10 @@
+import { describe, expect, test } from "@javarome/testscript"
 import { DomReplaceCommand } from "./DomReplaceCommand.js"
 import { HtmlSsgContext } from "../../../HtmlSsgContext.js"
 import { DomReplacer } from "./DomReplacer.js"
 import { testUtil } from "../../../../test/TestUtil.js"
-import { describe, expect, test } from "@javarome/testscript"
-import { SsgContext } from "../../../SsgContext"
-import { ReplacerFactory } from "./ReplacerFactory"
+import { SsgContext } from "../../../SsgContext.js"
+import { ReplacerFactory } from "./ReplacerFactory.js"
 
 describe("DomReplaceCommand", () => {
 
@@ -30,7 +30,8 @@ describe("DomReplaceCommand", () => {
     expect(command.postExecuted).toBe(false)
     await command.execute(context)
     expect(command.postExecuted).toBe(true)
-    expect(context.file.contents).toBe(
+    const contents = context.file.contents as string
+    expect(contents).toBe(
       `<html><head><meta name="generator" content="ssg-api"></head><body><a href="link" data-prop="value">text</a></body></html>`)
   })
 })

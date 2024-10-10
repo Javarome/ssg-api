@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.16.3] - 2024-10-10
+
+### Added
+
+- Import from vanilla JS compatibility.
+
 ## [1.16.1] - 2024-09-03
 
 ### Added

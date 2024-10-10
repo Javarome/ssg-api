@@ -1,13 +1,13 @@
 import * as fs from "fs"
 import { promises as fsAsync } from "fs"
-import { detectEncoding as _detectEncoding } from "char-encoding-detector"
 import path from "path"
+import { glob } from "glob"
+import { detectEncoding as _detectEncoding } from "char-encoding-detector"
 import { readdir } from "fs/promises"
 import { Dirent } from "node:fs"
-import { SsgContextImpl } from "../SsgContextImpl"
-import { CopyStepConfig } from "../step"
-import { FileContents } from "./FileContents"
-import { glob } from "glob"
+import { SsgContextImpl } from "../SsgContextImpl.js"
+import { CopyStepConfig } from "../step/index.js"
+import { FileContents } from "./FileContents.js"
 
 /**
  * File utility functions

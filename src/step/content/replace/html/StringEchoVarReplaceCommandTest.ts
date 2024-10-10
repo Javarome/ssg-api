@@ -1,6 +1,6 @@
+import { describe, expect, test } from "@javarome/testscript"
 import { testUtil } from "../../../../../test/TestUtil.js"
 import { StringEchoVarReplaceCommand } from "./StringEchoVarReplaceCommand.js"
-import { describe, expect, test } from "@javarome/testscript"
 
 describe("StringEchoVarReplaceCommand", () => {
 
@@ -11,7 +11,8 @@ describe("StringEchoVarReplaceCommand", () => {
     context.setVar("mail", "javarome@gmail.com")
     expect(context.getVar("mail")).toBe("javarome@gmail.com")
     await command.execute(context)
-    expect(context.file.contents).toBe(`<a href="mailto:javarome@gmail.com">Ecrire à javarome@gmail.com</a>`)
+    const contents = context.file.contents as string
+    expect(contents).toBe(`<a href="mailto:javarome@gmail.com">Ecrire à javarome@gmail.com</a>`)
   })
 
   test("replaces alls var in string", async () => {
@@ -24,7 +25,8 @@ var x = 12; console.log('x = \${x}')
     context.setVar("mail", "javarome@gmail.com")
     expect(context.getVar("mail")).toBe("javarome@gmail.com")
     await command.execute(context)
-    expect(context.file.contents).toBe(`<script>
+    const contents = context.file.contents as string
+    expect(contents).toBe(`<script>
 var x = 12; console.log('x = \${x}')
 </script>
 <a href="mailto:javarome@gmail.com">Ecrire à javarome@gmail.com</a>`)

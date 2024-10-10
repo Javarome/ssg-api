@@ -1,6 +1,6 @@
+import { describe, expect, test } from "@javarome/testscript"
 import { testUtil } from "../../../../../test/TestUtil.js"
 import { HtAccessToNetlifyConfigReplaceCommand } from "./HtAccessToNetlifyConfigReplaceCommand.js"
-import { describe, expect, test } from "@javarome/testscript"
 
 describe("HtAccessToNetlifyConfigReplaceCommand", () => {
 
@@ -9,7 +9,8 @@ describe("HtAccessToNetlifyConfigReplaceCommand", () => {
     const context = testUtil.newContext(".htaccess",
       `Redirect /Documents/Articles/Vallee/1990_5ArgumentsContreHET_Vallee_fr.html https://rr0.org/time/1/9/9/0/Vallee_5ArgumentsAgainstTheExtraterrestrialOriginOfUnidentifiedFlyingObjects/index_fr.html`)
     await command.execute(context)
-    expect(context.file.contents).toBe(`[[redirects]]
+    const contents = context.file.contents as string
+    expect(contents).toBe(`[[redirects]]
   from = "/Documents/Articles/Vallee/1990_5ArgumentsContreHET_Vallee_fr.html"
   to = "/time/1/9/9/0/Vallee_5ArgumentsAgainstTheExtraterrestrialOriginOfUnidentifiedFlyingObjects/index_fr.html"
 
@@ -21,7 +22,8 @@ describe("HtAccessToNetlifyConfigReplaceCommand", () => {
     const context = testUtil.newContext(".htaccess",
       `Redirect /science/crypto/ufologie https://rr0.org/science/crypto/ufo`)
     await command.execute(context)
-    expect(context.file.contents).toBe(`[[redirects]]
+    const contents = context.file.contents as string
+    expect(contents).toBe(`[[redirects]]
   from = "/science/crypto/ufologie/*"
   to = "/science/crypto/ufo/:splat"
 
@@ -35,7 +37,8 @@ describe("HtAccessToNetlifyConfigReplaceCommand", () => {
       const context = testUtil.newContext(".htaccess",
         `Redirect /science/crypto/ufo/analyse/hypotheses/HET/ https://rr0.org/science/crypto/ufo/analyse/hypotheses/intelligence/HET/`)
       await command.execute(context)
-      expect(context.file.contents).toBe(`[[redirects]]
+      const contents = context.file.contents as string
+      expect(contents).toBe(`[[redirects]]
   from = "/science/crypto/ufo/analyse/hypotheses/HET/*"
   to = "/science/crypto/ufo/analyse/hypotheses/intelligence/HET/:splat"
 
@@ -47,7 +50,8 @@ describe("HtAccessToNetlifyConfigReplaceCommand", () => {
       const context = testUtil.newContext(".htaccess",
         `Redirect /science/crypto/ufologie https://rr0.org/science/crypto/ufo`)
       await command.execute(context)
-      expect(context.file.contents).toBe(`[[redirects]]
+      const contents = context.file.contents as string
+      expect(contents).toBe(`[[redirects]]
   from = "/science/crypto/ufologie/*"
   to = "/science/crypto/ufo/:splat"
 

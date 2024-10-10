@@ -1,6 +1,6 @@
+import { describe, expect, test } from "@javarome/testscript"
 import { SsiSetVarReplaceCommand } from "./SsiSetVarCommand.js"
 import { testUtil } from "../../../../../../test/TestUtil.js"
-import { describe, expect, test } from "@javarome/testscript"
 
 describe("SsiVarCommand", () => {
 
@@ -10,7 +10,8 @@ describe("SsiVarCommand", () => {
     const context = testUtil.newHtmlContext("org/eu/fr/asso/spepse/projet/Magonia.html",
       `<!--#set var="title" value="Le projet Magonia" -->`)
     await command.execute(context)
-    expect(context.file.contents).toBe(`<title>Le projet Magonia</title>`)
+    const contents = context.file.contents as string
+    expect(contents).toBe(`<title>Le projet Magonia</title>`)
   })
 
   test("replaces url var", async () => {
@@ -19,6 +20,7 @@ describe("SsiVarCommand", () => {
     const context = testUtil.newHtmlContext("org/eu/fr/dn/gendarmerie/index.html",
       `<!--#set var="url" value="https://www.defense.gouv.fr/gendarmerie/" -->`)
     await command.execute(context)
-    expect(context.file.contents).toBe(`<meta name="url" content="https://www.defense.gouv.fr/gendarmerie/"/>`)
+    const contents = context.file.contents as string
+    expect(contents).toBe(`<meta name="url" content="https://www.defense.gouv.fr/gendarmerie/"/>`)
   })
 })

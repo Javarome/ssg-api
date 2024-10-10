@@ -1,4 +1,4 @@
-import { HtmlFileContents, LinkType } from "./HtmlFileContents"
+import { HtmlFileContents, LinkType } from "./HtmlFileContents.js"
 import { describe, expect, test } from "@javarome/testscript"
 
 describe("HtmlFileContents", () => {

@@ -1,8 +1,8 @@
+import { describe, expect, test } from "@javarome/testscript"
 import { SsiEchoVarReplaceCommand } from "./SsiEchoVarCommand.js"
 import { RegexReplacer } from "../../RegexReplacer.js"
 import { HtmlSsgContext } from "../../../../../HtmlSsgContext.js"
 import { testUtil } from "../../../../../../test/TestUtil.js"
-import { describe, expect, test } from "@javarome/testscript"
 
 describe("SsiEchoVarReplaceCommand", () => {
 
@@ -20,6 +20,7 @@ describe("SsiEchoVarReplaceCommand", () => {
     const context = testUtil.newHtmlContext("index.html",
       `<title>RR0</title><h1 class="full-page"><!--#echo var="title" --></h1>`)
     await command.execute(context)
-    expect(context.file.contents).toBe(`<title>RR0</title><h1 class="full-page">RR0</h1>`)
+    const contents = context.file.contents as string
+    expect(contents).toBe(`<title>RR0</title><h1 class="full-page">RR0</h1>`)
   })
 })

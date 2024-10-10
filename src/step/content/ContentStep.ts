@@ -1,9 +1,9 @@
 import fs from "fs"
+import { glob } from "glob"
 import { SsgStep } from "../SsgStep.js"
 import { ContentStepConfig } from "./ContentStepConfig.js"
 import { OutputFunc } from "../../OutputFunc.js"
-import { glob } from "glob"
-import { SsgContext } from "../../SsgContext"
+import { SsgContext } from "../../SsgContext.js"
 
 export type ContentStepResult = {
   processedFiles: string[]
@@ -100,9 +100,9 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
    * @param context
    * @param filePath
    * @param contentsConfig
-   * @return If the file was processed.
+   * @return {string|undefined} The output file.
    * @see #shouldProcessFile(context)
-   * @see #shouldProcessFile(context)
+   * @see #shouldProcessContent(context)
    * @protected
    */
   protected async processFile(context: C, filePath: string,
@@ -119,7 +119,7 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
           await replacement.execute(context)
         }
         const outputPath = contentsConfig.getOutputPath(context)
-        const output = context.newOutput(outputPath)
+        const output = await context.newOutput(outputPath)
         context.debug("Writing", output.name)
         await this.write(context, output)
         return output.name
