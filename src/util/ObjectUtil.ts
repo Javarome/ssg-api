@@ -10,8 +10,8 @@ export class ObjectUtil {
     return ObjectUtil.isUndefined(obj) || obj === null
   }
 
-  static asSet<T>(obj?: T | null, msg?: string): T {
-    assert.ok(!this.isNotSet(obj))
+  static asSet<T>(obj?: T | null | undefined, msg?: string): T {
+    assert.ok(!this.isNotSet(obj), msg)
     return obj!
   }
 }

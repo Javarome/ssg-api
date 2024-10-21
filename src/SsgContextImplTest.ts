@@ -8,6 +8,11 @@ interface MyVars {
 
 describe("SsgContextImpl", () => {
 
+  test("no file", () => {
+    const context = new SsgContextImpl<MyVars>("fr")
+    expect(() => context.file).toThrow("Should have a file")
+  })
+
   test("sets and gets variable", () => {
     const myVars = new Map([["someVar", undefined]])
     const context = new SsgContextImpl<MyVars>("fr", myVars)

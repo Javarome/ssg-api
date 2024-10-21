@@ -1,4 +1,3 @@
-import * as assert from "node:assert"
 import { SsgContext } from "./SsgContext.js"
 import { ConsoleLogger } from "./ConsoleLogger.js"
 import { Logger } from "./Logger.js"
@@ -44,8 +43,7 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
   _file: FileContents | undefined
 
   get file(): FileContents {
-    assert.ok(this._file, "Should have a file")
-    return this._file
+    return ObjectUtil.asSet<FileContents>(this._file, "Should have a file")
   }
 
   set file(value: FileContents) {
