@@ -26,12 +26,13 @@ describe("DomReplaceCommand", () => {
         return domReplacer
       }
     })
-    const context = testUtil.newHtmlContext("test.xml", `<a href="#">text</a>`)
+    const context = testUtil.newHtmlContext("test.xml",
+      `<html lang="en"><head><title>Test title</title><meta name="generator" content="ssg-api"></head><body><a href="#">text</a></body></html>`)
     expect(command.postExecuted).toBe(false)
     await command.execute(context)
     expect(command.postExecuted).toBe(true)
     const contents = context.file.contents as string
     expect(contents).toBe(
-      `<html lang="en"><head><title></title><meta name="generator" content="ssg-api"></head><body><a href="#" data-prop="value">text</a></body></html>`)
+      `<html lang="en"><head><title>Test title</title><meta name="generator" content="ssg-api"></head><body><a href="#" data-prop="value">text</a></body></html>`)
   })
 })
