@@ -1,14 +1,15 @@
 import path from "path"
 import { describe, expect, test } from "@javarome/testscript"
-import { CopyStep, CopyStepConfig } from "./CopyStep.js"
+import { CopyStep } from "./CopyStep.js"
 import { SsgContextImpl } from "../SsgContextImpl.js"
 import { SsgContext } from "../SsgContext.js"
+import { FileCopyConfig } from "./FileCopyConfig"
 
 describe("CopyStep", () => {
 
   test("copy", async () => {
     const destDir = "out/"
-    const config: CopyStepConfig = {
+    const config: FileCopyConfig = {
       sourcePatterns: ["**/test.html", "**/*.bpmn"],
       getOutputPath(context: SsgContext): string {
         return path.join(destDir, context.file.name)

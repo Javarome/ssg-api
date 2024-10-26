@@ -1,14 +1,9 @@
 import * as process from "process"
-import { GlobOptionsWithFileTypesUnset } from "glob"
 import { SsgStep } from "./SsgStep.js"
-import { SsgConfig } from "../SsgConfig.js"
 import { SsgContextImpl } from "../SsgContextImpl.js"
-import { FileUtil } from "../file/index.js"
-
-export interface CopyStepConfig extends SsgConfig {
-  readonly sourcePatterns: string[]
-  readonly options?: GlobOptionsWithFileTypesUnset
-}
+import { FileCopyConfig } from "./FileCopyConfig"
+import { copy, FileContents } from "@javarome/fileutil"
+import path from "path"
 
 export type CopyStepResult = {
   files: string[]
@@ -21,12 +16,14 @@ export class CopyStep<C extends SsgContextImpl = SsgContextImpl> implements SsgS
 
   readonly name = "copy"
 
-  constructor(protected config: CopyStepConfig) {
+  constructor(protected config: FileCopyConfig) {
   }
 
   async execute(context: C): Promise<CopyStepResult> {
     try {
-      const copiedFiles = await FileUtil.copy(context, this.config)
+      context.file = new FileContents("toCopy", "utf-8", "", new Date, "en")
+      const outDir = path.dirname(this.config.getOutputPath(context))
+      const copiedFiles = await copy(outDir, this.config.sourcePatterns, this.config.options)
       const cwd = process.cwd()
       const files = copiedFiles.map(file => file.startsWith(cwd) ? file.substring(cwd.length + 1) : file)
       return {files}

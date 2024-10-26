@@ -108,7 +108,8 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
   protected async processFile(context: C, filePath: string,
                               contentsConfig: ContentStepConfig): Promise<string | undefined> {
     Object.assign(context, {_file: {name: filePath}})
-    context.file.lastModified = fs.statSync(context.file.name).mtime
+    const lastModified = fs.statSync(context.file.name).mtime
+    Object.assign(context.file, {lastModified})
     const processFile = await this.shouldProcessFile(context, contentsConfig)
     if (processFile) {
       context.file = context.read(filePath)

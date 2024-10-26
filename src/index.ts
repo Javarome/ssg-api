@@ -1,6 +1,6 @@
 export * from "./util/index.js"
 export * from "./file/index.js"
-export * from "./SsgConfig.js"
+export * from "./FileWriteConfig.js"
 export * from "./Logger.js"
 export * from "./SsgContext.js"
 export * from './OutputFunc.js';

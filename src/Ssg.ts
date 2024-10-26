@@ -1,5 +1,5 @@
 import { SsgContext } from "./SsgContext.js"
-import { SsgConfig } from "./SsgConfig.js"
+import { FileWriteConfig } from "./FileWriteConfig"
 import { SsgStep } from "./step/index.js"
 
 
@@ -17,7 +17,7 @@ export class Ssg {
 
   protected steps: SsgStep[] = []
 
-  constructor(protected config: SsgConfig) {
+  constructor(protected config: FileWriteConfig) {
   }
 
   add(...steps: SsgStep[]) {

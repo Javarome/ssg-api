@@ -5,7 +5,8 @@ import { ContentStep } from "./ContentStep.js"
 import { SsgContext } from "../../SsgContext.js"
 import { SsgContextImpl } from "../../SsgContextImpl.js"
 import { ContentStepConfig } from "./ContentStepConfig.js"
-import { FileContents, HtmlFileContents } from "../../file/index.js"
+import { HtmlFileContents } from "../../file/index.js"
+import { FileContents } from "@javarome/fileutil"
 
 describe("ContentStep", () => {
 

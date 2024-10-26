@@ -1,5 +1,6 @@
 import { ObjectUtil } from "../src/util/ObjectUtil.js"
-import { FileContents, HtmlFileContents, HtmlSsgContext, SsgContext, SsgContextImpl } from "../src/index.js"
+import { HtmlFileContents, HtmlSsgContext, SsgContext, SsgContextImpl } from "../src/index.js"
+import { FileContents } from "@javarome/fileutil"
 
 class TestUtil {
 

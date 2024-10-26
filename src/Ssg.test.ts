@@ -4,12 +4,12 @@ import { Ssg } from "./Ssg.js"
 import { SsgContextImpl } from "./SsgContextImpl.js"
 import { SsgStep } from "./step/index.js"
 import { SsgContext } from "./SsgContext.js"
-import { SsgConfig } from "./SsgConfig.js"
+import { FileWriteConfig } from "./FileWriteConfig"
 
 describe("Ssg", function () {
 
   test("start", async () => {
-    const config: SsgConfig = {
+    const config: FileWriteConfig = {
       getOutputPath(context: SsgContext): string {
         return path.join("out", context.name)
       }

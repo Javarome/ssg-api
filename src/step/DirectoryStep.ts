@@ -1,9 +1,9 @@
 import { SsgStep } from "./SsgStep.js"
 import { SsgContext } from "../SsgContext.js"
-import { SsgConfig } from "../SsgConfig.js"
-import { FileContents, FileUtil } from "../file/index.js"
+import { FileWriteConfig } from "../FileWriteConfig"
+import { FileContents, findDirs } from "@javarome/fileutil"
 
-export interface DirectoryStepConfig extends SsgConfig {
+export interface DirectoryStepConfig extends FileWriteConfig {
   /**
    * A list of directories to look into.
    */
@@ -50,7 +50,7 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
     context.file = context.read(this.config.templateFileName)
     const outputFilePath = this.config.getOutputPath(context)
     const outputFile = context.newOutput(outputFilePath)
-    const dirNames = await FileUtil.findDirs(this.config.rootDirs, this.config.excludedDirs)
+    const dirNames = await findDirs(this.config.rootDirs, this.config.excludedDirs)
     await this.processDirs(context, dirNames, outputFile)
     return {directoryCount: dirNames.length}
   }

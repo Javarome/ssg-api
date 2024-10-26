@@ -1,5 +1,3 @@
-import * as assert from "node:assert"
-
 export class ObjectUtil {
 
   static isUndefined(obj: any): boolean {
@@ -10,8 +8,10 @@ export class ObjectUtil {
     return ObjectUtil.isUndefined(obj) || obj === null
   }
 
-  static asSet<T>(obj?: T | null | undefined, msg?: string): T {
-    assert.ok(!this.isNotSet(obj), msg)
+  static asSet<T>(obj?: T | null | undefined, msg: string = "value is not set"): T {
+    if (this.isNotSet(obj)) {
+      throw new Error(msg)
+    }
     return obj!
   }
 }

@@ -1,5 +1,5 @@
 import { JSDOM } from "jsdom"
-import { FileUtil } from "./FileUtil.js"
+import { toBufferEncoding } from "@javarome/fileutil"
 
 export class HtmlUtil {
 
@@ -8,7 +8,7 @@ export class HtmlUtil {
     const charsetEl = html.querySelector("html[charset]")
     if (charsetEl) {
       const charSetValue = charsetEl.getAttribute("charset") || undefined
-      charSet = FileUtil.toBufferEncoding(charSetValue)
+      charSet = toBufferEncoding(charSetValue)
     }
     return charSet
   }
@@ -26,7 +26,7 @@ export class HtmlUtil {
           let charsetPos = value.indexOf(key)
           if (charsetPos >= 0) {
             const charset = value.substring(charsetPos + key.length).toLowerCase().trim()
-            contentType = FileUtil.toBufferEncoding(charset)
+            contentType = toBufferEncoding(charset)
           }
         }
       }

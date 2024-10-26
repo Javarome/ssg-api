@@ -1,6 +1,6 @@
 import { JSDOM } from "jsdom"
-import { FileContents, FileContentsLang } from "./FileContents.js"
 import { HtmlUtil } from "./HtmlUtil.js"
+import { FileContents, FileContentsLang } from "@javarome/fileutil"
 
 export type HtmlMeta = {
   url?: string
@@ -54,13 +54,13 @@ export class HtmlFileContents extends FileContents {
    */
   get dom(): JSDOM {
     if (!this._dom) {
-      this._dom = new JSDOM(this._contents)
+      this._dom = new JSDOM(this.contents)
     }
     return this._dom
   }
 
   set dom(newDom: JSDOM) {
-    this._contents = newDom.serialize()
+    this.contents = newDom.serialize()
     this._dom = newDom
   }
 
@@ -69,12 +69,12 @@ export class HtmlFileContents extends FileContents {
   }
 
   get contents(): string {
-    return this._contents
+    return super.contents
   }
 
   set contents(value: string) {
     this._dom = undefined
-    this._contents = value
+    super.contents = value
   }
 
   static read(fileName: string): HtmlFileContents {

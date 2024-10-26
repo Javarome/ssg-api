@@ -3,7 +3,7 @@ import { describe, expect, test } from "@javarome/testscript"
 import { DirectoryStep } from "./DirectoryStep.js"
 import { SsgContextImpl } from "../SsgContextImpl.js"
 import { SsgContext } from "../SsgContext.js"
-import { FileContents } from "../file/index.js"
+import { FileContents } from "@javarome/fileutil"
 
 describe("DirectoryStep", () => {
 

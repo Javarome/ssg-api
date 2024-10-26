@@ -3,7 +3,8 @@
 jest*.*
 *.test.*
 **/*Test.*
-test/**/*
+test/
 src/**/*
 dist/test/**/*
 src/**/*
+out/
