@@ -17,13 +17,17 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
 
   protected stack: string[] = []
 
-  constructor(readonly locale: string, protected vars: Map<string, any> = new Map<string, any>(),
+  constructor(private _locale: string, protected vars: Map<string, any> = new Map<string, any>(),
               name = SsgContextImpl.DEFAULT_NAME,
               readonly logger: Logger = new ConsoleLogger(name),
               currentFile: FileContents | undefined = undefined) {
     this._file = currentFile
     this.stack.push(name)
     this.name = name
+  }
+
+  get locale(): string {
+    return this._file ? this._file.lang.lang : this._locale
   }
 
   protected _name = SsgContextImpl.DEFAULT_NAME
