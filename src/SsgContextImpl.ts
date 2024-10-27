@@ -27,7 +27,7 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
   }
 
   get locale(): string {
-    return this._file ? this._file.lang.lang : this._locale
+    return this._file?.lang.lang ? this._file.lang.lang : this._locale
   }
 
   protected _name = SsgContextImpl.DEFAULT_NAME
