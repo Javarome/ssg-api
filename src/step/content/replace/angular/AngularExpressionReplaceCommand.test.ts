@@ -11,7 +11,7 @@ describe("AngularExpressionReplaceCommand", () => {
     const command = new AngularExpressionReplaceCommand()
     await command.execute(context)
     const contents = context.file.contents as string
-    expect(contents).toBe(`my name is Jérôme`)
+    expect(contents).toBe(`<html><head></head><body>my name is Jérôme</body></html>`)
   })
 
   test("replace numbers", async () => {
@@ -21,7 +21,7 @@ describe("AngularExpressionReplaceCommand", () => {
     const command = new AngularExpressionReplaceCommand()
     await command.execute(context)
     const contents = context.file.contents as string
-    expect(contents).toBe(`The price is 39 500`)
+    expect(contents).toBe(`<html><head></head><body>The price is 39 500</body></html>`)
   })
 
   test("replace currency", async () => {
@@ -30,7 +30,7 @@ describe("AngularExpressionReplaceCommand", () => {
     const command = new AngularExpressionReplaceCommand()
     await command.execute(context)
     const contents = context.file.contents as string
-    expect(contents).toBe(`The price is 100 000 000,00 $US`)
+    expect(contents).toBe(`<html><head></head><body>The price is 100 000 000,00&nbsp;$US</body></html>`)
   })
 
   test("replace context value", async () => {
@@ -41,6 +41,6 @@ describe("AngularExpressionReplaceCommand", () => {
     const command = new AngularExpressionReplaceCommand()
     await command.execute(context)
     const contents = context.file.contents as string
-    expect(contents).toBe(`The context is My context`)
+    expect(contents).toBe(`<html><head></head><body>The context is My context</body></html>`)
   })
 })

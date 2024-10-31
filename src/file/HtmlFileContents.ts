@@ -38,30 +38,175 @@ export type HtmlLinks = {
  *   - `<title>` tag content
  */
 export class HtmlFileContents extends FileContents {
-
+  /**
+   * The default generator value
+   */
   static readonly generator = "ssg-api"
 
+  /**
+   * Creates a new HTML file in memory.
+   *
+   * Values provided in this constructor will override those which could be induced from contents.
+   *
+   * @param name The HTML filename.
+   * @param encoding The contents encoding ("utf-8", "latin1", etc.)
+   * @param contents The HTML contents
+   * @param lastModified
+   * @param lang The lang of the HTML file (will be induced from HTML contents <html lang="xx"> tag otherwise)
+   * @param meta The meta tags of the HTML file (will be induced from HTML contents <meta> tags otherwise)
+   * @param links The links of the HTML file (will be induced from HTML contents <link> tags otherwise)
+   * @param title The title of the HTML file (will be induced from HTML contents <title> tag otherwise)
+   */
   constructor(
     name: string, encoding: BufferEncoding, contents: string, lastModified: Date, lang: FileContentsLang,
-    readonly meta: HtmlMeta, readonly links: HtmlLinks, public title?: string) {
+    meta: HtmlMeta, links: HtmlLinks, title?: string) {
     super(name, encoding, contents, lastModified, lang)
+    this._meta = meta
+    this._links = links
+    this._title = title || ""
   }
 
-  _dom: JSDOM | undefined
+  protected _meta: HtmlMeta
+
+  get meta(): HtmlMeta {
+    this.dom
+    return this._meta
+  }
+
+  protected _links: HtmlLinks
+
+  get links(): HtmlLinks {
+    this.dom
+    return this._links
+  }
+
+  protected _title: string
+
+  get title(): string {
+    this.dom
+    return this._title
+  }
+
+  set title(title: string) {
+    const elemTitle = title.trim()
+    const split = elemTitle.lastIndexOf(" - ")
+    title = split > 0 ? elemTitle.substring(0, split) : elemTitle
+    this._title = title?.replace(/\s{2,}/g, " ").replace(/[\n\t]/, " ")
+    let root = this.document.documentElement
+    let titleEl = root.querySelector("title")
+    if (!titleEl) {
+      titleEl = this.document.createElement("title")
+      let head = root.querySelector("head")
+      if (!head) {
+        head = document.createElement("head")
+        root.appendChild(head)
+      }
+      head.appendChild(titleEl)
+    }
+    if (split >= 0) {
+      titleEl.textContent = title + (titleEl.textContent || "").substring(split)
+    } else {
+      titleEl.textContent = title
+    }
+  }
+
+  protected _dom: JSDOM | undefined
 
   /**
    * @deprecated Avoid this as JSDOM is implementation-specific. Most of the time calling `.document` will be enough.
    */
   get dom(): JSDOM {
     if (!this._dom) {
-      this._dom = new JSDOM(this.contents)
+      this._dom = this.readContents(this.contents)
     }
     return this._dom
   }
 
   set dom(newDom: JSDOM) {
-    this.contents = newDom.serialize()
-    this._dom = newDom
+    this.readDOM(newDom)
+  }
+
+  get lang() {
+    const lang = super.lang
+    this.dom
+    return this._lang
+  }
+
+  set contents(value: string) {
+    this.readContents(value)
+  }
+
+  /**
+   * Create an HtmlFileContents from a FileContents
+   *
+   * @param fileInfo
+   */
+  static create(fileInfo: FileContents): HtmlFileContents {
+    return new HtmlFileContents(fileInfo.name, fileInfo.encoding, fileInfo.contents, fileInfo.lastModified,
+      fileInfo.lang, {author: []}, {})  // HTML metadata will be read from HTML fileInfo.contents
+  }
+
+  protected readDOM(dom: JSDOM) {
+    this._dom = dom
+    const declaredEncoding = HtmlUtil.getHtmlDeclaredEncoding(dom)
+    if (declaredEncoding && declaredEncoding !== this.encoding) {
+      console.warn(`Encoding of ${this.name} is ${this.encoding} but declares ${declaredEncoding}`)
+    }
+    const doc = this.document
+    let docLang = doc.documentElement.lang
+    if (docLang) {
+      this.lang.lang = docLang
+    }
+    if (this._title) {
+      this.title = this._title
+    } else {
+      this.readTitle(doc)
+    }
+    let meta = this._meta
+    if (!meta) {
+      meta = this._meta = {author: []}
+    }
+    if (!meta.url) {
+      meta.url = HtmlFileContents.getMeta("url", doc)[0]
+    }
+    if (meta.author.length <= 0) {
+      meta.author = HtmlFileContents.getMeta("author", doc)
+    }
+    if (!meta.copyright) {
+      meta.copyright = HtmlFileContents.getMeta("copyright", doc)[0]
+    }
+    if (!meta.description) {
+      meta.description = HtmlFileContents.getMeta("description", doc)[0]
+    }
+    if (!meta.generator) {
+      meta.generator = HtmlFileContents.getMeta("generator", doc)[0] || HtmlFileContents.generator
+    }
+    let links = this._links
+    if (!links) {
+      links = this._links = {}
+    }
+    if (!links.start) {
+      links.start = HtmlFileContents.getLink(LinkType.start, doc)
+    }
+    if (!links.contents) {
+      links.contents = HtmlFileContents.getLink(LinkType.contents, doc)
+    }
+    if (!links.prev) {
+      links.prev = HtmlFileContents.getLink(LinkType.prev, doc)
+    }
+    if (!links.next) {
+      links.next = HtmlFileContents.getLink(LinkType.next, doc)
+    }
+    this._contents = dom.serialize()
+    return this._dom
+  }
+
+  protected readTitle(doc: Document) {
+    let title = doc.title
+    if (title) {
+      this.title = title
+    }
+    return title
   }
 
   get document(): Document {
@@ -72,9 +217,12 @@ export class HtmlFileContents extends FileContents {
     return super.contents
   }
 
-  set contents(value: string) {
-    this._dom = undefined
-    super.contents = value
+  protected updateTitle() {
+    const document = this.document
+    const title = this.title
+    if (title && document.title !== title) {
+      this.title = title
+    }
   }
 
   static read(fileName: string): HtmlFileContents {
@@ -82,44 +230,10 @@ export class HtmlFileContents extends FileContents {
     return this.create(fileInfo)
   }
 
-  /**
-   * Create an HtmlFileContents from a FileContents
-   *
-   * @param fileInfo
-   */
-  static create(fileInfo: FileContents): HtmlFileContents {
-    const dom = new JSDOM(fileInfo.contents)
-    const declaredEncoding = HtmlUtil.getHtmlDeclaredEncoding(dom)
-    if (declaredEncoding && declaredEncoding !== fileInfo.encoding) {
-      console.warn(`Encoding of ${fileInfo.name} is ${fileInfo.encoding} but declares ${declaredEncoding}`)
-    }
-    let title: string | undefined
-    const doc = dom.window.document
-    let docLang = doc.documentElement.lang
-    if (docLang) {
-      fileInfo.lang.lang = docLang
-    }
-    let titleElem = doc.querySelector("title")
-    if (titleElem) {
-      const elemTitle = titleElem.textContent ? titleElem.textContent.trim() : ""
-      const split = elemTitle.lastIndexOf(" - ")
-      title = split > 0 ? elemTitle.substring(0, split) : elemTitle
-      title = title?.replace(/\s{2,}/g, " ").replace(/[\n\t]/, " ")
-    }
-    const url = HtmlFileContents.getMeta("url", doc)[0]
-    const author = HtmlFileContents.getMeta("author", doc)
-    const copyright = HtmlFileContents.getMeta("copyright", doc)[0]
-    const description = HtmlFileContents.getMeta("description", doc)[0]
-    const generator = HtmlFileContents.getMeta("generator", doc)[0] || HtmlFileContents.generator
-    const meta: HtmlMeta = {url, author, copyright, description, generator}
-    const start = HtmlFileContents.getLink(LinkType.start, doc)
-    const contents = HtmlFileContents.getLink(LinkType.contents, doc)
-    const prev = HtmlFileContents.getLink(LinkType.prev, doc)
-    const next = HtmlFileContents.getLink(LinkType.next, doc)
-    const links: HtmlLinks = {start, contents, prev, next}
-    return new HtmlFileContents(fileInfo.name, fileInfo.encoding, fileInfo.contents, fileInfo.lastModified,
-      fileInfo.lang,
-      meta, links, title)
+  protected readContents(contents: string): JSDOM {
+    const dom = this._dom = new JSDOM(contents)
+    this.readDOM(dom)
+    return dom
   }
 
   static getMeta(name: string, doc: Document): string[] {
@@ -144,15 +258,7 @@ export class HtmlFileContents extends FileContents {
     return this.dom.serialize()
   }
 
-  private updateTitle() {
-    const document = this.document
-    const title = this.title
-    if (title && document.title !== title) {
-      document.title = title
-    }
-  }
-
-  private updateLinkTags() {
+  protected updateLinkTags() {
     const document = this.document
     const links = this.links
     for (const linkRel in links) {
@@ -173,7 +279,7 @@ export class HtmlFileContents extends FileContents {
     }
   }
 
-  private updateMetaTags() {
+  protected updateMetaTags() {
     const document = this.document
     const meta = this.meta
     meta.generator = meta.generator || "ssg-api"

@@ -12,7 +12,8 @@ describe("StringEchoVarReplaceCommand", () => {
     expect(context.getVar("mail")).toBe("javarome@gmail.com")
     await command.execute(context)
     const contents = context.file.contents as string
-    expect(contents).toBe(`<a href="mailto:javarome@gmail.com">Ecrire à javarome@gmail.com</a>`)
+    expect(contents).toBe(
+      `<html><head></head><body><a href="mailto:javarome@gmail.com">Ecrire à javarome@gmail.com</a></body></html>`)
   })
 
   test("replaces alls var in string", async () => {
@@ -26,9 +27,9 @@ var x = 12; console.log('x = \${x}')
     expect(context.getVar("mail")).toBe("javarome@gmail.com")
     await command.execute(context)
     const contents = context.file.contents as string
-    expect(contents).toBe(`<script>
+    expect(contents).toBe(`<html><head><script>
 var x = 12; console.log('x = \${x}')
 </script>
-<a href="mailto:javarome@gmail.com">Ecrire à javarome@gmail.com</a>`)
+</head><body><a href="mailto:javarome@gmail.com">Ecrire à javarome@gmail.com</a></body></html>`)
   })
 })

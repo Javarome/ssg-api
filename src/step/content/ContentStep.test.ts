@@ -36,7 +36,7 @@ describe("ContentStep", () => {
     }(contentConfigs, outputFunc)
     const context = new SsgContextImpl("fr")
     const result = await step.execute(context)
-    expect(result.processedFiles.length).toEqual(4)
+    expect(result.processedFiles.length).toEqual(6)
     const outputFile = context.file as HtmlFileContents
     expect(outputFile.meta.author).toEqual(["Jérôme Beau"])
     expect(outputFile.meta.url).toBe("https://rr0.org/tech/info/soft")

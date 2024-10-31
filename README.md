@@ -36,5 +36,67 @@ try {
 }
 ```
 
+## Data types
+
+### Steps
+
 [Steps](https://github.com/Javarome/ssg-api/wiki/Steps) can do anything. You can implement your owns, but there are predefined ones.
 Check the [documentation](https://github.com/Javarome/ssg-api/wiki) for more.
+
+### Files
+
+```mermaid
+classDiagram
+    namespace fileutil {
+        class FileContents {
+            name: string
+            lastModified: Date
+            contents: string
+            encoding: BufferEncoding
+            write(): Promise<void>
+            read(fileName, declaredEncoding)$: FileContents
+            readOrNew(fileName, declaredEncoding)$: FileContents
+            getLang(filePath)$: FileContentsLang
+            getContents(fileName, declaredEncoding)$
+        }
+        class FileContentsLang {
+            lang: string | undefined
+            variants: string[]
+        }
+    }
+    FileContents --> FileContentsLang: lang
+    namespace ssg-api {
+        class HtmlFileContents {
+            lang
+            title: string
+            contents: string
+            document: Document
+            read(fileName): HtmlFileContents
+            serialize(): string
+            create(FileContents)$: HtmlFileContents
+            getMeta(name, document)$: string[]
+            getLink(rek, document)$: Link[]
+        }
+        class HtmlMeta {
+            url?: string
+            author: string[]
+            copyright?: string
+            description?: string
+            generator?: string
+        }
+        class HtmlLinks {
+        }
+        class Link {
+            type: LinkType;
+            text: string;
+            url: string;
+        }
+    }
+    HtmlFileContents --> HtmlMeta: meta
+    HtmlFileContents --> HtmlLinks: links
+    HtmlLinks --> Link: start?
+    HtmlLinks --> Link: contents?
+    HtmlLinks --> Link: prev?
+    HtmlLinks --> Link: next?
+    FileContents <|-- HtmlFileContents
+```

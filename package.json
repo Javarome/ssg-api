@@ -2,7 +2,7 @@
   "name": "ssg-api",
   "type": "module",
   "author": "Jérôme Beau <javarome@gmail.com> (https://javarome.com)",
-  "version": "1.16.8",
+  "version": "1.16.10",
   "description": "Static Site Generation TypeScript API",
   "exports": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -19,7 +19,7 @@
     "prebuild": "npm install",
     "build": "rm -Rf dist && tsc --project tsconfig.prod.json",
     "test": "rimraf ./out && testscript",
-    "test-one": "rimraf ./out && tsx src/step/CopyStep.test.ts",
+    "test-one": "rimraf ./out && tsx src/file/HtmlFileContents.test.ts",
     "test-ci": "rimraf ./out && testscript",
     "prepublishOnly": "npm run build && npm run test"
   },
@@ -28,7 +28,7 @@
     "glob": "^11.0.0",
     "jsdom": "^24.1.1",
     "csv-parser": "^3.0.0",
-    "@javarome/fileutil": "^0.3.4"
+    "@javarome/fileutil": "^0.3.6"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",
