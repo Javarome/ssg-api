@@ -25,21 +25,9 @@ export class SsiIncludeReplaceCommand extends RegexReplaceCommand {
 
   protected async createReplacer(context: SsgContext): Promise<RegexReplacer> {
     return {
-      replace: (_match: string, ...args: any[]): string => {
-        let currentDir = process.cwd()
-        const toInclude = args[1]
-        if (!toInclude.startsWith("/")) {
-          const currentFile = context.file
-          if (currentFile) {
-            const currentFileName = currentFile.name
-            const lastSlash = currentFileName.lastIndexOf("/")
-            if (lastSlash) {
-              currentDir = path.join(process.cwd(), currentFileName.substring(0, lastSlash))
-            }
-          }
-        }
-        const fileName = path.join(currentDir, toInclude)
-        const file = this.fetchFile(fileName)
+      replace: (_match: string, ...args: string[]): string => {
+        const filePath = this.filePath(context, args[1])
+        const file = this.fetchFile(filePath)
         let replacement: string = file.contents
         for (const transformer of this.transformers) {
           const transformed = transformer.transform(context, file)
@@ -51,6 +39,22 @@ export class SsiIncludeReplaceCommand extends RegexReplaceCommand {
         return replacement
       }
     }
+  }
+
+  protected filePath(context: SsgContext, fileNameArg: string): string {
+    const currentDir = process.cwd()
+    let baseDir = currentDir
+    if (!fileNameArg.startsWith("/")) {
+      const currentFile = context.file
+      if (currentFile) {
+        const currentFileName = currentFile.name
+        const lastSlash = currentFileName.lastIndexOf("/")
+        if (lastSlash) {
+          baseDir = path.join(currentDir, currentFileName.substring(0, lastSlash))
+        }
+      }
+    }
+    return path.join(baseDir, fileNameArg)
   }
 
   protected fetchFile(fileName: string): FileContents {
