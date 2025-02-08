@@ -41,7 +41,7 @@ export class SsiIncludeReplaceCommand extends RegexReplaceCommand {
     }
   }
 
-  protected filePath(context: SsgContext, fileNameArg: string): string {
+  protected baseDir(context: SsgContext, fileNameArg: string): string {
     const currentDir = process.cwd()
     let baseDir = currentDir
     if (!fileNameArg.startsWith("/")) {
@@ -54,6 +54,11 @@ export class SsiIncludeReplaceCommand extends RegexReplaceCommand {
         }
       }
     }
+    return baseDir
+  }
+
+  protected filePath(context: SsgContext, fileNameArg: string): string {
+    const baseDir = this.baseDir(context, fileNameArg)
     return path.join(baseDir, fileNameArg)
   }
 

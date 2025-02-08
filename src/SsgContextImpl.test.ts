@@ -64,4 +64,16 @@ describe("SsgContextImpl", () => {
     expect(context.name).toBe(hierarchicalName)
     expect(context.logger.name).toBe(hierarchicalName)
   })
+
+  describe("clone", () => {
+    test("unread file", () => {
+      const context = new SsgContextImpl<MyVars>("fr")
+      const name = "FAQ.html"
+      const file = {name, lastModified: new Date(2023, 10, 8, 17, 21, 50)}
+      Object.assign(context, {file})
+      const clone = context.clone()
+      expect(clone.file.name).toBe(name)
+      expect(clone.locale).toBe("fr")
+    })
+  })
 })
