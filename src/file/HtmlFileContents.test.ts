@@ -51,15 +51,13 @@ describe("HtmlFileContents", () => {
     test("from contents", () => {
       {
         const frFile = new HtmlFileContents("testfrench", "utf-8", `<html lang="fr">`, new Date(),
-          {lang: "", variants: []},
-          {author: []}, {})
+          {lang: "", variants: []})
         let lang = frFile.lang.lang as string
         expect(lang).toBe("fr")
       }
       {
         const enFile = new HtmlFileContents("testfrench", "utf-8", `<html lang="en">`, new Date(),
-          {lang: "", variants: []},
-          {author: []}, {})
+          {lang: "", variants: []})
         let lang = enFile.lang.lang as string
         expect(lang).toBe("en")
       }

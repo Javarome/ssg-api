@@ -43,6 +43,10 @@ export class HtmlFileContents extends FileContents {
    */
   static readonly generator = "ssg-api"
 
+  protected _meta: HtmlMeta
+
+  protected _links: HtmlLinks
+
   /**
    * Creates a new HTML file in memory.
    *
@@ -53,27 +57,19 @@ export class HtmlFileContents extends FileContents {
    * @param contents The HTML contents
    * @param lastModified
    * @param lang The lang of the HTML file (will be induced from HTML contents <html lang="xx"> tag otherwise)
-   * @param meta The meta tags of the HTML file (will be induced from HTML contents <meta> tags otherwise)
-   * @param links The links of the HTML file (will be induced from HTML contents <link> tags otherwise)
-   * @param title The title of the HTML file (will be induced from HTML contents <title> tag otherwise)
    */
   constructor(
-    name: string, encoding: BufferEncoding, contents: string, lastModified: Date, lang: FileContentsLang,
-    meta: HtmlMeta, links: HtmlLinks, title?: string) {
+    name: string, encoding: BufferEncoding, contents: string, lastModified: Date, lang: FileContentsLang) {
     super(name, encoding, contents, lastModified, lang)
-    this._meta = meta
-    this._links = links
-    this._title = title || ""
+    this._meta = this.meta || {author: []}
+    this._links = this.links || {}
+    this._title = this.title || ""
   }
-
-  protected _meta: HtmlMeta
 
   get meta(): HtmlMeta {
     this.dom
     return this._meta
   }
-
-  protected _links: HtmlLinks
 
   get links(): HtmlLinks {
     this.dom
@@ -87,26 +83,30 @@ export class HtmlFileContents extends FileContents {
     return this._title
   }
 
-  set title(title: string) {
-    const elemTitle = title.trim()
-    const split = elemTitle.lastIndexOf(" - ")
-    title = split > 0 ? elemTitle.substring(0, split) : elemTitle
-    this._title = title?.replace(/\s{2,}/g, " ").replace(/[\n\t]/, " ")
-    let root = this.document.documentElement
-    let titleEl = root.querySelector("title")
-    if (!titleEl) {
-      titleEl = this.document.createElement("title")
-      let head = root.querySelector("head")
-      if (!head) {
-        head = document.createElement("head")
-        root.appendChild(head)
+  set title(title: string | undefined) {
+    const root = this.document.documentElement
+    if (title) {
+      const elemTitle = title.trim()
+      const split = elemTitle.lastIndexOf(" - ")
+      title = split > 0 ? elemTitle.substring(0, split) : elemTitle
+      this._title = title?.replace(/\s{2,}/g, " ").replace(/[\n\t]/, " ")
+      let titleEl = root.querySelector("title")
+      if (!titleEl) {
+        titleEl = this.document.createElement("title")
+        let head = root.querySelector("head")
+        if (!head) {
+          head = document.createElement("head")
+          root.appendChild(head)
+        }
+        head.appendChild(titleEl)
       }
-      head.appendChild(titleEl)
-    }
-    if (split >= 0) {
-      titleEl.textContent = title + (titleEl.textContent || "").substring(split)
+      if (split >= 0) {
+        titleEl.textContent = title + (titleEl.textContent || "").substring(split)
+      } else {
+        titleEl.textContent = title
+      }
     } else {
-      titleEl.textContent = title
+      root.querySelector("title")?.remove()
     }
   }
 
@@ -143,7 +143,7 @@ export class HtmlFileContents extends FileContents {
    */
   static create(fileInfo: FileContents): HtmlFileContents {
     return new HtmlFileContents(fileInfo.name, fileInfo.encoding, fileInfo.contents, fileInfo.lastModified,
-      fileInfo.lang, {author: []}, {})  // HTML metadata will be read from HTML fileInfo.contents
+      fileInfo.lang)  // HTML metadata will be read from HTML fileInfo.contents
   }
 
   protected readDOM(dom: JSDOM) {

@@ -23,8 +23,10 @@ class TestUtil {
       title = titleExec && titleExec.length > 0 ? titleExec[1].trim() : undefined
     }
     const currentFile = context.file
-    context.file = new HtmlFileContents(currentFile.name, currentFile.encoding, currentFile.contents,
-      currentFile.lastModified, currentFile.lang, {author: []}, {}, title)
+    const htmlFile = new HtmlFileContents(currentFile.name, currentFile.encoding, currentFile.contents,
+      currentFile.lastModified, currentFile.lang)
+    context.file = htmlFile
+    htmlFile.title = title
     return context as HtmlSsgContext
   }
 }
