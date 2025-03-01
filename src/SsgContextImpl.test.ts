@@ -1,5 +1,6 @@
 import { describe, expect, test } from "@javarome/testscript"
 import { SsgContextImpl } from "./SsgContextImpl.js"
+import { ConsoleLogger } from "./ConsoleLogger"
 
 interface MyVars {
   someVar?: string
@@ -11,6 +12,13 @@ describe("SsgContextImpl", () => {
   test("no file", () => {
     const context = new SsgContextImpl<MyVars>("fr")
     expect(() => context.file).toThrow("Should have a file")
+  })
+
+  test("bug", () => {
+    const locale = "fr"
+    const currentFile = undefined
+    const context = new SsgContextImpl(locale, new Map(), "RR0", new ConsoleLogger("RR0"), currentFile)
+    expect(context.locale).toBe("fr")
   })
 
   test("sets and gets variable", () => {

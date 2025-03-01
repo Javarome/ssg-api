@@ -1,24 +1,7 @@
 import { SsgStep } from "./SsgStep.js"
 import { SsgContext } from "../SsgContext.js"
-import { FileWriteConfig } from "../FileWriteConfig"
 import { FileContents, findDirs } from "@javarome/fileutil"
-
-export interface DirectoryStepConfig extends FileWriteConfig {
-  /**
-   * A list of directories to look into.
-   */
-  readonly rootDirs: string[]
-
-  /**
-   * A list of directories to avoid looking into.
-   */
-  readonly excludedDirs: string[]
-
-  /**
-   * The name of the file containing the <--#echo var="directories"--> tag
-   */
-  readonly templateFileName: string
-}
+import { DirectoryStepConfig } from "./DirectoryStepConfig"
 
 export interface DirectoryResult {
   directoryCount: number;
