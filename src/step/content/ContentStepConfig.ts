@@ -1,15 +1,15 @@
 import { SsgContext } from "../../SsgContext.js"
-import { ReplaceCommand } from "./replace/index.js"
-import { FileWriteConfig } from "../../FileWriteConfig"
+import { ReplaceCommand } from "./replace/ReplaceCommand.js"
+import { FileWriteConfig } from "../../FileWriteConfig.js"
 
-export interface ContentStepConfig<C extends SsgContext = SsgContext> extends FileWriteConfig {
+export abstract class ContentStepConfig<C extends SsgContext = SsgContext> extends FileWriteConfig {
   /**
    * The glob roots of contents to process.
    */
-  roots: string[],
+  roots: string[] = []
 
   /**
    * The replacements to process on contents.
    */
-  replacements: ReplaceCommand<C>[],
+  replacements: ReplaceCommand<C>[] = []
 }

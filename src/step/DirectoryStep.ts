@@ -1,7 +1,7 @@
 import { SsgStep } from "./SsgStep.js"
 import { SsgContext } from "../SsgContext.js"
 import { FileContents, findDirs } from "@javarome/fileutil"
-import { DirectoryStepConfig } from "./DirectoryStepConfig"
+import { DirectoryStepConfig } from "./DirectoryStepConfig.js"
 
 export interface DirectoryResult {
   directoryCount: number;

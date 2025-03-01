@@ -1,7 +1,7 @@
-import { FileWriteConfig } from "../FileWriteConfig"
+import { FileWriteConfig } from "../FileWriteConfig.js"
 import { GlobOptionsWithFileTypesUnset } from "glob"
 
-export interface FileCopyConfig extends FileWriteConfig {
-  readonly sourcePatterns: string[]
+export abstract class FileCopyConfig extends FileWriteConfig {
+  readonly sourcePatterns: string[] = []
   readonly options?: GlobOptionsWithFileTypesUnset
 }
