@@ -2,7 +2,7 @@
   "name": "ssg-api",
   "type": "module",
   "author": "Jérôme Beau <javarome@gmail.com> (https://javarome.com)",
-  "version": "1.16.15",
+  "version": "1.17.0",
   "description": "Static Site Generation TypeScript API",
   "exports": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
@@ -19,7 +19,7 @@
     "prebuild": "npm install",
     "build": "rm -Rf dist && tsc --project tsconfig.prod.json",
     "test": "rimraf ./out && testscript",
-    "test-one": "rimraf ./out && tsx src/file/HtmlFileContents.test.ts",
+    "test-one": "rimraf ./out && tsx src/step/content/replace/htaccess/HtAccessToNetlifyRedirectsReplaceCommand.test.ts",
     "test-ci": "rimraf ./out && testscript",
     "prepublishOnly": "npm run build && npm run test"
   },

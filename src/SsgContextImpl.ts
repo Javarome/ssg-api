@@ -47,6 +47,8 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
 
   _file: FileContents | undefined
 
+  outputFile: FileContents | undefined
+
   get file(): FileContents {
     return ObjectUtil.asSet<FileContents>(this._file, "Should have a file")
   }

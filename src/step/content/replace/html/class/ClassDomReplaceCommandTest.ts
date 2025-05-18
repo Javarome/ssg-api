@@ -19,7 +19,7 @@ describe("ClassDomRegexReplaceCommand", () => {
       }
     }()
     const command = new ClassDomReplaceCommand(repFactory, "temoin")
-    const context = testUtil.newHtmlContext("Test.html", `<span class="temoin">Untel</span>`)
+    const context = testUtil.newHtmlContext("Test.html", `<span class="witness">Untel</span>`)
     await command.execute(context)
     const contents = context.file.contents as string
     expect(contents).toBe(

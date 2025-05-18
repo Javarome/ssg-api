@@ -2,7 +2,7 @@ import { SsgContext } from "../../../SsgContext.js"
 
 export interface ReplaceCommand<C extends SsgContext> {
   /**
-   * Proceed to the replacement from context.inputFile to context.outputFile
+   * Proceed to the replacement for context.file
    *
    * @param context
    * @return The output file.

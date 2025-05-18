@@ -1,0 +1,43 @@
+</head>
+<body>
+<header id="main-header">
+  <h1 class="full-page"><!--#echo var="title" --></h1>
+</header>
+<nav id="main-nav">
+  <h1>Navigation</h1>
+  <ul>
+    <li class="full-page">
+      <a class="home" href="/" title="Home">RR0</a>
+    </li>
+    <li class="search full-page">
+      <rr0-search></rr0-search>
+    </li>
+    <li id="summary">
+      <a class="outline-title" href="#_top" id="out-top" title="Début de l'article"></a>
+      <ul class="outline">
+      </ul>
+    </li>
+    <li>
+      <span id="alternate"></span>
+    </li>
+    <li class="map-toggle">
+      <button class="toggle">Carte</button>
+    </li>
+  </ul>
+  <script async src="/test/search/SearchComponent.mjs" type="module"></script>
+  <script async src="/test/time/DualRangeComponent.mjs" type="module"></script>
+</nav>
+<script>
+  const summary = document.getElementById("out-top")
+  const observer = new IntersectionObserver(function (entries) {
+    summary.textContent = entries[0].intersectionRatio < 0.3 ? document.title : "Sommaire"
+  }, { threshold: [0, 0.3, 1] })
+  observer.observe(document.querySelector("#main-header"))
+  document.querySelector("rr0-search").placeholder = "Rechercher parmi ${contentTotal} pages..."
+  <!--#include virtual="/test/place/index.js" -->
+</script>
+<div aria-hidden="true" class="anchor" id="_top"></div>
+<div class="metadata">
+  <!--#echo var="author" -->
+</div>
+<div class="contents">

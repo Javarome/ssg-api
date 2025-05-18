@@ -7,6 +7,7 @@ import { SsgContextImpl } from "../../SsgContextImpl.js"
 import { ContentStepConfig } from "./ContentStepConfig.js"
 import { HtmlFileContents } from "../../file/index.js"
 import { FileContents } from "@javarome/fileutil"
+import { SsiIncludeReplaceCommand } from "./replace"
 
 describe("ContentStep", () => {
 
@@ -23,8 +24,10 @@ describe("ContentStep", () => {
       }
     }
     const contentConfigs: ContentStepConfig[] = [{
-      roots: ["test/*.html"],
-      replacements: [],
+      roots: ["test/test*.html"],
+      replacements: [
+        new SsiIncludeReplaceCommand()
+      ],
       getOutputPath(context: SsgContext) {
         return path.join(outDir, context.file.name)
       }
@@ -32,6 +35,13 @@ describe("ContentStep", () => {
     const step = new class extends ContentStep {
       protected async shouldProcessFile(_context: SsgContext, _contentsConfig: ContentStepConfig): Promise<boolean> {
         return true  // Always process all files even if unmodified
+      }
+
+      protected async processFileContents(context: SsgContext, filePath: string,
+                                          contentsConfig: ContentStepConfig): Promise<string> {
+        const outputFileName = super.processFileContents(context, filePath, contentsConfig)
+        expect(context.outputFile).toBeDefined()
+        return outputFileName
       }
     }(contentConfigs, outputFunc)
     const context = new SsgContextImpl("fr")

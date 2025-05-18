@@ -128,13 +128,13 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
     return outputName
   }
 
-  protected async processFileContents(context: C, filePath: string, contentsConfig: ContentStepConfig<SsgContext>) {
+  protected async processFileContents(context: C, filePath: string, contentsConfig: ContentStepConfig) {
     context.debug("Processing contents of", filePath)
+    const outputPath = contentsConfig.getOutputPath(context)
+    const output = context.outputFile = context.newOutput(outputPath)
     for (const replacement of contentsConfig.replacements) {
       await replacement.execute(context)
     }
-    const outputPath = contentsConfig.getOutputPath(context)
-    const output = context.newOutput(outputPath)
     context.debug("Writing new contents of", output.name)
     await this.write(context, output)
     return output.name

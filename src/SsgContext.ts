@@ -24,6 +24,13 @@ export interface SsgContext<V = any> extends Logger {
    */
   file: FileContents
 
+  /**
+   * The file where output will be written.
+   * Use only to check initial output contents before overwriting.
+   * Writing will not occur here but in the file field.
+   */
+  outputFile: FileContents | undefined
+
   getVar(varName: string): string | undefined
 
   setVar(varName: string, value: any): void

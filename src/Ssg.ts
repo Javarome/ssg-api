@@ -1,6 +1,6 @@
 import { SsgContext } from "./SsgContext.js"
-import { FileWriteConfig } from "./FileWriteConfig"
-import { SsgStep } from "./step/index.js"
+import { FileWriteConfig } from "./FileWriteConfig.js"
+import { SsgStep } from "./step/SsgStep.js"
 
 
 /**

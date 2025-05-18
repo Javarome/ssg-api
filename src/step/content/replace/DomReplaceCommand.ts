@@ -15,7 +15,7 @@ export class DomReplaceCommand<T extends HTMLElement = HTMLElement, C extends Ht
     const replacer = await this.createReplacer(context)
     const doc = inputFile.document
     if (!doc) {
-      throw Error(inputFile.name + " has is not an HTML file")
+      throw Error(`${inputFile.name} has is not an HTML file`)
     }
     const docEl = doc.documentElement
     do {
