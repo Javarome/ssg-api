@@ -15,12 +15,12 @@ describe("ContentStep", () => {
 
   test("parses HTML", async () => {
     fs.rmSync(outDir, {recursive: true, force: true})
-    const outputFunc = async (context: SsgContext, info: FileContents) => {
+    const outputFunc = async (context: SsgContext, fileContents: FileContents) => {
       try {
-        context.log("Writing", info.name)
-        await info.write()
+        context.log("Writing", fileContents.name)
+        await fileContents.write()
       } catch (e) {
-        context.error(info.name, e)
+        context.error(fileContents.name, e)
       }
     }
     const contentConfigs: ContentStepConfig[] = [{

@@ -117,7 +117,7 @@ export class HtmlFileContents extends FileContents {
    */
   get dom(): JSDOM {
     if (!this._dom) {
-      this._dom = this.readContents(this.contents)
+      this._dom = this.parseContents(this.contents)
     }
     return this._dom
   }
@@ -133,7 +133,7 @@ export class HtmlFileContents extends FileContents {
   }
 
   set contents(value: string) {
-    this.readContents(value)
+    this.parseContents(value)
   }
 
   /**
@@ -230,7 +230,7 @@ export class HtmlFileContents extends FileContents {
     return this.create(fileInfo)
   }
 
-  protected readContents(contents: string): JSDOM {
+  protected parseContents(contents: string): JSDOM {
     const dom = this._dom = new JSDOM(contents)
     this.readDOM(dom)
     return dom

@@ -136,6 +136,7 @@ export class ContentStep<C extends SsgContext = SsgContext> implements SsgStep<C
       await replacement.execute(context)
     }
     context.debug("Writing new contents of", output.name)
+    output.contents = context.file.contents
     await this.write(context, output)
     return output.name
   }
