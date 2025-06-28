@@ -10,8 +10,13 @@ export class HtAccessToNetlifyConfigReplaceCommand extends HtAccessReplaceComman
   protected handleDirectoryIndex(args: string[], _result: string[]): void {
   }
 
-  protected handleHeader(from: string, to: string): string {
-    return ""  // TODO:
+  protected handleHeader(action: string, header: string, value: string): string {
+    return `[[headers]]
+  for = "/*"
+  [headers.values]
+    ${header} = ${value}
+
+`
   }
 
   protected handleRedirect(from: string, to: string): string {

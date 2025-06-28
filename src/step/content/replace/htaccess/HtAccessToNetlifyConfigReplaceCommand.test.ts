@@ -23,14 +23,17 @@ describe("HtAccessToNetlifyConfigReplaceCommand", () => {
 
   test("add CORS headers", async () => {
     const command = new HtAccessToNetlifyConfigReplaceCommand("https://rr0.org/")
+    const header1 = `Access-Control-Allow-Origin`
+    const value1 = `"*"`
     const context = testUtil.newContext(".htaccess",
-      `Header /Documents/Articles/Vallee/1990_5ArgumentsContreHET_Vallee_fr.html https://rr0.org/time/1/9/9/0/Vallee_5ArgumentsAgainstTheExtraterrestrialOriginOfUnidentifiedFlyingObjects/index_fr.html`)
+      `Header add ${header1} ${value1}`)
     context.outputFile = outputFile
     await command.execute(context)
     const contents = context.file.contents as string
-    expect(contents).toBe(`[[redirects]]
-  from = "/Documents/Articles/Vallee/1990_5ArgumentsContreHET_Vallee_fr.html"
-  to = "/time/1/9/9/0/Vallee_5ArgumentsAgainstTheExtraterrestrialOriginOfUnidentifiedFlyingObjects/index_fr.html"
+    expect(contents).toBe(`[[headers]]
+  for = "/*"
+  [headers.values]
+    ${header1} = ${value1}
 
 `)
   })

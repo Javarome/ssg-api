@@ -10,7 +10,6 @@ export class HtAccessToNetlifyRedirectsReplaceCommand extends HtAccessReplaceCom
     return ""
   }
 
-
   protected handleRedirect(from: string, to: string): string {
     let path = to.substring(this.host.length)
     const trailingFrom = from.endsWith("/")

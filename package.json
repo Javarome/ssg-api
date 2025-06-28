@@ -19,7 +19,7 @@
     "prebuild": "npm install",
     "build": "rm -Rf dist && tsc --project tsconfig.prod.json",
     "test": "rimraf ./out && testscript",
-    "test-one": "rimraf ./out && tsx src/step/content/replace/htaccess/HtAccessToNetlifyRedirectsReplaceCommand.test.ts",
+    "test-one": "rimraf ./out && tsx src/step/content/replace/htaccess/HtAccessToNetlifyConfigReplaceCommand.test.ts",
     "test-ci": "rimraf ./out && testscript",
     "prepublishOnly": "npm run build && npm run test"
   },
