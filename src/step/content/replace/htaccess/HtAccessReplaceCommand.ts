@@ -13,6 +13,7 @@ enum HtAccessCommands {
   DirectoryIndex = "DirectoryIndex",
   Redirect = "Redirect",
   ErrorDocument = "ErrorDocument",
+  Header = "Header",
 }
 
 export abstract class HtAccessReplaceCommand implements ReplaceCommand<SsgContext> {
@@ -34,6 +35,9 @@ export abstract class HtAccessReplaceCommand implements ReplaceCommand<SsgContex
           case HtAccessCommands.Redirect:
             commandOutLines.push(this.handleRedirect(args[1], args[2]))
             break
+          case HtAccessCommands.Header:
+            commandOutLines.push(this.handleHeader(args[1], args[2]))
+            break
         }
         outLines.push(...commandOutLines)
       }
@@ -49,6 +53,8 @@ export abstract class HtAccessReplaceCommand implements ReplaceCommand<SsgContex
   protected abstract handleDirectoryIndex(args: string[], result: string[]): void
 
   protected abstract handleRedirect(from: string, to: string): string
+
+  protected abstract handleHeader(from: string, to: string): string
 
   async contentStepEnd() {
     // NOP

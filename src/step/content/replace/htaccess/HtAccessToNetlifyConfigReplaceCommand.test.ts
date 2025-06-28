@@ -21,16 +21,16 @@ describe("HtAccessToNetlifyConfigReplaceCommand", () => {
 `)
   })
 
-  test("redirect directory to directory", async () => {
+  test("add CORS headers", async () => {
     const command = new HtAccessToNetlifyConfigReplaceCommand("https://rr0.org/")
     const context = testUtil.newContext(".htaccess",
-      `Redirect /science/crypto/ufologie https://rr0.org/science/crypto/ufo`)
+      `Header /Documents/Articles/Vallee/1990_5ArgumentsContreHET_Vallee_fr.html https://rr0.org/time/1/9/9/0/Vallee_5ArgumentsAgainstTheExtraterrestrialOriginOfUnidentifiedFlyingObjects/index_fr.html`)
     context.outputFile = outputFile
     await command.execute(context)
     const contents = context.file.contents as string
     expect(contents).toBe(`[[redirects]]
-  from = "/science/crypto/ufologie/*"
-  to = "/science/crypto/ufo/:splat"
+  from = "/Documents/Articles/Vallee/1990_5ArgumentsContreHET_Vallee_fr.html"
+  to = "/time/1/9/9/0/Vallee_5ArgumentsAgainstTheExtraterrestrialOriginOfUnidentifiedFlyingObjects/index_fr.html"
 
 `)
   })
