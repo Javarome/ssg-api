@@ -10,6 +10,10 @@ export class HtAccessToNetlifyConfigReplaceCommand extends HtAccessReplaceComman
   protected handleDirectoryIndex(args: string[], _result: string[]): void {
   }
 
+  protected handleHeader(from: string, to: string): string {
+    return ""  // TODO:
+  }
+
   protected handleRedirect(from: string, to: string): string {
     let path = to.substring(this.host.length)
     const trailingFrom = from.endsWith("/")
