@@ -1,4 +1,4 @@
-import { FileWriteConfig } from "../FileWriteConfig"
+import { FileWriteConfig } from "../FileWriteConfig.js"
 
 export abstract class DirectoryStepConfig extends FileWriteConfig {
   /**
