@@ -39,7 +39,7 @@ export abstract class DirectoryStep<C extends SsgContext = SsgContext> implement
   }
 
   /**
-   * Perform a processing of all found subdirectories.
+   * Perform processing of all found subdirectories.
    *
    * The implementation of this method is responsible for writing the outputfile (using
    * `writeFileInfo(context.outputFile)` typically), if any.
