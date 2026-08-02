@@ -1,7 +1,7 @@
 import * as process from "process"
 import { SsgStep } from "./SsgStep.js"
 import { SsgContextImpl } from "../SsgContextImpl.js"
-import { FileCopyConfig } from "./FileCopyConfig"
+import { FileCopyConfig } from "./FileCopyConfig.js"
 import { copy, FileContents } from "@javarome/fileutil"
 import path from "path"
 

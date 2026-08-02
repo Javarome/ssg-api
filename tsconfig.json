@@ -2,16 +2,19 @@
   "compilerOptions": {
     "declaration": true,
     "strict": true,
-    "module": "ES2020",
+    "module": "NodeNext",
     "target": "ES2018",
-    "moduleResolution": "node",
+    "moduleResolution": "NodeNext",
     "lib": [
       "ES2020",
       "DOM"
     ],
     "outDir": "./dist/",
+    "rootDir": "./src",
     "sourceMap": true,
-    "baseUrl": "./src",
+    "paths": {
+      "*": ["./src/*"]
+    },
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -21,7 +24,7 @@
     "src"
   ],
   "exclude": [
-    "*.test.*",
-    "*Test.*"
+    "**/*.test.*",
+    "**/*Test.*"
   ]
 }
