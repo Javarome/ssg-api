@@ -73,6 +73,22 @@ describe("SsgContextImpl", () => {
     expect(context.logger.name).toBe(hierarchicalName)
   })
 
+  describe("newOutput", () => {
+    test("a different output file starts empty rather than inheriting the source's contents", () => {
+      const context = new SsgContextImpl<MyVars>("fr")
+      Object.assign(context, {file: {name: ".htaccess", contents: "Options +Indexes"}})
+      const output = context.newOutput("netlify.toml")
+      expect(output.contents).toBe("")
+    })
+
+    test("the same output file (in-place edit) inherits the source's current contents", () => {
+      const context = new SsgContextImpl<MyVars>("fr")
+      Object.assign(context, {file: {name: "style.css", contents: "body { color: red }"}})
+      const output = context.newOutput("out/style.css")
+      expect(output.contents).toBe("body { color: red }")
+    })
+  })
+
   describe("clone", () => {
     test("unread file", () => {
       const context = new SsgContextImpl<MyVars>("fr")

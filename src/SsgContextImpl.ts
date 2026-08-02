@@ -1,3 +1,4 @@
+import path from "path"
 import { SsgContext } from "./SsgContext.js"
 import { ConsoleLogger } from "./ConsoleLogger.js"
 import { Logger } from "./Logger.js"
@@ -123,11 +124,17 @@ export class SsgContextImpl<V = any> implements SsgContext<V> {
       lang = {lang: this.locale, variants: []}
     }
     const creationDate = new Date()
+    // Only an in-place edit (output path names the same file as the one currently being read) should
+    // inherit the source's current contents as a starting point. A genuinely different output file
+    // (e.g. a .htaccess root producing a netlify.toml output) must start empty, or every replacement
+    // targeting a different file ends up prefixed with the unrelated source file's raw contents.
+    const isSameFile = path.basename(filePath) === path.basename(this.file.name)
+    const initialContents = isSameFile ? this.file.contents : ""
     if (filePath.endsWith(".html")) {
-      const fileInfo: FileContents = new FileContents(filePath, encoding, this.file.contents, creationDate, lang)
+      const fileInfo: FileContents = new FileContents(filePath, encoding, initialContents, creationDate, lang)
       outFile = HtmlFileContents.create(fileInfo)
     } else {
-      outFile = new FileContents(filePath, encoding, this.file.contents, creationDate, lang)
+      outFile = new FileContents(filePath, encoding, initialContents, creationDate, lang)
     }
     this.logger.debug("Created new output file", outFile.name)
     return outFile
