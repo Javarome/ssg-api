@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@javarome/testscript"
+import { describe, expect, test } from "vitest"
 import { ObjectUtil } from "./ObjectUtil"
 
 describe("ObjectUtil", () => {

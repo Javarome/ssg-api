@@ -1,5 +1,5 @@
 import { testUtil } from "../../../../../../test/TestUtil.js"
-import { describe, expect, test } from "@javarome/testscript"
+import { describe, expect, test } from "vitest"
 import { SsiIncludeReplaceCommand, SsiIncludeReplaceCommandTransformer } from "./SsiIncludeReplaceCommand.js"
 import { SsgContext } from "../../../../../SsgContext.js"
 import { FileContents } from "@javarome/fileutil"

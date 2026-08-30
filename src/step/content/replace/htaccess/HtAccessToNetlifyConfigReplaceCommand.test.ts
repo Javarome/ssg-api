@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@javarome/testscript"
+import { describe, expect, test } from "vitest"
 import { testUtil } from "../../../../../test/TestUtil.js"
 import { HtAccessToNetlifyConfigReplaceCommand } from "./HtAccessToNetlifyConfigReplaceCommand.js"
 import { FileContents, FileContentsLang } from "@javarome/fileutil"
@@ -47,10 +47,10 @@ describe("HtAccessToNetlifyConfigReplaceCommand", () => {
       try {
         const contents = await generate(preamble)
         const banner = contents.indexOf("generated from .htaccess on every build")
-        expect(banner > -1).toBe(true)
+        expect(banner).toBeGreaterThan(-1)
         // Between the two halves, and in neither of them.
-        expect(banner > contents.indexOf("elsewhere.example")).toBe(true)
-        expect(banner < contents.indexOf(`from = "/old.html"`)).toBe(true)
+        expect(banner).toBeGreaterThan(contents.indexOf("elsewhere.example"))
+        expect(banner).toBeLessThan(contents.indexOf(`from = "/old.html"`))
       } finally {
         await rm(preamble, {force: true})
       }
@@ -59,13 +59,7 @@ describe("HtAccessToNetlifyConfigReplaceCommand", () => {
     test("refuses to build at all when the trunk it was told about is missing", async () => {
       // The whole point. Dropping the trunk in silence is the failure being fixed here — it is how
       // a site lost its hand-written redirects and its CORS headers twice without a word.
-      let thrown: unknown
-      try {
-        await generate(path.join(os.tmpdir(), "ssg-preamble-that-does-not-exist.toml"))
-      } catch (e) {
-        thrown = e
-      }
-      expect(thrown === undefined).toBe(false)
+      await expect(generate(path.join(os.tmpdir(), "ssg-preamble-that-does-not-exist.toml"))).rejects.toThrow()
     })
 
     test("generates exactly as before when no trunk is named", async () => {

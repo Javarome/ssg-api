@@ -1,5 +1,5 @@
 import path from "path"
-import { describe, expect, test } from "@javarome/testscript"
+import { describe, expect, test } from "vitest"
 import { DirectoryStep } from "./DirectoryStep.js"
 import { SsgContextImpl } from "../SsgContextImpl.js"
 import { SsgContext } from "../SsgContext.js"

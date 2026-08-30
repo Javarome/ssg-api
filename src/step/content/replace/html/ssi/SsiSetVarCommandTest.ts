@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@javarome/testscript"
+import { describe, expect, test } from "vitest"
 import { SsiSetVarReplaceCommand } from "./SsiSetVarCommand.js"
 import { testUtil } from "../../../../../../test/TestUtil.js"
 

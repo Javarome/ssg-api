@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@javarome/testscript"
+import { describe, expect, test } from "vitest"
 import { DomReplaceCommand } from "./DomReplaceCommand.js"
 import { HtmlSsgContext } from "../../../HtmlSsgContext.js"
 import { DomReplacer } from "./DomReplacer.js"

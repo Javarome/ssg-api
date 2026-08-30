@@ -1,6 +1,6 @@
 import fs from "fs"
 import path from "path"
-import { describe, expect, test } from "@javarome/testscript"
+import { describe, expect, test } from "vitest"
 import { ContentStep } from "./ContentStep.js"
 import { SsgContext } from "../../SsgContext.js"
 import { SsgContextImpl } from "../../SsgContextImpl.js"

@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@javarome/testscript"
+import { describe, expect, test } from "vitest"
 import { SsgContextImpl } from "./SsgContextImpl.js"
 import { ConsoleLogger } from "./ConsoleLogger"
 

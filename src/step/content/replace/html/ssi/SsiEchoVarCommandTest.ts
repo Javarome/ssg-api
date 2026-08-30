@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@javarome/testscript"
+import { describe, expect, test } from "vitest"
 import { SsiEchoVarReplaceCommand } from "./SsiEchoVarCommand.js"
 import { RegexReplacer } from "../../RegexReplacer.js"
 import { HtmlSsgContext } from "../../../../../HtmlSsgContext.js"

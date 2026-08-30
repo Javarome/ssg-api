@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@javarome/testscript"
+import { describe, expect, test } from "vitest"
 import { ConsoleLogger, LogConsole } from "./ConsoleLogger.js"
 
 class TestConsole implements LogConsole {
