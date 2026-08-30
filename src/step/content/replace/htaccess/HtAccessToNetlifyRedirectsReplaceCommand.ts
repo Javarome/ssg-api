@@ -2,8 +2,8 @@ import { HtAccessReplaceCommand } from "./HtAccessReplaceCommand.js"
 
 export class HtAccessToNetlifyRedirectsReplaceCommand extends HtAccessReplaceCommand {
 
-  constructor(protected host: string) {
-    super()
+  constructor(protected host: string, preambleFile?: string) {
+    super(preambleFile)
   }
 
   protected handleHeader(from: string, to: string): string {

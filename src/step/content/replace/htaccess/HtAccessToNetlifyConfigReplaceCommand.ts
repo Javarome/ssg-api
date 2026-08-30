@@ -3,8 +3,10 @@ import { HtAccessReplaceCommand } from "./HtAccessReplaceCommand.js"
 
 export class HtAccessToNetlifyConfigReplaceCommand extends HtAccessReplaceCommand {
 
-  constructor(protected host: string) {
-    super()
+  /** @param preambleFile The invariable trunk of the `netlify.toml` this produces — see
+   *   HtAccessReplaceCommand for what belongs in it and why it is a file of its own. */
+  constructor(protected host: string, preambleFile?: string) {
+    super(preambleFile)
   }
 
   protected handleDirectoryIndex(args: string[], _result: string[]): void {

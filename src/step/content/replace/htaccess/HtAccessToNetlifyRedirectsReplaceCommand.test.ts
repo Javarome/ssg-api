@@ -17,29 +17,25 @@ describe("HtAccessToNetlifyRedirectsReplaceCommand", () => {
       `/Documents/Articles/Vallee/1990_5ArgumentsContreHET_Vallee_fr.html /time/1/9/9/0/Vallee_5ArgumentsAgainstTheExtraterrestrialOriginOfUnidentifiedFlyingObjects/index_fr.html`)
   })
 
-  test("don't use existing output if same file", async () => {
-    const command = new HtAccessToNetlifyRedirectsReplaceCommand("https://rr0.org/")
-    const fileName = ".htaccess"
-    const context = testUtil.newContext(fileName,
-      `Redirect /Documents/Articles/Vallee/1990_5ArgumentsContreHET_Vallee_fr.html https://rr0.org/time/1/9/9/0/Vallee_5ArgumentsAgainstTheExtraterrestrialOriginOfUnidentifiedFlyingObjects/index_fr.html`)
-    context.outputFile = new FileContents(`out/${fileName}`, "utf-8", "", new Date(), new FileContentsLang())
-    await command.execute(context)
-    expect(context.file.contents).toBe(
-      `/Documents/Articles/Vallee/1990_5ArgumentsContreHET_Vallee_fr.html /time/1/9/9/0/Vallee_5ArgumentsAgainstTheExtraterrestrialOriginOfUnidentifiedFlyingObjects/index_fr.html`)
-  })
-
-  test("append on existing output file", async () => {
+  test("never carries anything over from what the output already held", async () => {
+    // THE TEST THAT USED TO SAY THE OPPOSITE, and it is worth knowing why it was wrong. It handed
+    // the command an output file already holding a [build] section and asserted the result kept it,
+    // which passed — and could never happen in a real build, because a real output comes from
+    // SsgContext.newOutput(), which builds a fresh empty one and does not read the file on disk. So
+    // the "complete what is already there" behaviour was alive in the tests and dead in production,
+    // and a site's hand-written configuration went missing twice with everything green.
+    //
+    // A trunk now comes from a named source file instead (see HtAccessReplaceCommand's preamble),
+    // and the output's own former contents are no longer an input to anything.
     const command = new HtAccessToNetlifyRedirectsReplaceCommand("https://rr0.org/")
     const context = testUtil.newContext(".htaccess",
       `Redirect /Documents/Articles/Vallee/1990_5ArgumentsContreHET_Vallee_fr.html https://rr0.org/time/1/9/9/0/Vallee_5ArgumentsAgainstTheExtraterrestrialOriginOfUnidentifiedFlyingObjects/index_fr.html`)
-    const existingOutputContents = `[build]
+    context.outputFile = new FileContents("netlify.toml", "utf-8", `[build]
   publish = "out"
   command = "Echo deploying..."
-`
-    context.outputFile = new FileContents("netlify.toml", "utf-8", existingOutputContents, new Date(),
-      new FileContentsLang())
+`, new Date(), new FileContentsLang())
     await command.execute(context)
-    expect(context.file.contents).toBe(existingOutputContents +
+    expect(context.file.contents).toBe(
       `/Documents/Articles/Vallee/1990_5ArgumentsContreHET_Vallee_fr.html /time/1/9/9/0/Vallee_5ArgumentsAgainstTheExtraterrestrialOriginOfUnidentifiedFlyingObjects/index_fr.html`)
   })
 
