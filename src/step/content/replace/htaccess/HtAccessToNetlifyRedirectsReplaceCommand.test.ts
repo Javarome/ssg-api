@@ -39,6 +39,18 @@ describe("HtAccessToNetlifyRedirectsReplaceCommand", () => {
       `/Documents/Articles/Vallee/1990_5ArgumentsContreHET_Vallee_fr.html /time/1/9/9/0/Vallee_5ArgumentsAgainstTheExtraterrestrialOriginOfUnidentifiedFlyingObjects/index_fr.html`)
   })
 
+  test("never turns a DirectoryIndex into a catch-all over the whole site", async () => {
+    // It used to emit `/* index_fr.html`, which in this format is not a directory index at all: a
+    // leading /* matches EVERY path, so the entire site would have answered with that one page.
+    // Caught by generating a real site's redirects and reading the first lines of them.
+    const command = new HtAccessToNetlifyRedirectsReplaceCommand("https://rr0.org/")
+    const context = testUtil.newContext(".htaccess", `DirectoryIndex index_fr.html index.html
+Redirect /old.html https://rr0.org/new.html`)
+    context.outputFile = outputFile
+    await command.execute(context)
+    expect(context.file.contents).toBe(`/old.html /new.html`)
+  })
+
   test("redirect directory to directory", async () => {
     const command = new HtAccessToNetlifyRedirectsReplaceCommand("https://rr0.org/")
     const context = testUtil.newContext(".htaccess",
